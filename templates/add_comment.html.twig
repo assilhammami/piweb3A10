@@ -1,0 +1,20 @@
+{# Début du formulaire de commentaire #}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+{# Champ pour le contenu du commentaire #}
+<div class="form-group">
+    {{ form_label(form.contenu) }}
+    {{ form_widget(form.contenu) }}
+</div>
+
+{# Champ pour la note du commentaire (s'il y a lieu) #}
+<div class="form-group">
+    {{ form_label(form.note) }}
+    {{ form_widget(form.note) }}
+</div>
+
+{# Bouton de soumission du formulaire #}
+<button type="submit" class="btn btn-primary">Modifier le commentaire</button>
+
+{# Fin du formulaire de commentaire #}
+{{ form_end(form) }}

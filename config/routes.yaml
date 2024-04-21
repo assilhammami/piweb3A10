@@ -1,0 +1,76 @@
+# config/routes.yaml
+
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+
+forum:
+    path: /forum
+    controller: App\Controller\ForumController::index
+
+publication_new:
+    path: /publication/new
+    controller: App\Controller\ForumController::new
+
+add_comment:
+    path: '/publication/{id}/add-comment'
+    controller: 'App\Controller\ForumController::addCommentaire'
+    methods: ['GET', 'POST']
+    
+ 
+app_forum:
+    path: /forum
+    controller: App\Controller\ForumController::index
+
+my_publications:
+    path: /my-publications
+    controller: App\Controller\ForumController::myPublications  
+
+
+delete_publication:
+    path: /publication/delete/{id}
+    controller: App\Controller\ForumController::deletePublication 
+
+edit_publication:
+    path: /publication/edit/{id}
+    controller: App\Controller\ForumController::editPublication
+    methods: ['GET', 'POST']    
+
+
+delete_comment:
+    path: /delete_comment/{id}
+    controller: App\Controller\ForumController::deleteComment
+
+
+edit_comment:
+    path: /edit_comment/{id}
+    controller: 'App\Controller\ForumController::editComment'   
+
+forum_admin:
+    path: /forumadmin
+    controller: App\Controller\ForumadminController::index     
+
+
+
+search_publications:
+    path: /search
+    controller: 'App\Controller\ForumadminController::searchPublications'
+    methods: [GET]
+
+
+publication_newadmin:
+    path: /publication/newadmin
+    controller: App\Controller\ForumadminController::new
+    methods: ['GET', 'POST']
+
+
+my_publicationsadmin:
+    path: /my-publicationsadmin
+    controller: App\Controller\ForumadminController::myPublications
+    methods: ['GET']
+
+
+edit_publicationadmin:
+    path: /publication/edit/admin/{id}
+    controller: 'App\Controller\ForumadminController::editpublication'
+    methods: ['GET', 'POST']

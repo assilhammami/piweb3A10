@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Publications</title>
+    <style>
+        /* Styles pour le forum */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #f4f4f4;
+            padding: 10px;
+            overflow: auto;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: #333;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        .publication {
+            background-color: #f9f9f9;
+            padding: 20px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: auto; /* Pour que les éléments à l'intérieur de .publication soient alignés correctement */
+        }
+
+        .publication img {
+            max-width: 40%; /* Ajustez la largeur de l'image selon vos préférences */
+            float: left; /* Affichez l'image à gauche */
+            margin-right: 20px; /* Espacement entre l'image et le contenu */
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .publication-content {
+            overflow: hidden; /* Pour gérer le dépassement du contenu de la publication */
+        }
+
+        .publication h2 {
+            color: #333;
+        }
+
+        .publication p {
+            color: #666;
+        }
+
+        .publication-actions {
+            float: right;
+        }
+
+        .publication-actions a {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mes Publications</h1>
+    </header>
+    <nav>
+        <a href="forumadmin">Accueil</a>
+        <a href="#">Mes Publications</a>
+        <!-- Ajoutez d'autres liens de navigation si nécessaire -->
+    </nav>
+    <section>
+        {% for publication in publications %}
+            <div class="publication">
+                <h2>{{ publication.titre }}</h2>
+                <p>{{ publication.description }}</p>
+                <img width="200px" src="{{ asset('image/' ~ publication.image) }}" alt="Image de la publication">
+                <div class="publication-actions">
+                    <a href="{{ path('edit_publicationadmin', {'id': publication.id}) }}">Modifier</a>
+                    <a href="{{ path('delete_publication', {'id': publication.id}) }}">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+</body>
+</html>
