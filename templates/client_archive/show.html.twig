@@ -1,0 +1,32 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Archive{% endblock %}
+
+{% block body %}
+    <h1>Archive</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ archive.id }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>{{ archive.image }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ archive.description }}</td>
+            </tr>
+            <tr>
+                <th>Date_creation</th>
+                <td>{{ archive.dateCreation ? archive.dateCreation|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_client_archive_index') }}">back to list</a>
+
+   
+{% endblock %}

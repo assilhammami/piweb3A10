@@ -1,0 +1,39 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}Archive index{% endblock %}
+
+{% block body %}
+    <h1>Archive index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Description</th>
+                <th>Date_creation</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for archive in archives %}
+            <tr>
+                <td>{{ archive.id }}</td>
+                <td>{{ archive.image }}</td>
+                <td>{{ archive.description }}</td>
+                <td>{{ archive.dateCreation ? archive.dateCreation|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_client_archive_show', {'id': archive.id}) }}">show</a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

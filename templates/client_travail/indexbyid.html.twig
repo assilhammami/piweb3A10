@@ -1,0 +1,89 @@
+{% extends 'front.html.twig' %}
+{% block body %}
+<style>
+    .title-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        text-transform: uppercase;
+        border-bottom: 2px solid #333;
+        padding-bottom: 10px;
+        display: inline-block;
+    }
+</style>
+
+<div class="title-container">
+    <div class="title">Liste des travaux</div>
+</div>
+
+<style>
+    body {
+        background-color: #ffffff; /* Arrière-plan blanc */
+        color: #333333; /* Couleur de texte principale */
+    }
+
+    .card {
+        border: 1px solid #007bff; /* Bordure bleue */
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px; /* Espacement entre les cartes */
+        background-color: #f9f9f9;
+    }
+
+    .card h2 {
+        margin-top: 0;
+        color: #007bff; /* Titre en bleu */
+    }
+
+    .card p {
+        margin: 5px 0;
+    }
+
+    .actions {
+        margin-top: 10px;
+    }
+
+    .btn {
+        background-color: #007bff; /* Bouton en bleu */
+        color: #ffffff; /* Texte des boutons en blanc */
+        border: none;
+        border-radius: 3px;
+        padding: 8px 16px;
+        cursor: pointer;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Bouton secondaire en gris */
+    }
+</style>
+
+<div class="card-container">
+    {% for travail in travails %}
+        <div class="card">
+            <h2>{{ travail.titre }}</h2>
+            <p><strong>Description:</strong> {{ travail.description }}</p>
+            <p><strong>Prix:</strong> {{ travail.prix }}</p>
+            <p><strong>Type:</strong> {{ travail.type }}</p>
+            <p><strong>Date de demande:</strong> {{ travail.dateDemande|date('Y-m-d') }}</p>
+            <p><strong>Date de fin:</strong> {{ travail.dateFin|date('Y-m-d') }}</p>
+            <div class="actions">
+                <button type="button" class="btn" onclick="window.location.href='{{ path('app_client_travail_show', {'id': travail.id}) }}';">Voir détails</button>
+                <button type="button" class="btn" onclick="window.location.href='{{ path('app_client_travail_edit', {'id': travail.id}) }}';">Modifier</button>
+                <form method="post" action="{{ path('app_client_travail_delete', {'id': travail.id}) }}" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ travail.id) }}">
+                    <button type="submit" class="btn btn-secondary">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucun travail trouvé</p>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
