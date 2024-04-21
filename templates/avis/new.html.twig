@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Avis{% endblock %}
+
+{% block body %}
+    <h1>Create new Avis</h1>
+
+    {{ include('avis/_form.html.twig') }}
+
+   <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_index') }}'">Back to list</button>
+
+{% endblock %}

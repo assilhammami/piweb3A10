@@ -1,0 +1,6 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+search_course:
+    path: /search/course
+    controller: 'App\Controller\CourseController@search'

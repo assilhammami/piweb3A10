@@ -1,0 +1,74 @@
+{% extends 'front.html.twig' %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Cours</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+     
+
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #fff;
+        }
+
+        .btn-custom:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+
+        /* Styles pour les icônes des boutons */
+        .btn-custom .fas {
+            margin-right: 5px;
+        }
+        h1.text-center {
+    font-size: 36px; /* Taille de la police */
+    color: #007bff; /* Couleur du texte (bleu) */
+    margin-bottom: 20px; /* Marge inférieure pour l'espace */
+    text-transform: uppercase; /* Convertir le texte en majuscules */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 60px; /* Ombre portée pour mettre en évidence */
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Liste Des Cours</h1>
+
+    <div class="row">
+        {% for cour in cours %}
+            <div class="col-md-4">
+                <div class="course-card">
+                   <img src="{{ asset('img/' ~ cour.image) }}" class="course-image" width="300" height="150">
+
+                    <div class="course-details">
+                        <h2>{{ cour.nom }}</h3>
+                        <p><strong>Description :</strong>{{ cour.description }}</p>
+                        <p><strong>Date de publication : </strong>{{ cour.datePub ? cour.datePub|date('Y-m-d') : '' }}</p>
+                        <p><strong>Likes :</strong> {{ cour.likes }}</p>
+                        <p><strong>Dislikes : </strong>{{ cour.dislikes }}</p>
+
+                        
+                    </div>
+                </div>
+            </div>
+            {% if loop.index % 3 == 0 %}
+                </div><div class="row">
+            {% endif %}
+        {% else %}
+            <p>Aucun cours trouvé.</p>
+        {% endfor %}
+    </div>
+
+   
+</body>
+</html>
+{% endblock %}
