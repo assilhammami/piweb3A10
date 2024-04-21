@@ -1,0 +1,59 @@
+{% extends 'base_front_office.html.twig' %}
+
+{% block title %}CustomerOrder{% endblock %}
+
+{% block body %}
+    <section class="single-page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>My Order</h2>
+                    <ol class="breadcrumb header-bradcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">My Orders</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="posts section" style="background-color: #F6F5F2;">
+        <div class="container" style="background-color: #F6F5F2;">
+            <div class="row">
+                {% if customer_order.products|length > 0 %}
+                    {% for product in customer_order.products %}
+                        <div class="col-lg-4 col-md-4 mb-3">
+                            <article style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <div style="text-align: center;">
+                                    <h3 style="margin-right: 115px; font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">{{ product.productName }}</h3>
+                                    <div class="media-wrapper" style="height: 400px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                                        <img loading="lazy" src="{{ asset('uploads/' ~ product.productImage) }}" alt="Product Image" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+                                    </div>
+                                    <p>Price: {{ product.price }} DT</p>
+                                    <p>Quantity: {{ product.quantity }}</p>
+                                </div>
+                            </article>
+                        </div>
+                        {% if loop.index % 3 == 0 %}
+                            </div><div class="row">
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <div class="col-md-12" style="text-align: center; background-color: #F6F5F2;">
+                        There are no products in this order.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+<div class="buttons" style="display: flex; justify-content: center; margin-top: 10px;">
+    <a href="{{ path('app_customer_order_front_index', {'id': 1}) }}" style="text-decoration: none;">
+        <button onmouseover="this.style.backgroundColor='#ff4d4d'; this.style.transform='scale(1.05)';" onmouseout="this.style.backgroundColor='#ff6b6b'; this.style.transform='scale(1)';" style="background-color: #ff6b6b; border: none; padding: 10px 20px; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+            <i class="fas fa-arrow-left" style="margin-right: 5px;"></i> Return to My Orders
+        </button>
+    </a>
+</div>
+
+
+    </section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base_front_office.html.twig' %}
+
+{% block title %}Products{% endblock %}
+
+{% block body %}
+<section class="single-page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Products</h2>
+                <ol class="breadcrumb header-bradcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="posts section" style="background-color: #F6F5F2;">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-6">
+                <h1>{{ product.name }}</h1>
+                <img src="{{ asset('uploads/' ~ product.image) }}" alt="{{ product.name }}" class="img-fluid">
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <p>Description: {{ product.description }}</p>
+                    <p>Price: {{ product.price }}</p>
+                    <p>Stock: {{ product.stock }}</p>
+                    <p>Creation Date: {{ product.creationDate }}</p>
+                    <p>Category: {{ product.category }}</p>
+                </div>
+<div class="text-center">
+    <div class="btn-group">
+        <a class="btn" href="{{ path('app_shop_index') }}" style="text-decoration: underline;">Back to list</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="btn btn-success" href="{{ path('app_add_to_cart', {'id': product.id}) }}">Add to cart</a>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

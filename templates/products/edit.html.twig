@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Products{% endblock %}
+
+{% block body %}
+    <h1>Edit Products</h1>
+
+    {# Display flash messages #}
+    {% for flashError in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ flashError }}
+        </div>
+    {% endfor %}
+
+    {{ include('products/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_products_index') }}">Back to list</a>
+
+    {{ include('products/_delete_form.html.twig') }}
+{% endblock %}

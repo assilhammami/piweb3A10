@@ -1,0 +1,120 @@
+{% extends 'base_front_office.html.twig' %}
+
+{% block title %}Products index{% endblock %}
+
+{% block body %}
+
+<section class="single-page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Products</h2>
+                <ol class="breadcrumb header-bradcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<form style="background-color: #F6F5F2;">
+    <br>
+</form>
+<form id="searchForm" action="{{ path('app_shop_index') }}" method="GET" class="d-flex justify-content-center" style="background-color: #F6F5F2;">
+    <div class="input-group" style="width: 300px;" >
+        <input type="text" id="searchInput" name="query" class="form-control rounded-start" placeholder="Search by name" style="border-radius: 25px 0 0 25px; border-color: #c8e6c9;">
+               <button type="submit" class="btn btn-primary rounded-end" style="border-radius: 0 25px 25px 0; border-color: #c8e6c9; background-color: #e0f2f1;">
+            <span class="visually-hidden">Search</span>
+            <i class="bi bi-search"></i>
+        </button>
+
+    </div>
+</form>
+
+<section class="posts section" style="background-color: #F6F5F2;">
+    <div class="container">
+        <div class="row">
+            {% for product in products %}
+            <div class="col-lg-4 col-md-4 mb-3">
+                <article style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <div style="text-align: center;">
+                        <h3 style="margin-right: 115px; font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">{{ product.Name }}</h3>
+                    </div>
+                    <div class="post-item" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <a href="{{ path('app_products_show_front', {'id': product.id}) }}">
+             <div class="media-wrapper" style="height: 400px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+    {% if product.Image %}
+    <img loading="lazy" src="{{ asset('uploads/' ~ product.Image) }}" alt="Product Image" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+    {% else %}
+    <p style="height: 400px; display: flex; align-items: center; justify-content: center;">No image available</p>
+    {% endif %}
+</div>
+
+                        </a>
+                        <div class="content">
+                            <div class="row"> 
+                                <p style="font-size: 16px; color: #666;">{{ product.Description }}</p> 
+                            </div>
+                            <div class="row" style="display: flex; justify-content: space-between;"> 
+                                <p style="font-size: 18px; color: #333;">{{ product.Price }} DT</p>
+                                <p style="font-size: 18px; color: #333;">{{ product.Stock }} left</p>
+                            </div>
+                        </div>
+                        <div class="buttons" style="display: flex; justify-content: space-between; margin-top: 10px;">
+                            <a class="btn btn-success" href="{{ path('app_add_to_cart', {'id': product.id}) }}"  onmouseover="this.style.boxShadow='0 0 10px #28a745'"
+       onmouseout="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'">Add To Cart</a> 
+                            {% if product.isInWishlist %}
+                            <form action="{{ path('app_remove_from_wishlist', {'id': product.id}) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-danger"><i class="bi bi-heart-fill"></i></button>
+                            </form>
+                            {% else %}
+                            <form action="{{ path('app_add_to_wishlist', {'id': product.id}) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-danger"><i class="bi bi-heart"></i></button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </article>
+            </div>
+            {% if loop.index % 3 == 0 %}
+            <div class="w-100"></div> {# Add a new row after every 3rd product #}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+</div>
+
+<script>
+    // Get the search input field
+    var searchInput = document.getElementById("searchInput");
+    // Get the product list container
+    var productList = document.getElementById("productList");
+
+    // Function to update the product list based on search input
+    function updateProductList() {
+        // Get the search query from the input field
+        var query = searchInput.value.trim().toLowerCase();
+
+        // Send an AJAX request to fetch the filtered products
+        fetch("{{ path('app_shop_index') }}?query=" + query)
+            .then(response => response.text())
+            .then(data => {
+                // Update the product list with the received data
+                productList.innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Listen for input events on the search input field
+    searchInput.addEventListener("input", function(event) {
+        // Update the product list when the input value changes
+        updateProductList();
+    });
+
+    // Update the product list when the page loads
+    updateProductList();
+</script>
+
+{% endblock %}

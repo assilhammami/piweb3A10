@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('app_wish_list_delete', {'id': wish_list.id}) }}" onsubmit="return confirm('Are you sure you want to remove this item from your wishlist?');">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ wish_list.id) }}">
+    <button type="submit" class="btn" style="background-color: #6c757d; border-color: #6c757d; color: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 10px #6c757d'" onmouseout="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'">
+        <i class="bi bi-trash"></i> Remove from WishList
+    </button>
+</form>

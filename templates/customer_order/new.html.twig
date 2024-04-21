@@ -1,0 +1,25 @@
+{# templates/customer_order/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Create New Customer Order{% endblock %}
+
+{% block body %}
+    <h1>Create New Customer Order</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.userId) }}
+        <h2>Available Products</h2>
+        <ul>
+            {% for product in availableProducts %}
+                <li>
+                    {{ product.id }} - {{ product.name }} - {{ product.price }}
+                    <input type="checkbox" name="productIds[]" value="{{ product.id }}"> Select
+                </li>
+            {% endfor %}
+        </ul>
+        <label for="productId">Enter Product ID:</label>
+        <input type="text" id="productId" name="productId">
+        <button type="submit">Save</button>
+    {{ form_end(form) }}
+{% endblock %}

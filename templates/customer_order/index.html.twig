@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block title %}CustomerOrder index{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>OrderDate</th>
+                <th>Products</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for customer_order in customer_orders %}
+            <tr>
+                <td>{{ customer_order.orderDate ? customer_order.orderDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    {% for product in customer_order.products %}
+                        <div class="product">
+                            <span class="product-name">{{ product.productName }}</span>
+                            {% if product.productImage %}
+                                <img src="{{ product.productImage }}" alt="{{ product.productName }}" class="product-image">
+                            {% endif %}
+                            <span class="product-quantity">Quantity: {{ product.quantity }}</span>
+                            <span class="product-price">Price: ${{ product.price }}</span>
+                        </div>
+                    {% endfor %}
+                </td>
+                <td>
+                     <span class="product-status">{{ customer_order.status }}</span>
+                </td>
+                <td><a class="btn" href="{{ path('app_toggle_status', {'id': customer_order.id}) }}">Change Status</a></td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div align="center">
+    <a class="btn btn-success btn-sm" href="{{ path('app_customer_order_new') }}">Create new</a>
+    </div>
+{% endblock %}

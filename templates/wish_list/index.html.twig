@@ -1,0 +1,54 @@
+{% extends 'base_front_office.html.twig' %}
+
+{% block title %}WishList index{% endblock %}
+
+{% block body %}
+ <section class="single-page-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>WishList</h2>
+				<ol class="breadcrumb header-bradcrumb justify-content-center">
+					<li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Shop</li>
+				</ol>
+			</div>
+		</div>
+	</div>
+</section>
+<form action="{{ path('app_shop_index') }}" method="GET" class="d-flex justify-content-center">
+    <div class="input-group" style="width: 300px;">
+        <input type="text" name="query" class="form-control" placeholder="Search by name">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<section class="posts section">
+	<div class="container">
+		<div class="row">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ProductImage</th>
+                <th>ProductName</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for wish_list in wish_lists %}
+            <tr>
+                <td>{{ wish_list.productImage }}</td>
+                <td>{{ wish_list.productName }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    </div>
+    </div>
+    </section>
+{% endblock %}

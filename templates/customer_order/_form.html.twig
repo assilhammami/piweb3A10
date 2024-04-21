@@ -1,0 +1,46 @@
+<div class="container">
+    {{ form_start(form) }}
+
+    <div class="form-group">
+        {{ form_label(form.Name, "Name") }}
+        {{ form_widget(form.Name, {'attr':{'class': 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.Name) }}</span>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.Description.vars.id }}">Description</label>
+        {{ form_widget(form.Description, {'attr': {'class': 'form-control', 'rows': '4'}}) }}
+        <span class="text-danger">{{ form_errors(form.Description) }}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.Price, "Price") }}
+        {{ form_widget(form.Price, {'attr':{'class': 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.Price) }}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.Stock, "Stock") }}
+        {{ form_widget(form.Stock, {'attr':{'class': 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.Stock) }}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.Category, "Category") }}
+        {{ form_widget(form.Category, {'attr':{'class': 'form-control'}}) }}
+        <span class="text-danger">{{ form_errors(form.Category) }}</span>
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.Image, "Image") }}
+        {{ form_widget(form.Image, {'attr':{'class': 'form-control'}}) }}
+        <small class="form-text text-muted">Enter the image path or URL</small>
+        <span class="text-danger">{{ form_errors(form.Image) }}</span>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-success">{{ button_label|default('Create') }}</button>
+    </div>
+
+    {{ form_end(form) }}
+</div>

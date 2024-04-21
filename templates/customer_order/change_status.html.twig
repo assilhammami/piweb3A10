@@ -1,0 +1,19 @@
+{# templates/customer_order/change_status.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Change Order Status{% endblock %}
+
+{% block body %}
+    <h1>Change Order Status</h1>
+    <form method="post">
+        <div>
+            <label for="status">Status:</label>
+            <select name="status" id="status">
+                <option value="Delivered">Delivered</option>
+                <option value="Declined">Declined</option>
+            </select>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

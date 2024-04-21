@@ -1,0 +1,50 @@
+{% extends 'base_front_office.html.twig' %}
+
+{% block title %}WishList index{% endblock %}
+
+{% block body %}
+<section class="single-page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>WishList</h2>
+                <ol class="breadcrumb header-bradcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-white">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">WishList</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="posts section" style="background-color: #F6F5F2;">
+    <div class="container" style="background-color: #F6F5F2;">
+        <div class="row">
+            {% if wish_lists|length > 0 %}
+                {% for wish_list in wish_lists %}
+                    <div class="col-lg-4 col-md-4 mb-3">
+                        <article style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <h3 style="margin-right: 115px; font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">{{ wish_list.productName }}</h3>
+                               <div class="media-wrapper" style="height: 400px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                                    <img loading="lazy" src="{{ asset('uploads/' ~ wish_list.productImage) }}" alt="Product Image" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+                                </div>
+                            </div>
+                            <div class="buttons" style="display: flex; justify-content: center; margin-top: 10px;">
+                                {{ include('wish_list/front_office/_remove_form.html.twig') }}
+                            </div>
+                        </article>
+                    </div>
+                    {% if loop.index % 3 == 0 %}
+                        </div><div class="row">
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <div class="col-md-12" style="text-align: center; background-color: #F6F5F2;">
+                    You don't have products in your WishList
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

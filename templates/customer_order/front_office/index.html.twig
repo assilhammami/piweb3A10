@@ -1,0 +1,110 @@
+{% extends 'base_front_office.html.twig' %}
+{% block title %}My Orders{% endblock %}
+
+{% block body %}
+<section class="single-page-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>My Orders</h2>
+                <ol class="breadcrumb header-bradcrumb justify-content-center">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="posts section" style="background-color: #F6F5F2;">
+    <div class="container">
+<form action="{{ path('app_customer_order_front_index', {'id': id}) }}" method="get" class="mb-3">
+    <div class="btn-group" role="group" aria-label="Filter by Status" style="width: 100%;">
+        <button type="submit" name="Status" value="" class="btn btn-success{% if not app.request.query.get('Status') %} active{% endif %}" style="width: 25%; border-radius: 0; background-color: #E0C296; border-color: #E0C296;">All</button>
+        <button type="submit" name="Status" value="In progress..." class="btn btn-success{% if app.request.query.get('Status') == 'In progress...' %} active{% endif %}" style="width: 25%; border-radius: 0; background-color: #E0C296; border-color: #E0C296;">In Progress</button>
+        <button type="submit" name="Status" value="Delivered" class="btn btn-success{% if app.request.query.get('Status') == 'Delivered' %} active{% endif %}" style="width: 25%; border-radius: 0; background-color: #E0C296; border-color: #E0C296;">Delivered</button>
+        <button type="submit" name="Status" value="Old" class="btn btn-success{% if app.request.query.get('Status') == 'Old' %} active{% endif %}" style="width: 25%; border-radius: 0; background-color: #E0C296; border-color: #E0C296;">History</button>
+    </div>
+</form>
+
+        <div class="row">
+            {% for customer_order in customer_orders %}
+            <div class="col-lg-4 col-md-4 mb-3">
+                <div style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <div style="text-align: center;">
+                        <h3 style="font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">Order Date: {{ customer_order.orderDate ? customer_order.orderDate|date('Y-m-d H:i:s') : '' }}</h3>
+                    </div>
+                    <div class="content">
+                        {% if customer_order.products|length >= 1 %}
+                        <div id="carouselExampleControls{{ loop.index }}" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+                            <div class="carousel-inner">
+                                {% for product in customer_order.products %}
+                                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                                    <div class="product">
+                                        <div style="text-align: center;">
+                                            <span class="product-name">{{ product.productName }}</span>
+                                        </div>
+                                        {% if product.productImage %}
+                                        <div class="media-wrapper" style="height: 200px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                                            <img loading="lazy" src="{{ asset('uploads/' ~ product.productImage) }}" alt="{{ product.productName }}" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+                                        </div>
+                                        {% else %}
+                                        <p style="height: 200px; display: flex; align-items: center; justify-content: center;">No image available</p>
+                                        {% endif %}
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <span class="product-quantity">Quantity: {{ product.quantity }}</span>
+                                            <span class="product-price">Price: ${{ product.price }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% else %}
+                        {% for product in customer_order.products %}
+                        <div class="product">
+                            <div style="text-align: center;">
+                                <span class="product-name">{{ product.productName }}</span>
+                            </div>
+                            {% if product.productImage %}
+                            <div class="media-wrapper" style="height: 200px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                                <img loading="lazy" src="{{ product.productImage }}" alt="{{ product.productName }}" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+                            </div>
+                            {% else %}
+                            <p style="height: 200px; display: flex; align-items: center; justify-content: center;">No image available</p>
+                            {% endif %}
+                            <div style="display: flex; justify-content: space-between;">
+                                <span class="product-quantity">Quantity: {{ product.quantity }}</span>
+                                <span class="product-price">Price: ${{ product.price }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+<div class="buttons" style="display: flex; justify-content: center; margin-top: 10px;">
+    <span class="product-status"
+          style="text-align: center; padding: 5px 10px; border-radius: 5px; filter: drop-shadow(0 0 10px rgba(108, 117, 125, 0.8));">
+        {{ customer_order.status }}
+    </span>
+</div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="{{ path('app_customer_order_show', {'id': customer_order.id}) }}" style="text-decoration: none;">
+                        <button onmouseover="this.style.boxShadow='0 0 10px #6c757d'; this.style.transform='scale(1.05)';" onmouseout="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.2)'; this.style.transform='scale(1)';" style="background-color: #F6F5F2; border: none; padding: 10px 20px; border-radius: 5px; transition: box-shadow 0.3s;">
+    <i class="bi bi-eye" style="margin-right: 5px;"></i> Inspect
+</button>
+
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-md-12">
+                <p>No orders available.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
