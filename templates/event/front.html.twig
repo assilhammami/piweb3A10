@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <h1>Events</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Capacity</th>
+                <th>Place</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                
+                <td>{{ event.nom }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.capacity }}</td>
+                <td>{{ event.place }}</td>
+                 <td><img width="200px" src="{{ asset('images/' ~ event.image) }}" alt="Image de l evenement"></td>
+                <td>
+                    <a href="{{ path('app_eventt_show', {'id': event.id}) }}">show</a>
+                    <a href="{{ path('app_reservationfront_new', {'eventId': event.id}) }}">Réserver</a>
+
+                      
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   
+<a href="{{ path('app_reservation_new') }}">add reservation</a>
+{% endblock %}

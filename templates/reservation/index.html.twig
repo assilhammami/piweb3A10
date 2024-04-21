@@ -1,0 +1,40 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Reservation {% endblock %}
+
+{% block body %}
+    <h1>Reservation </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+               <th>Event</th>
+                <th>Date</th>
+                <th>Nbplaces</th>
+                
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.idevent.nom }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.nbplaces }}</td>
+                
+
+                <td>
+                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reservation_new') }}">Create new</a>
+{% endblock %}

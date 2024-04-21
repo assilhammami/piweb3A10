@@ -1,0 +1,45 @@
+{% extends 'backoffice/base.html.twig' %}
+{% block title %}Events{% endblock %}
+
+{% block body %}
+    <h1>Events</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Capacity</th>
+                <th>Place</th>
+                 <th>Description</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.nom }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.capacity }}</td>
+                <td>{{ event.place }}</td>
+                 <td>{{ event.Description }}</td>
+                <td><img width="200px" src="{{ asset('images/' ~ event.image) }}" alt="Image de l evenement"></td>
+                <td>
+                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
+                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        {% if events|length == 0 %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_eventt_new') }}">add event</a>
+    <br>
+    <a href="{{ path('app_reservation_new') }}">add reservation</a>
+{% endblock %}
