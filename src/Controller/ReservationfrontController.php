@@ -11,6 +11,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\PdfGeneratorService;
+
+
 
 #[Route('/reservationfront')]
 class ReservationfrontController extends AbstractController
@@ -48,7 +51,7 @@ class ReservationfrontController extends AbstractController
             $entityManager->flush();
     
             // Rediriger vers la liste des réservations ou toute autre page appropriée
-            return $this->redirectToRoute('app_reservationfront_new', ['eventId' => $eventId]);
+            return $this->redirectToRoute('app_reservationfront_index');
 
         }
     
@@ -96,4 +99,22 @@ class ReservationfrontController extends AbstractController
 
         return $this->redirectToRoute('app_reservationfront_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+    #[Route('/pdf/reservation', name: 'generator_service_reservation')]
+    public function pdfEvenement(): Response
+    {
+        $reservation= $this->getDoctrine()
+            ->getRepository(Reservation::class)
+            ->findAll();
+
+
+
+        $html =$this->renderView('mpdf/index.html.twig', ['reservations' => $reservation]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
+
+        return new Response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+
+}}

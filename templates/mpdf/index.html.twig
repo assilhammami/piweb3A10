@@ -1,0 +1,26 @@
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="{{ asset('imagee/logo.jpg') }}" style="width: 140px; height: 100px;" alt="Description de votre image">
+</div>
+
+<br>
+<h2>Liste des réservations</h2> <!-- Ajout du titre ici -->
+<br>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th style="color:#009CFF;">Id</th>
+            <th style="color:#009CFF;">Date</th>
+            <th style="color:#009CFF;">NbPlaces</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.nbplaces }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

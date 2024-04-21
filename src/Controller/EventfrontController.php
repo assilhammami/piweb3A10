@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\EventSearchType;
 
 #[Route('/frontoffice/event')]
 class EventfrontController extends AbstractController
@@ -66,7 +67,28 @@ class EventfrontController extends AbstractController
         ]);
     }
 
-   
+    #[Route('/recherche', name: 'app_event_recherche', methods: ['GET', 'POST'])]
+    public function rechercher(Request $request, EventRepository $eventRepository): Response
+    {
+        // Créez le formulaire de recherche
+        $formSearch = $this->createForm(EventSearchType::class);
+        $formSearch->handleRequest($request);
+        
+        // Si le formulaire est soumis et valide, effectuez une recherche d'événements
+        if ($formSearch->isSubmitted() && $formSearch->isValid()) {
+            $searchData = $request->query->get('event_search');
+            if ($searchData && isset($searchData['nom'])) {
+                $events = $eventRepository->findByCriteria($searchData['nom']);
+            } else {
+                $events = $eventRepository->findAll();
+            }
+        
+            return $this->render('event/front.html.twig', [
+                'events' => $events,
+                'formSearch' => $formSearch->createView(),
+            ]);
+        }
+    }
 
    
 }
