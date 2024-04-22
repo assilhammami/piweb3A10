@@ -37,7 +37,33 @@
     margin-bottom: 20px; /* Marge inférieure pour l'espace */
     text-transform: uppercase; /* Convertir le texte en majuscules */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    font-size: 60px; /* Ombre portée pour mettre en évidence */
+    font-size: 60px; /* Ombre portée pour mettre en évidence */}
+    .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
+
     </style>
 </head>
 <body>
@@ -67,6 +93,9 @@
             <p>Aucun cours trouvé.</p>
         {% endfor %}
     </div>
+<div class="pagination">
+    {{ knp_pagination_render(cours) }}
+</div>
 
    
 </body>

@@ -21,6 +21,7 @@
                 <td>
                     <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_show', {'id': avi.id}) }}'">Show</button>
                     <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_edit', {'id': avi.id}) }}'">Edit</button>
+                    
                 </td>
             </tr>
         {% else %}
@@ -32,4 +33,5 @@
     </table>
 
     <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_new') }}'">Create new</button>
+    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('generator_service_avis') }}'">PDF</button>
 {% endblock %}

@@ -22,11 +22,11 @@ class Avis
 
     #[ORM\ManyToOne(inversedBy: 'user')]
     #[ORM\JoinColumn(name:"id_user", referencedColumnName:"id", nullable:false)]
-    private ?User $id_user = null;
+    public ?User $id_user = null;
 
     #[ORM\ManyToOne(inversedBy: 'avis')]
     #[ORM\JoinColumn(name:"id_cour", referencedColumnName:"id", nullable:false)]
-    private ?Cours $id_cour = null;
+    public ?Cours $id_cour = null;
 
 
 

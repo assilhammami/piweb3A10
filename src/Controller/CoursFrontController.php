@@ -10,15 +10,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/cours-front')]
 class CoursFrontController extends AbstractController
 {
+    
     #[Route('/', name: 'app_cours_front_index', methods: ['GET'])]
-    public function index(CoursRepository $coursRepository): Response
+    public function index(CoursRepository $coursRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $query = $coursRepository->findAll(); // Récupérer tous les cours
+    
+        $cours = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1
+            3 // Nombre d'éléments par page
+        );
+    
         return $this->render('cours_front/index.html.twig', [
-            'cours' => $coursRepository->findAll(),
+            'cours' => $cours,
         ]);
     }
 

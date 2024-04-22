@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\PdfGeneratorService;
 use App\Entity\Avis;
 use App\Entity\Cours;
 use App\Form\AvisType;
@@ -82,29 +82,29 @@ class AvisController extends AbstractController
     #[Route('/new/{coursId}', name: 'app_aviss_new', methods: ['GET', 'POST'])]
     public function new1($coursId, Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Trouver l'événement en fonction de son ID
+        // Trouver l'cours en fonction de son ID
         $cours = $this->getDoctrine()->getRepository(Cours::class)->find($coursId);
     
-        // Vérifier si l'événement existe
+        // Vérifier si l'cours existe
         if (!$cours) {
             throw $this->createNotFoundException('L\'événement avec l\'ID '.$coursId.' n\'existe pas.');
         }
     
-        // Créer une nouvelle réservation et l'associer à l'événement
+        // Créer une nouvelle avis et l'associer à l'cours
         $avis = new Avis();
         $avis->setIdCour($cours);
     
-        // Créer le formulaire de réservation
+        // Créer le formulaire de l'avis
         $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);
     
         // Traiter la soumission du formulaire
         if ($form->isSubmitted() && $form->isValid()) {
-            // Persister la réservation
+            // Persister l' avis
             $entityManager->persist($avis);
             $entityManager->flush();
     
-            // Rediriger vers la liste des réservations ou toute autre page appropriée
+            // Rediriger vers la liste des avis ou toute autre page appropriée
             return $this->redirectToRoute('app_avis_index');
 
         }
@@ -115,4 +115,23 @@ class AvisController extends AbstractController
             'form' => $form,
         ]);
     }
+    #[Route('/pdf/avis', name: 'generator_service_avis')]
+    public function pdfAvis(): Response
+    {
+        $avis= $this->getDoctrine()
+            ->getRepository(Avis::class)
+            ->findAll();
+
+
+
+        $html =$this->renderView('mpdf/index.html.twig', ['avis' => $avis]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
+
+        return new Response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+
+}
 }
