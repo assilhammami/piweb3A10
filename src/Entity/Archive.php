@@ -27,7 +27,7 @@ class Archive
     #[ORM\Column(type: Types::DATE_MUTABLE)]
 
     
-    private ?\DateTimeInterface $date_creation = null;
+    public ?\DateTimeInterface $date_creation = null;
 
     #[ORM\ManyToOne(inversedBy: 'id_archives')]
     #[ORM\JoinColumn(name:"idT", referencedColumnName:"id")]

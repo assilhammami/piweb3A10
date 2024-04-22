@@ -11,16 +11,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\FormError;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/travail')]
 class TravailController extends AbstractController
 {
     #[Route('/', name: 'app_travail_index', methods: ['GET'])]
-    public function index(TravailRepository $travailRepository): Response
+    public function index(Request $request, TravailRepository $travailRepository, PaginatorInterface $paginator): Response
     {
+        // Récupère tous les travaux depuis la base de données
+        $allTravaux = $travailRepository->findAll();
+
+        // Paginer les travaux avec KnpPaginatorBundle
+        $travaux = $paginator->paginate(
+            $allTravaux, // Les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+            5 // Nombre d'éléments par page
+        );
+
         return $this->render('travail/index.html.twig', [
-            'travails' => $travailRepository->findAll(),
+            'travaux' => $travaux,
         ]);
     }
 
@@ -89,4 +99,7 @@ class TravailController extends AbstractController
 
         return $this->redirectToRoute('app_travail_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    
+    
 }

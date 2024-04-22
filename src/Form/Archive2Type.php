@@ -15,7 +15,7 @@ class Archive2Type extends AbstractType
             ->add('image')
             ->add('description')
             ->add('date_creation')
-            ->add('idT')
+            
         ;
     }
 

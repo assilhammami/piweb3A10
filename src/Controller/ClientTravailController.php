@@ -10,15 +10,27 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
+
 
 #[Route('/client-travail')]
 class ClientTravailController extends AbstractController
 {
     #[Route('/', name: 'app_client_travail_index', methods: ['GET'])]
-    public function index(TravailRepository $travailRepository): Response
+    public function index(Request $request,TravailRepository $travailRepository , PaginatorInterface $paginator): Response
     {
+ // Récupère tous les travaux depuis la base de données
+    $allTravaux = $travailRepository->findAll();
+
+    // Paginer les travaux avec KnpPaginatorBundle
+    $travaux = $paginator->paginate(
+        $allTravaux, // Les données à paginer
+        $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+        5 // Nombre d'éléments par page
+    );
+        
         return $this->render('client_travail/index.html.twig', [
-            'travails' => $travailRepository->findAll(),
+            'travails' => $travaux,
         ]);
     }
 

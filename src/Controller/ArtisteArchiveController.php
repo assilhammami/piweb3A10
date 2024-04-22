@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Archive;
+use App\Entity\PdfGeneratorService;
+use App\Entity\Travail;
 use App\Form\Archive2Type;
 use App\Repository\ArchiveRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -78,4 +80,61 @@ class ArtisteArchiveController extends AbstractController
 
         return $this->redirectToRoute('app_artiste_archive_index', [], Response::HTTP_SEE_OTHER);
     }
-}
+
+    #[Route('/new/{travailId}', name: 'app_reservationfront_new', methods: ['GET', 'POST'])]
+    public function new1($travailId, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Trouver l'événement en fonction de son ID
+        $tarvail = $this->getDoctrine()->getRepository(Travail::class)->find($travailId);
+    
+        // Vérifier si l'événement existe
+        if (!$tarvail) {
+            throw $this->createNotFoundException('L\'événement avec l\'ID '.$travailId.' n\'existe pas.');
+        }
+    
+        // Créer une nouvelle réservation et l'associer à l'événement
+        $archive = new Archive();
+        $archive->setIdT($tarvail);
+    
+        // Créer le formulaire de réservation
+        $form = $this->createForm(Archive2Type::class, $archive);
+        $form->handleRequest($request);
+    
+        // Traiter la soumission du formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persister la réservation
+            $entityManager->persist($archive);
+            $entityManager->flush();
+    
+            // Rediriger vers la liste des réservations ou toute autre page appropriée
+            return $this->redirectToRoute('app_artiste_archive_index');
+
+        }
+    
+        // Afficher le formulaire de réservation
+        return $this->renderForm('artiste_archive/new.html.twig', [
+            'archive' => $archive,
+            'form' => $form,
+        ]);
+    }
+    #[Route('/pdf/reservation', name: 'generator_service_reservation')]
+    public function pdfEvenement(): Response
+    {
+        $archive= $this->getDoctrine()
+            ->getRepository(Archive::class)
+            ->findAll();
+
+
+
+        $html =$this->renderView('mpdf/index.html.twig', ['archives' => $archive]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
+
+        return new Response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+
+}}
+
+

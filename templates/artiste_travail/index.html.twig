@@ -60,10 +60,35 @@
     .btn-secondary {
         background-color: #6c757d; /* Bouton secondaire en gris */
     }
+   .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
 </style>
 
 <div class="card-container">
-    {% for travail in travails %}
+    {% for travail in travaux %}
         <div class="card">
             <h2>{{ travail.titre }}</h2>
             <p><strong>Description:</strong> {{ travail.description }}</p>
@@ -73,7 +98,7 @@
             <p><strong>Date de fin:</strong> {{ travail.dateFin|date('Y-m-d') }}</p>
             <div class="actions">
                 <button type="button" class="btn" onclick="window.location.href='{{ path('app_artiste_travail_show', {'id': travail.id}) }}';">Voir détails</button>
-                <button type="button" class="btn" onclick="window.location.href='{{ path('app_artiste_archive_new', {'id': travail.id}) }}';">Proposer</button>
+                <button type="button" class="btn" onclick="window.location.href='{{ path('app_reservationfront_new', {'travailId': travail.id}) }}';">Proposer</button>
                 </form>
             </div>
         </div>
@@ -81,6 +106,9 @@
         <p>Aucun travail trouvé.</p>
     {% endfor %}
 </div>
-
+</div>
+ <center><div class="pagination">
+    {{ knp_pagination_render(travaux) }}
+</div></center>
 <a href="{{ path('app_artiste_travail_new') }}" class="btn">Créer un nouveau travail</a>
 {% endblock %}

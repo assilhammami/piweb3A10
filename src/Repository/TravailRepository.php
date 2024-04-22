@@ -20,6 +20,7 @@ class TravailRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Travail::class);
     }
+  
 
 //    /**
 //     * @return Travail[] Returns an array of Travail objects

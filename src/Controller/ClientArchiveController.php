@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\PdfGeneratorService;
 use App\Entity\Archive;
 use App\Form\Archive1Type;
 use App\Repository\ArchiveRepository;
@@ -78,4 +78,26 @@ class ClientArchiveController extends AbstractController
 
         return $this->redirectToRoute('app_client_archive_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/pdf/reservation', name: 'generator_service_reservation')]
+    public function pdfEvenement(): Response
+    {
+        $archive= $this->getDoctrine()
+            ->getRepository(Archive::class)
+            ->findAll();
+
+
+
+        $html =$this->renderView('mpdf/index.html.twig', ['archives' => $archive]);
+        $pdfGeneratorService=new PdfGeneratorService();
+        $pdf = $pdfGeneratorService->generatePdf($html);
+
+        return new Response($pdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="document.pdf"',
+        ]);
+
+}
+
+
+
 }

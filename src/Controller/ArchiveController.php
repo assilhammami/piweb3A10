@@ -82,4 +82,5 @@ class ArchiveController extends AbstractController
 
         return $this->redirectToRoute('app_archive_index', [], Response::HTTP_SEE_OTHER);
     }
+    
 }
