@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Avis;
+use App\Entity\Cours;
 use App\Form\AvisType;
 use App\Repository\AvisRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -77,5 +78,41 @@ class AvisController extends AbstractController
         }
 
         return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
+    }
+    #[Route('/new/{coursId}', name: 'app_aviss_new', methods: ['GET', 'POST'])]
+    public function new1($coursId, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Trouver l'événement en fonction de son ID
+        $cours = $this->getDoctrine()->getRepository(Cours::class)->find($coursId);
+    
+        // Vérifier si l'événement existe
+        if (!$cours) {
+            throw $this->createNotFoundException('L\'événement avec l\'ID '.$coursId.' n\'existe pas.');
+        }
+    
+        // Créer une nouvelle réservation et l'associer à l'événement
+        $avis = new Avis();
+        $avis->setIdCour($cours);
+    
+        // Créer le formulaire de réservation
+        $form = $this->createForm(AvisType::class, $avis);
+        $form->handleRequest($request);
+    
+        // Traiter la soumission du formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persister la réservation
+            $entityManager->persist($avis);
+            $entityManager->flush();
+    
+            // Rediriger vers la liste des réservations ou toute autre page appropriée
+            return $this->redirectToRoute('app_avis_index');
+
+        }
+    
+        // Afficher le formulaire de réservation
+        return $this->renderForm('avis/new.html.twig', [
+            'avis' => $avis,
+            'form' => $form,
+        ]);
     }
 }

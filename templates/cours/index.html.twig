@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +34,7 @@
         /* Ajout de marge supérieure au bouton */
         .btn-new-course {
             margin-top: 20px;
+            float: right;
         }
         h1.text-center {
     font-size: 36px; /* Taille de la police */
@@ -46,7 +48,17 @@
     </style>
 </head>
 <body>
+ <form method="GET" action="{{ path('app_cours_new') }}" class="d-inline-block btn-new-course">
+        <button type="submit" class="btn btn-custom">
+        <i class="fas fa-plus-circle"></i>
+            Créer un nouveau cours 
+        </button>
+    </form>
     <h1 class="text-center">Liste Des Cours</h1>
+    
+   <div class="pagination">
+    {{ knp_pagination_render(cours) }}
+</div>
 
     <div class="row">
         {% for cour in cours %}
@@ -67,6 +79,8 @@
                         <form method="post" action="{{ path('app_cours_delete', {'id': cour.id}) }}" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this item?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cour.id) }}">
                             <button type="submit" class="btn btn-custom"><i class="fas fa-trash-alt"></i>Supprimer</button>
+                             <button type="button" class="btn btn-custom" onclick="window.location.href='{{ path('app_aviss_new', {'coursId': cour.id}) }}';"><i class="fas fa-comment"></i>Evaluer</button>
+
                         </form>
                     </div>
                 </div>
@@ -79,12 +93,7 @@
         {% endfor %}
     </div>
 
-    <form method="GET" action="{{ path('app_cours_new') }}" class="d-inline-block btn-new-course">
-        <button type="submit" class="btn btn-custom">
-        <i class="fas fa-plus-circle"></i>
-            Créer un nouveau cours 
-        </button>
-    </form>
 </body>
+
 </html>
 {% endblock %}
