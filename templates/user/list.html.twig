@@ -1,0 +1,46 @@
+{% extends 'template.html.twig' %}
+ {% block pagetitle %}Liste des utilisateurs{% endblock %}
+
+ {% block body %}
+<table class ="table">
+    <th class="table-light">photo de profil</th>
+    <th class="table-light">ID</th>
+    <th class="table-light">username</th>
+    <th class="table-light">email</th>
+    <th class="table-light">password</th>
+    <th class="table-light">date de naissance</th>
+    <th class="table-light">type</th>
+    <th class="table-light">nom</th>
+    <th class="table-light">prenom</th>
+    <th class="table-light">num telephone</th>
+    <th class="table-light">suppr</th>
+    <th class="table-light">modif</th>
+    <th class="table-light">activer/desactiver</th>
+    </th>
+    {%for a in users%}
+    <tr class="table-primary">
+        <td><img width="70px" src="{{ asset('uploads/photos/' ~ a.getPhotoDeProfile) }}"></td>
+        <td>{{a.id}}</td>
+        <td>{{a.username}}</td>
+        <td>{{a.email}}</td>
+        <td>{{a.password}}</td>
+        <td>{{a.getDateDeNaissance() | date('d/m/Y') }}</td>
+        <td>{{ a.getUserType }}</td>
+        <td>{{a.nom}}</td>
+        <td>{{a.prenom}}</td>
+        <td>{{ a.getNumTelephone }}</td>
+
+        <td><a href="{{ path('deletebyid', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-delete-left"></i></a></td>
+<td><a href="{{ path('updateform', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-pen"></i></a></td>
+{% if a.getActive %}
+    <td><a href="{{ path('deactivate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-x"></i></a></td>
+{% else %}
+    <td><a href="{{ path('activate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i></a></td>
+{% endif %}
+    </tr>
+    {%endfor%}
+</table>
+<a href="{{ path('user_add') }}" class="btn btn-primary btn-sm">Add a User</a></td>
+{% endblock %}
+{%block title%}Users List{%endblock%}
+
