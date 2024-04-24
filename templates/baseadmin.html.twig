@@ -62,6 +62,11 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
+                <a class="nav-link" href="/forumadmin">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>homepage</span></a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="/my-publicationsadmin">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Mes publications</span></a>
@@ -152,6 +157,7 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                {% block recherche  %}{% endblock %}
 
                     {% block body %}{% endblock %}
 

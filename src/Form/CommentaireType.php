@@ -23,8 +23,11 @@ class CommentaireType extends AbstractType
             
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $commentaire = $event->getData();
-                $commentaire->setDatecommentaire(new \DateTime()); // Définir la date de publication sur la date actuelle
+                $commentaire->setDatecommentaire(new \DateTime());
+                
+                 // Définir la date de publication sur la date actuelle
             });
+            
         
     }
 

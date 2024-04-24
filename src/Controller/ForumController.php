@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Knp\Component\Pager\PaginatorInterface;
+use App\Repository\PublicationRepository;
 
 
 class ForumController extends AbstractController
@@ -25,34 +27,55 @@ class ForumController extends AbstractController
     }
 
     #[Route('/forum', name: 'app_forum')]
-    public function index(Request $request): Response
+public function index(Request $request, PaginatorInterface $paginator): Response
 {
     // Récupérer l'EntityManager
     $entityManager = $this->managerRegistry->getManager();
-
+    
     // Récupérer toutes les publications depuis la base de données
-    $publications = $entityManager->getRepository(Publication::class)->findAll();
-
+    $query = $entityManager->getRepository(Publication::class)->createQueryBuilder('p')
+        ->orderBy('p.datepublication', 'DESC')
+        ->getQuery();
+    
+    // Paginer les résultats
+    $publications = $paginator->paginate(
+        $query, // Requête à paginer
+        $request->query->getInt('page', 1), // Numéro de page par défaut
+        2 // Nombre d'éléments par page
+    );
+    
     // Créer un tableau pour stocker les formulaires de commentaire
     $commentForms = [];
-
+    
+    // Créer un tableau pour stocker la moyenne des notes de chaque publication
+    $averageRatings = [];
+    
     // Pour chaque publication, créer un formulaire de commentaire
     foreach ($publications as $publication) {
         $commentaire = new Commentaire();
+       
         $commentForm = $this->createForm(CommentaireType::class, $commentaire);
         $commentForms[$publication->getId()] = $commentForm->createView();
+        
+    
+        // Calculer la moyenne des notes pour chaque publication
+        $totalRating = 0;
+        $commentaires = $publication->getCommentaires();
+        foreach ($commentaires as $commentaire) {
+            $totalRating += $commentaire->getNote();
+        }
+        $averageRatings[$publication->getId()] = count($commentaires) > 0 ? $totalRating / count($commentaires) : 0;
     }
     $form = $this->createForm(CommentaireType::class, $commentaire);
     
-
     return $this->render('forum/index.html.twig', [
         'publications' => $publications,
         'comment_forms' => $commentForms,
+        'average_ratings' => $averageRatings,
         'form' => $form->createView(),
-        
-        
     ]);
 }
+    
 
 
     #[Route('/publication/new', name: 'publication_new')]
@@ -113,12 +136,14 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
     // Créer une nouvelle instance de l'entité Commentaire
     $commentaire = new Commentaire();
     
+    
 
     // Créer le formulaire à partir de CommentaireType
     $form = $this->createForm(CommentaireType::class, $commentaire);
 
     // Gérer la soumission du formulaire
     $form->handleRequest($request);
+
 
     // Vérifier si le formulaire a été soumis et si les champs sont vides
     if ($form->isSubmitted() && $form->isEmpty()) {
@@ -136,6 +161,7 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
     // Si le formulaire a été soumis et est valide, associer le commentaire à la publication et enregistrer dans la base de données
     if ($form->isSubmitted() && $form->isValid()) {
         $commentaire->setPublication($publication);
+     
 
         // Enregistrer le commentaire dans la base de données
         $entityManager->persist($commentaire);
@@ -298,5 +324,7 @@ public function myPublications(ManagerRegistry $manager ): Response
             'form' => $form->createView(),
         ]);
     }
+    
+    
 
 }

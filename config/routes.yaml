@@ -74,3 +74,12 @@ edit_publicationadmin:
     path: /publication/edit/admin/{id}
     controller: 'App\Controller\ForumadminController::editpublication'
     methods: ['GET', 'POST']
+
+stats:
+    path: /stats
+    controller: App\Controller\ForumadminController::statistiques
+
+search:
+    path: /search
+    controller: App\Controller\ForumadminController::search
+    methods: ['POST']

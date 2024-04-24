@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Commentaire;
 use App\Form\CommentaireType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Repository\PublicationRepository;
 class ForumadminController extends AbstractController
 {
     private $managerRegistry;
@@ -272,5 +273,51 @@ public function myPublications(ManagerRegistry $manager ): Response
             'form' => $form->createView(),
         ]);
     }
+    /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistiques(PublicationRepository $publicationRepository): Response
+    {
+        $publications = $publicationRepository->findAll();
+        $data = [];
+
+        // Récupérer le nombre de commentaires pour chaque publication
+        foreach ($publications as $publication) {
+            $data[] = [
+                'title' => $publication->getTitre(),
+                'comment_count' => count($publication->getCommentaires())
+            ];
+        }
+
+        return $this->render('Forumadmin/chart.html.twig', [
+            'data' => json_encode($data)
+        ]);
+    }
+    #[Route('/', name: 'search', methods: ['POST'])]
+    public function search(Request $request, PublicationRepository $publicationRepository): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
+    
+      
+        if (empty($searchValue)) {
+           
+            $publications = $publicationRepository->findAll();
+        } else {
+           
+            $publications = $publicationRepository->createQueryBuilder('e')
+                ->where('e.titre LIKE :searchValue')
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('forumadmin/publicationsearched.html.twig', [
+            'publications' => $publications, 
+        ]);
+    
+        }
  
 }

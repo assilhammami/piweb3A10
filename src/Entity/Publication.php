@@ -39,11 +39,14 @@ class Publication
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'publication', orphanRemoval: true)]
     private Collection $commentaires;
 
+   
+
     public function __construct()
     {
         // Initialise iduser avec une valeur par défaut
         $this->iduser = 1; // Ou toute autre valeur par défaut que vous souhaitez
         $this->commentaires = new ArrayCollection();
+       
     }
 
     public function getId(): ?int
@@ -140,4 +143,10 @@ class Publication
 
         return $this;
     }
+
+    
+
+  
+
+   
 }

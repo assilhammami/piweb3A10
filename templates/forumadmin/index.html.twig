@@ -1,6 +1,35 @@
 {% extends 'baseadmin.html.twig' %}
 
 {% block title %}Forum{% endblock %}
+ {% block recherche %}
+ <input id="searchInput"  type="search" placeholder="Search">
+   
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
 
 {% block body %}
     <header>
@@ -9,6 +38,7 @@
     <!-- Formulaire de recherche -->
 
     <nav>
+     
         
         <a href="{{ path('publication_newadmin') }}" class="btn btn-primary">Ajouter une publication</a>
         
@@ -61,4 +91,21 @@
             });
         </script>
     {% endblock %}
+    <style>
+    /* Styles pour le champ de recherche */
+input#searchInput {
+    width: 300px; /* Largeur du champ de recherche */
+    padding: 10px; /* Espacement interne (padding) */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 5px; /* Bords arrondis */
+    outline: none; /* Supprime la bordure de focus par défaut */
+    transition: border-color 0.3s ease; /* Transition pour la couleur de la bordure */
+}
+
+/* Effet de focus pour le champ de recherche */
+input#searchInput:focus {
+    border-color: #007bff; /* Couleur de bordure plus vive au focus */
+}
+
+</style>
 {% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de la recherche{% endblock %}
+
+{% block body %}
+    <header>
+        <h1>Résultats de la recherche</h1>
+    </header>
+    <section>
+        {% if publications is empty %}
+            <p>Aucune publication trouvée pour votre recherche.</p>
+        {% else %}
+            {% for publication in publications %}
+                <div class="publication">
+                    <h2>{{ publication.titre }}</h2>
+                    <p>{{ publication.description }}</p>
+                    <img src="{{ asset('image/' ~ publication.image) }}" alt="Image de la publication">
+                </div>
+            {% endfor %}
+        {% endif %}
+    </section>
+{% endblock %}
