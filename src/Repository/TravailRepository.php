@@ -20,6 +20,15 @@ class TravailRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Travail::class);
     }
+
+    public function findBySearchQuery(string $searchQuery): array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.titre LIKE :searchQuery')
+            ->setParameter('searchQuery', '%'.$searchQuery.'%')
+            ->getQuery()
+            ->getResult();
+    }
   
 
 //    /**

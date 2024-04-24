@@ -19,8 +19,16 @@ class TravailController extends AbstractController
     #[Route('/', name: 'app_travail_index', methods: ['GET'])]
     public function index(Request $request, TravailRepository $travailRepository, PaginatorInterface $paginator): Response
     {
+        $searchQuery = $request->query->get('q');
+
+        if ($searchQuery) {
+            $allTravaux = $travailRepository->findBySearchQuery($searchQuery);
+        } else {
+            $allTravaux = $travailRepository->findAll();
+        }
+        
         // Récupère tous les travaux depuis la base de données
-        $allTravaux = $travailRepository->findAll();
+        
 
         // Paginer les travaux avec KnpPaginatorBundle
         $travaux = $paginator->paginate(
