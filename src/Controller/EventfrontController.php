@@ -11,17 +11,34 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\EventSearchType;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+
 
 #[Route('/frontoffice/event')]
 class EventfrontController extends AbstractController
 {
+  
+
     #[Route('/', name: 'app_frontevent_index', methods: ['GET'])]
-    public function index(EventRepository $eventfrontRepository): Response
+    public function index(Request $request, EventRepository  $eventfrontRepository, PaginatorInterface $paginator): Response
     {
+        // Récupère tous les travaux depuis la base de données
+        $allTravaux = $eventfrontRepository->findAll();
+
+        // Paginer les travaux avec KnpPaginatorBundle
+        $event = $paginator->paginate(
+            $allTravaux, // Les données à paginer
+            $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
+            1 // Nombre d'éléments par page
+        );
+
         return $this->render('event/front.html.twig', [
-            'events' => $eventfrontRepository->findAll(),
+            'events' => $event,
         ]);
     }
+
 
     #[Route('/new', name: 'app_event_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -67,28 +84,9 @@ class EventfrontController extends AbstractController
         ]);
     }
 
-    #[Route('/recherche', name: 'app_event_recherche', methods: ['GET', 'POST'])]
-    public function rechercher(Request $request, EventRepository $eventRepository): Response
-    {
-        // Créez le formulaire de recherche
-        $formSearch = $this->createForm(EventSearchType::class);
-        $formSearch->handleRequest($request);
-        
-        // Si le formulaire est soumis et valide, effectuez une recherche d'événements
-        if ($formSearch->isSubmitted() && $formSearch->isValid()) {
-            $searchData = $request->query->get('event_search');
-            if ($searchData && isset($searchData['nom'])) {
-                $events = $eventRepository->findByCriteria($searchData['nom']);
-            } else {
-                $events = $eventRepository->findAll();
-            }
-        
-            return $this->render('event/front.html.twig', [
-                'events' => $events,
-                'formSearch' => $formSearch->createView(),
-            ]);
-        }
+  ////////////////////////////////////////RECHERCHE/////////////////////////////
+  
     }
 
    
-}
+

@@ -1,0 +1,153 @@
+<div class="container-fluid pt-4 px-4">
+            <div class="col-12">
+                        <div >
+                            
+                            <div class="table-responsive">
+                                <table class="table">
+        <thead>
+          
+            <tr>
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Capacity</th>
+                <th>Place</th>
+                 <th>Description</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for events in events %}
+            <tr>
+                <td>{{ events.nom }}</td>
+                <td>{{ events.date }}</td>
+                <td>{{ events.capacity }}</td>
+                <td>{{ events.place }}</td>
+                 <td>{{ events.Description }}</td>
+                <td><img width="200px" src="{{ asset('images/' ~ events.image) }}" alt="Image de l evenement"></td>
+                <td>
+                  <a href="{{ path('app_event_show', {'id': events.id}) }}" class="link-action">show</a>
+                   <a href="{{ path('app_event_edit', {'id': events.id}) }}" class="link-action">edit</a>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no event found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+
+                        </div>
+                 
+                      </div>
+                    </div>
+                </div>
+                <style>
+                /* Styles pour la table */
+.table {
+    border-collapse: collapse; /* Supprime les espaces entre les cellules */
+    width: 100%; /* La table occupe toute la largeur du conteneur */
+    margin-bottom: 20px; /* Ajoute de l'espace en dessous de la table */
+}
+
+/* Styles pour les cellules de la table */
+.table th, .table td {
+    border: 1px solid #ddd; /* Bordure autour des cellules */
+    padding: 8px; /* Espacement interne des cellules */
+    text-align: left; /* Aligner le texte à gauche */
+}
+
+/* Styles pour l'en-tête de la table */
+.table th {
+    background-color: #f2f2f2; /* Couleur de fond pour l'en-tête */
+    color: #333; /* Couleur du texte pour l'en-tête */
+    font-weight: bold; /* Rend le texte en gras */
+}
+
+/* Style pour les lignes */
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Couleur de fond pour les lignes paires */
+}
+
+.table tr:hover {
+    background-color: #e2e2e2; /* Couleur de fond au survol d'une ligne */
+}
+/* Styles communs */
+.container {
+    padding: 20px; /* Espacement interne */
+    margin: 20px; /* Espacement externe */
+    background-color: #f9f9f9; /* Couleur de fond */
+    border-radius: 5px; /* Bords arrondis */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre autour de la boîte */
+}
+
+/* Styles pour les formulaires */
+form {
+    max-width: 600px; /* Largeur maximale du formulaire */
+    margin: 0 auto; /* Centre le formulaire */
+}
+
+form input, form textarea, form select {
+    display: block;
+    width: 100%; /* Les champs s'étirent sur toute la largeur */
+    padding: 10px; /* Espacement interne */
+    margin-bottom: 10px; /* Espacement externe entre les champs */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 5px; /* Bords arrondis */
+}
+
+form input[type="submit"] {
+    background-color: #007bff; /* Couleur de fond (bleu) */
+    color: white; /* Couleur du texte */
+    border: none; /* Pas de bordure */
+    padding: 10px 20px; /* Espacement interne (padding) */
+    border-radius: 5px; /* Bords arrondis */
+    cursor: pointer; /* Curseur en forme de main */
+    font-weight: bold; /* Texte en gras */
+}
+
+form input[type="submit"]:hover {
+    background-color: #0056b3; /* Couleur de fond plus foncée au survol */
+}
+
+/* Styles pour les éléments de texte */
+h1, h2, h3, h4, h5, h6 {
+    color: #333; /* Couleur du texte */
+    margin-bottom: 20px; /* Espacement en dessous des titres */
+}
+
+p, span {
+    color: #666; /* Couleur du texte */
+    margin-bottom: 10px; /* Espacement en dessous des paragraphes */
+}
+
+/* Effet de survol pour les liens */
+a {
+    color: #007bff; /* Couleur du texte */
+    text-decoration: none; /* Pas de soulignement */
+}
+
+a:hover {
+    text-decoration: underline; /* Souligner le lien au survol */
+    color: #0056b3; /* Couleur du texte au survol */
+}
+/* Styles pour les liens "show" et "edit" */
+a.link-action {
+    color: #007bff; /* Couleur bleue */
+    text-decoration: none; /* Pas de soulignement */
+    padding: 5px 10px; /* Espacement interne */
+    border-radius: 3px; /* Bords arrondis */
+    margin-right: 5px; /* Ajoute un espacement entre les liens */
+    font-weight: bold; /* Texte en gras */
+}
+
+/* Effet de survol pour les liens */
+a.link-action:hover {
+    background-color: #f2f2f2; /* Couleur de fond au survol */
+    color: #0056b3; /* Couleur de texte au survol */
+}
+
+</style>

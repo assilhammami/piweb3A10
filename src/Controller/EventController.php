@@ -51,7 +51,7 @@ class EventController extends AbstractController
                 $imageFile->move($destination, $newFilename);
                 // Enregistrer le nom du fichier dans l'entité Event
                 $event->setImage($newFilename);
-            }
+            
             
             // Persistez l'entité dans la base de données
             $entityManager->persist($event);
@@ -59,7 +59,7 @@ class EventController extends AbstractController
         
             return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
         }
-        
+    }
         return $this->renderForm('event/new.html.twig', [
             'event' => $event,
             'form' => $form,
@@ -76,37 +76,52 @@ class EventController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_event_edit', methods: ['GET', 'POST'])]
-    public function edit($id,Request $request, Event $event, EntityManagerInterface $entityManager,EventRepository $repo): Response
-    {
-        $event=$repo->find($id);
+    public function edit($id, Request $request, Event $event, EntityManagerInterface $entityManager, EventRepository $repo): Response {
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var UploadedFile $imageFile */
             $imageFile = $form->get('image')->getData();
-            
-            // Gérer l'envoi du fichier
-            if ($imageFile) {
-                // Récupérer le nom d'origine du fichier
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // Définir le chemin de destination final
-                $destination = $this->getParameter('kernel.project_dir').'/public/images';
     
-                // Générer un nom de fichier unique basé sur le nom d'origine et l'extension
-                $newFilename = $originalFilename . '_' . uniqid() . '.' . $imageFile->guessExtension();
-                // Déplacer le fichier vers le répertoire de destination avec le nouveau nom
+            // Si une nouvelle image a été téléchargée, traitez l'image
+            if ($imageFile) {
+                // Définir le chemin de destination final
+                $destination = $this->getParameter('kernel.project_dir') . '/public/images';
+    
+                // Générer un nom de fichier unique
+                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+    
+                // Déplacer le fichier vers le répertoire de destination
                 $imageFile->move($destination, $newFilename);
-                // Enregistrer le nom du fichier dans l'entité Event
+    
+                // Supprimer l'ancienne image si elle existe
+                if ($event->getImage()) {
+                    $oldImagePath = $destination . '/' . $event->getImage();
+                    if (file_exists($oldImagePath)) {
+                        unlink($oldImagePath);
+                    }
+                }
+    
+                // Mettre à jour l'entité Event avec le nouveau nom de fichier
                 $event->setImage($newFilename);
             }
-
+    
+            // Sauvegarder les modifications dans la base de données
+            $entityManager->flush();
+    
+            // Rediriger vers la page de détails de l'événement
+            return $this->redirectToRoute('app_event_show', ['id' => $event->getId()]);
+        }
+    
         return $this->renderForm('event/edit.html.twig', [
             'event' => $event,
             'form' => $form,
         ]);
     }
-    }
+    
+    
+    
     #[Route('/{id}', name: 'app_event_delete', methods: ['POST'])]
     public function delete(Request $request, Event $event, EntityManagerInterface $entityManager): Response
     {
@@ -117,6 +132,30 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('app_event_index', [], Response::HTTP_SEE_OTHER);
     }
-  
-
+    #[Route('/', name: 'search', methods: ['POST'])]
+    public function search(Request $request, EventRepository $eventRepository): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
+    
+      
+        if (empty($searchValue)) {
+           
+            $events = $eventRepository->findAll();
+        } else {
+           
+            $events = $eventRepository->createQueryBuilder('e')
+                ->where('e.nom LIKE :searchValue')
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('event/table_rows.html.twig', [
+            'events' => $events, 
+        ]);
+    
+        }
 }

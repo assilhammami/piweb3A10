@@ -43,7 +43,11 @@
         "symfony/yaml": "5.4.*",
         "tecnickcom/tcpdf": "^6.7",
         "twig/extra-bundle": "^2.12|^3.0",
+        "knplabs/knp-paginator-bundle": "^5.9",
+
         "twig/twig": "^2.12|^3.0"
+        
+    
     },
     "config": {
         "allow-plugins": {

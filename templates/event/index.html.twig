@@ -1,46 +1,96 @@
 {% extends 'backoffice/base.html.twig' %}
-{% block title %}Events{% endblock %}
+{% block title %}Events
 
+{% endblock %}
+ 
+
+
+  {% block recherche %}
+ <input id="searchInput"  type="search" placeholder="Search">
+   
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
+  
 {% block body %}
     <h1>Events</h1>
-    
+   
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Date</th>
-                <th>Capacity</th>
-                <th>Place</th>
-                 <th>Description</th>
-                <th>Image</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for event in events %}
-            <tr>
-                <td>{{ event.nom }}</td>
-                <td>{{ event.date }}</td>
-                <td>{{ event.capacity }}</td>
-                <td>{{ event.place }}</td>
-                 <td>{{ event.Description }}</td>
-                <td><img width="200px" src="{{ asset('images/' ~ event.image) }}" alt="Image de l evenement"></td>
-                <td>
-                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
-                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% endfor %}
-        {% if events|length == 0 %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endif %}
-        </tbody>
-    </table>
+   
 
-    <a href="{{ path('app_eventt_new') }}">add event</a>
+   <a href="{{ path('app_event_new') }}" class="btn-add-event">Add Event</a>
     <br>
+     <div id="searchResults"></div>
+
+
+     <style>
+     /* Styles pour le titre <h1> */
+h1 {
+    font-size: 2.5em; /* Taille de la police */
+    color: #333; /* Couleur du texte */
+    text-align: center; /* Centrer le texte */
+    margin-bottom: 20px; /* Ajouter de l'espace en dessous du titre */
+}
+
+/* Styles pour le bouton "Add Event" */
+/* Styles pour le bouton "Add Event" */
+a.btn-add-event {
+    background-color: #007bff; /* Couleur de fond (bleu) */
+    color: white; /* Couleur du texte */
+    padding: 10px 20px; /* Espacement interne (padding) */
+    margin-bottom: 10px; /* Espacement externe (margin) */
+    border: none; /* Pas de bordure */
+    border-radius: 5px; /* Bords arrondis */
+    cursor: pointer; /* Curseur en forme de main au survol */
+    text-decoration: none; /* Supprimer la décoration des liens */
+    font-weight: bold; /* Texte en gras */
+    float: right; /* Aligner le bouton à droite */
+     margin-right: 30px; /* Espacement externe (margin) */
+}
+
+/* Effet de survol pour le bouton "Add Event" */
+a.btn-add-event:hover {
+    background-color: #0056b3; /* Couleur de fond plus foncée au survol */
+}
+
+/* Styles pour le champ de recherche */
+input#searchInput {
+    width: 300px; /* Largeur du champ de recherche */
+    padding: 10px; /* Espacement interne (padding) */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 5px; /* Bords arrondis */
+    outline: none; /* Supprime la bordure de focus par défaut */
+    transition: border-color 0.3s ease; /* Transition pour la couleur de la bordure */
+}
+
+/* Effet de focus pour le champ de recherche */
+input#searchInput:focus {
+    border-color: #007bff; /* Couleur de bordure plus vive au focus */
+}
+
+</style>
     
 {% endblock %}

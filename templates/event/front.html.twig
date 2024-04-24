@@ -1,11 +1,41 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Events{% endblock %}
-   
+  {% block recherche %}
+<form class="d-none d-md-flex ms-4">
+    <input id="searchInput" class="form-control bg-dark border-0" type="search" placeholder="Search">
+</form>
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
+
 {% block body %}
     <h1>Events</h1>
 
-
+   
     <div>
     {% if events is not empty %}
         <table class="table">
@@ -45,4 +75,68 @@
         <p>Aucun événement trouvé</p>
     {% endif %}
 </div>
+
+<script>
+function searchEvents() {
+    const searchTerm = document.getElementById('searchTerm').value;
+    fetch(`/frontoffice/event/search?searchTerm=${searchTerm}`)
+        .then(response => {
+            // Vérifiez que la réponse est au format JSON
+            if (response.headers.get('Content-Type').includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('La réponse n\'est pas au format JSON.');
+            }
+        })
+        .then(data => {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Effacer les résultats précédents
+            data.events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.innerHTML = `
+                    <p>Nom: ${event.nom}</p>
+                    <p>Date: ${event.date}</p>
+                    <p>Lieu: ${event.place}</p>
+                `;
+                resultsDiv.appendChild(eventDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des événements :', error);
+        });
+}
+
+</script>
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
+</style>
+<center><div class="pagination">
+    {{ knp_pagination_render(events) }}
+</div></center>
+ <div id="searchResults"></div>
 {% endblock %}
+
