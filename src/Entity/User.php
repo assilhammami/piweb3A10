@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
     private ?string $email = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 6000)]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
@@ -64,7 +64,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $date_de_naissance ;
 
     #[ORM\Column]
-    private ?bool $Active = true;
+    private ?bool $Active = false;
 
     public function getId(): ?int
     {
@@ -179,17 +179,7 @@ public function setDateDeNaissance(\DateTimeInterface $date_de_naissance): self
     return $this;
 }
 
-    public function getActive(): ?bool
-    {
-        return $this->Active;
-    }
-    
-    public function setActive(bool $active): self
-    {
-        $this->Active = $active;
-    
-        return $this;
-    }
+   
     public function getRoles(): array
 {
     $roles = [];
@@ -228,6 +218,7 @@ public function setDateDeNaissance(\DateTimeInterface $date_de_naissance): self
  */
 private $plainPassword;
 
+
 public function getPlainPassword(): ?string
 {
     return $this->plainPassword;
@@ -236,6 +227,29 @@ public function getPlainPassword(): ?string
 public function setPlainPassword(string $plainPassword): self
 {
     $this->plainPassword = $plainPassword;
+
+    return $this;
+}
+
+public function isVerified(): bool
+{
+    return $this->Active;
+}
+
+public function setVerified(bool $isVerified): static
+{
+    $this->Active = $isVerified;
+
+    return $this;
+}
+public function getActive(): ?bool
+{
+    return $this->Active;
+}
+
+public function setActive(bool $active): self
+{
+    $this->Active = $active;
 
     return $this;
 }

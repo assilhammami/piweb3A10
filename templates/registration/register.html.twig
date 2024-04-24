@@ -1,48 +1,161 @@
-{% extends 'test.html.twig' %}
-{%block pagetitle%}
-            Register
-            {%endblock%}
-{% block title %}Register{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block body %}
-    
-    {{ form_start(registrationForm,{'attr': {'novalidate': 'novalidate' }} )}}
-        
-  
-        <fieldset class="mb-3">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="backoffice/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="/backoffice/css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+    <div class="container">
+
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
+                <div class="row">
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            </div>
+                            {{ form_start(registrationForm,{'attr': {'novalidate': 'novalidate' }} )}}
+                            
             
-            <legend>Personal Information</legend>
-       
-            {{ form_row(registrationForm.photo_de_profile) }}
-       
-            {{ form_row(registrationForm.nom) }}
-            {{ form_row(registrationForm.prenom) }}
-       
-            {{ form_row(registrationForm.num_telephone) }}
-        
-            {{ form_row(registrationForm.date_de_naissance) }}
-        
-    </fieldset>
-       <fieldset class="mb-3">
-    <legend>Account Information</legend>
-    {{ form_row(registrationForm.email) }}
-            {{ form_row(registrationForm.username) }}
-        
-            {{ form_row(registrationForm.plainPassword, {
-                label: 'My password :'
-            }) }}
-        
-       </fieldset>
-       
-        {{ form_row(registrationForm.usertype) }}
-       
-        
-    
-    {{ form_widget(registrationForm.Save) }}
-    
-        
-        
+                            <legend>Personal Information</legend>    
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    {{ form_label(registrationForm.photo_de_profile) }}
+                                    {{ form_widget(registrationForm.photo_de_profile, {'attr': {'class': 'form-control form-control-user', 'id': 'photo_de_profile'}}) }}
+                                    {{ form_errors(registrationForm.photo_de_profile) }}
+                                    <img id="preview" src="#" alt="Image Preview" style="display: none;"/>
+                                </div>
+                            </div>
+                             <div class="form-group row">
+                                  <div class="col-sm-6 mb-3 mb-sm-0">
+                                    {{ form_label(registrationForm.nom) }}
+                                    {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                    {{ form_errors(registrationForm.nom) }}    
+                                </div>
+                                    <div class="col-sm-6">
+                                        {{ form_label(registrationForm.prenom) }}
+                                        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                        {{ form_errors(registrationForm.prenom) }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                  <div class="col-sm-6 mb-3 mb-sm-0">
+                                    {{ form_label(registrationForm.num_telephone) }}
+                                    {{ form_widget(registrationForm.num_telephone, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                    {{ form_errors(registrationForm.num_telephone) }}
+                                </div>
+                                <div class="col-sm-6">
+                                    {{ form_label(registrationForm.date_de_naissance) }}
+                                    {{ form_widget(registrationForm.date_de_naissance, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                    {{ form_errors(registrationForm.date_de_naissance) }}
+                                </div>
+                                </div>
+                              
+                              
+                                <legend>Account Information</legend>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_label(registrationForm.email) }}
+                                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                        {{ form_errors(registrationForm.email) }}
+                                    </div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        {{ form_label(registrationForm.username) }}
+                                        {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                        {{ form_errors(registrationForm.username) }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                      {{ form_label(registrationForm.plainPassword, 'My password :') }}
+                                      {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-control-user'}}) }}
+                                      {{ form_errors(registrationForm.plainPassword) }}
+                                    </div>
+                                </div>
+                             
+                                {{ form_label(registrationForm.usertype) }}
+                                {{ form_widget(registrationForm.usertype, {'attr': {'class': 'form-control form-control-user '}}) }}
+                                {{ form_errors(registrationForm.usertype) }}
+                                {{ form_widget(registrationForm.Save, {'attr': {'class': 'btn btn-primary btn-user btn-block'}}) }}
+                              {{ form_end(registrationForm) }}
+                                <hr>
+                                <a href="index.html" class="btn btn-google btn-user btn-block">
+                                    <i class="fab fa-google fa-fw"></i> Register with Google
+                                </a>
+                                <a href="index.html" class="btn btn-facebook btn-user btn-block">
+                                    <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                                </a>
+                                
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="/reset-password">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a class="small" href="/login">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+    </div>
+
+    
+    <!-- Load jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <!-- Then load the other scripts that depend on jQuery -->
+    <script src="backoffice/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="backoffice/js/sb-admin-2.min.js"></script>
+    
+    <!-- Your custom script -->
+    <script>
+        $(document).ready(function() {
+            console.log('Document is ready');
         
-    {{ form_end(registrationForm) }}
-{% endblock %}
+            var inputField = $('#photo_de_profile');
+            if (inputField.length > 0) {
+                console.log('Input field:', inputField);
+                inputField.on('change', function(e) {
+    console.log('Change event fired');
+    var file = e.target.files[0];
+    console.log('Selected file:', file);
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        console.log('File read:', e.target.result);
+        $('#preview').attr('src', e.target.result);
+        $('#preview').show();
+    };
+    reader.onerror = function(e) {
+        console.log('FileReader error:', e);
+    };
+    reader.readAsDataURL(file);
+});
+            }
+        });
+    </script>
+
+</body>
+
+</html>

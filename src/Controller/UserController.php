@@ -27,29 +27,52 @@ class UserController extends AbstractController
         $this->logger = $logger;
     }
     
+    #[Route('/home', name: 'home_page')]
+    public function index(): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var User $user */
+        $user = $this->getUser();
+        return match($user->isVerified()){
+            true => $this->render('user/home.html.twig'),
+            false => $this->render('user/please-verify-your-email.html.twig')
+        };
+        }
     
     
     
     #[Route('/admin', name: 'app_admin')]
     public function admin(): Response
-    {
-        return $this->render('user/admin.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+    {  $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var User $user */
+        $user = $this->getUser();
+        return match($user->isVerified()){
+            true => $this->render('user/list.html.twig'),
+            false => $this->render('user/please-verify-your-email.html.twig')
+        };
+       
     }
     #[Route('/user', name: 'app_user')]
     public function user(): Response
-    {
-        return $this->render('user/user.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+    {  $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var User $user */
+        $user = $this->getUser();
+        return match($user->isVerified()){
+            true => $this->render('user/user.html.twig'),
+            false => $this->render('user/please-verify-your-email.html.twig')
+        };
+        
     }
     #[Route('/artiste', name: 'app_artiste')]
     public function artiste(): Response
-    {
-        return $this->render('user/artiste.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
+    {$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        /** @var User $user */
+        $user = $this->getUser();
+        return match($user->isVerified()){
+            true => $this->render('user/artiste.html.twig'),
+            false => $this->render('user/please-verify-your-email.html.twig')
+        };
+       
     }
     #[Route('/user/getall', name: 'get_all')]
     public function getAllUsers(UserRepository $repo)

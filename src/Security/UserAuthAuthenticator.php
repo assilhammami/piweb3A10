@@ -51,7 +51,7 @@ class UserAuthAuthenticator extends AbstractLoginFormAuthenticator
 
     // Redirect the user to different pages based on their roles
     if (in_array('ROLE_ADMIN', $roles, true))
-        return new RedirectResponse($this->urlGenerator->generate('app_admin'));
+        return new RedirectResponse($this->urlGenerator->generate('get_all'));
     elseif (in_array('ROLE_ARTISTE', $roles, true))
         return new RedirectResponse($this->urlGenerator->generate('app_artiste'));
     else
