@@ -19,7 +19,7 @@ class CommentaireType extends AbstractType
             ->add('contenu', TextareaType::class, [
                 'label' => 'Contenu du commentaire',
                 'required' => true,
-            ])->add('note')
+            ])
             
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
                 $commentaire = $event->getData();

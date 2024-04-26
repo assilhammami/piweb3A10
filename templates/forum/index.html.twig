@@ -2,8 +2,10 @@
 
 {% block title %}Forum{% endblock %}
 
+
 {% block body %}
     <header>
+    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <h1>Welcome To Our Forum</h1>
     </header>
@@ -52,7 +54,7 @@
                     <form class="comment-form" action="{{ path('add_comment', {'id': publication.id}) }}" method="post" {{ form_start(comment_forms[publication.id], {'attr': {'novalidate': 'novalidate'}}) }}>
                         {{ form_widget(comment_forms[publication.id]) }}
                         <div class="rating">
-                            <input  id="ratingValue" name="note" value="0"> <!-- Champ de note caché pour stocker la valeur de la note -->
+                            <input type hidden  id="ratingValue" name="rating" value="0"> <!-- Champ de note caché pour stocker la valeur de la note -->
                             <i class="far fa-star" style="color: gold;" data-star-value="1"></i>
                             <i class="far fa-star" style="color: gold;" data-star-value="2"></i>
                             <i class="far fa-star" style="color: gold;" data-star-value="3"></i>
@@ -155,3 +157,4 @@
     </style>
     {% endblock %}
 {% endblock %}
+  

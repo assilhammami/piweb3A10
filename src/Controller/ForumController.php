@@ -15,6 +15,10 @@ use App\Form\CommentaireType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\PublicationRepository;
+use Symfony\Component\Mailer\Mailer;
+
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 
 
 class ForumController extends AbstractController
@@ -53,6 +57,7 @@ public function index(Request $request, PaginatorInterface $paginator): Response
     // Pour chaque publication, créer un formulaire de commentaire
     foreach ($publications as $publication) {
         $commentaire = new Commentaire();
+        
        
         $commentForm = $this->createForm(CommentaireType::class, $commentaire);
         $commentForms[$publication->getId()] = $commentForm->createView();
@@ -135,6 +140,7 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
 
     // Créer une nouvelle instance de l'entité Commentaire
     $commentaire = new Commentaire();
+    $commentaire->setNote(3);
     
     
 
@@ -160,12 +166,16 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
 
     // Si le formulaire a été soumis et est valide, associer le commentaire à la publication et enregistrer dans la base de données
     if ($form->isSubmitted() && $form->isValid()) {
+       
+        
+        
         $commentaire->setPublication($publication);
      
 
         // Enregistrer le commentaire dans la base de données
         $entityManager->persist($commentaire);
         $entityManager->flush();
+        $this->sendEmail();
 
         // Rediriger vers la page d'accueil ou tout autre endroit approprié
         return $this->redirectToRoute('forum');
@@ -323,6 +333,26 @@ public function myPublications(ManagerRegistry $manager ): Response
         return $this->render('add_comment.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/email', name: 'app_email')]
+    public function sendEmail(): Response
+    {  $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+        $mailer = new Mailer($transport);
+        $email = (new Email())
+            ->from('davincisdata@gmail.com')
+            ->to('aminehamrouni10@gmail.com')
+            //->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+            //->priority(Email::PRIORITY_HIGH)
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
+
+        return $this->render('email/index.html.twig', [
+            'controller_name' => 'EmailController',]);
     }
     
     
