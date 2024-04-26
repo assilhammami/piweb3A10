@@ -204,14 +204,7 @@ public function setDateDeNaissance(\DateTimeInterface $date_de_naissance): self
        return null;
     }
 
-    public function eraseCredentials()
-    {
-        
-    }
-    public function getUserIdentifier(): string
-    {
-        return $this->username;
-    }
+   
     /**
  * @Assert\NotBlank(message="Please enter your password")
  * @Assert\Length(min=8, max=4096)
@@ -229,6 +222,14 @@ public function setPlainPassword(string $plainPassword): self
     $this->plainPassword = $plainPassword;
 
     return $this;
+}
+public function eraseCredentials()
+{
+    $this->plainPassword = null;
+}
+public function getUserIdentifier(): string
+{
+    return $this->username;
 }
 
 public function isVerified(): bool
@@ -252,5 +253,9 @@ public function setActive(bool $active): self
     $this->Active = $active;
 
     return $this;
+}
+public function getPhoto_de_profile(): ?string
+{
+    return $this->photo_de_profile;
 }
 }

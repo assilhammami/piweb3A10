@@ -43,10 +43,9 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     {{ form_label(registrationForm.photo_de_profile) }}
-                                    {{ form_widget(registrationForm.photo_de_profile, {'attr': {'class': 'form-control form-control-user', 'id': 'photo_de_profile'}}) }}
-                                    {{ form_errors(registrationForm.photo_de_profile) }}
-                                    <img id="preview" src="#" alt="Image Preview" style="display: none;"/>
+                                    {{ form_widget(registrationForm.photo_de_profile, {'attr': {'class': 'form-control form-control-user', 'id': 'photo_de_profile', 'onchange': 'previewImage(event)'}}) }}                                    {{ form_errors(registrationForm.photo_de_profile) }}
                                 </div>
+                                <img id="preview" src="#" alt="Image Preview" style="display: none; width: 100px; height: 100px; margin-left: 20px; border-radius: 50%; border: 2px solid #000;"/>
                             </div>
                              <div class="form-group row">
                                   <div class="col-sm-6 mb-3 mb-sm-0">
@@ -131,30 +130,16 @@
     
     <!-- Your custom script -->
     <script>
-        $(document).ready(function() {
-            console.log('Document is ready');
-        
-            var inputField = $('#photo_de_profile');
-            if (inputField.length > 0) {
-                console.log('Input field:', inputField);
-                inputField.on('change', function(e) {
-    console.log('Change event fired');
-    var file = e.target.files[0];
-    console.log('Selected file:', file);
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        console.log('File read:', e.target.result);
-        $('#preview').attr('src', e.target.result);
-        $('#preview').show();
-    };
-    reader.onerror = function(e) {
-        console.log('FileReader error:', e);
-    };
-    reader.readAsDataURL(file);
-});
-            }
-        });
-    </script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        </script>
 
 </body>
 

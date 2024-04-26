@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class UserType extends AbstractType
 {
@@ -23,19 +24,16 @@ class UserType extends AbstractType
         $builder
         ->add('photo_de_profile', FileType::class, [
             'label' => 'Your profile picture :',
+            
             // unmapped means that this field is not associated to any entity property
             'mapped' => false,
             // make it optional so you don't have to re-upload the PDF file
             // every time you edit the Product details
-            'required' => true,
+            'required' => false,
             // unmapped fields can't define their validation using attributes
             // in the associated entity, so you can use the PHP constraint classes
             'constraints' => [
                 // ...
-
-                                new NotBlank([
-                    'message' => 'Please select an image file to upload',
-                ]),
                 new File([
                     'maxSize' => '2048k',
                     'mimeTypes' => [
@@ -56,9 +54,18 @@ class UserType extends AbstractType
             ['label' => 'Your Last Name :'])
             ->add('email',TextType::class,
             ['label' => 'Your Email :'])
-            ->add('password'
-            ,TextType::class,
-            ['label' => 'Your Password :'])
+            ->add('plainPassword', PasswordType::class, [
+                'mapped' => true,
+                'required' => false,
+                'label' => 'Your  password : ','constraints' => [
+                    new Length([
+                        'min' => 6,
+                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                    ]),
+                ],
+            ])
             ->add('username'
                 ,TextType::class,
             ['label' => 'Your Username :'])
@@ -83,21 +90,8 @@ class UserType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('usertype', ChoiceType::class, [
-                'choices' => [
-                    'Artiste' => 'ARTISTE',
-                    'Client' => 'CLIENT',
-                ],
-                'multiple' => false,
-                'expanded' => true,
-                'label' => 'Select your user type:',
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please select your user type',
-                    ]),
-                ],
-            ])
-             ->add('date_de_naissance', DateType::class, [
+
+            ->add('date_de_naissance', DateType::class, [
                 'years' => range(date('Y') - 100, date('Y')),
                 'label' => 'Your Birth date :']
             )

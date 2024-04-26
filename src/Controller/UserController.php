@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 
 
@@ -34,7 +35,7 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         return match($user->isVerified()){
-            true => $this->render('user/home.html.twig'),
+            true => $this->render('home.html.twig'),
             false => $this->render('user/please-verify-your-email.html.twig')
         };
         }
@@ -58,7 +59,7 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         return match($user->isVerified()){
-            true => $this->render('user/user.html.twig'),
+            true => $this->render('home.html.twig'),
             false => $this->render('user/please-verify-your-email.html.twig')
         };
         
@@ -69,7 +70,7 @@ class UserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         return match($user->isVerified()){
-            true => $this->render('user/artiste.html.twig'),
+            true => $this->render('home.html.twig'),
             false => $this->render('user/please-verify-your-email.html.twig')
         };
        
@@ -127,7 +128,7 @@ public function addUser(ManagerRegistry $manager, Request $req,Helpers $helper,U
     return $this->renderForm('user/add.html.twig', ['f' => $form]);
 }
     #[Route('/user/update/{id}', name: 'updateform')]
-    public function updateUser($id, ManagerRegistry $manager, UserRepository $repo, Request $req,Helpers $helper,UploaderService $uploader)
+    public function updateUser($id, ManagerRegistry $manager, UserRepository $repo, Request $req,Helpers $helper,UploaderService $uploader, UserPasswordHasherInterface $userPasswordHasher)
     {
         $user = $repo->find($id);
         $form = $this->createForm(UserType::class, $user);
@@ -148,16 +149,21 @@ public function addUser(ManagerRegistry $manager, Request $req,Helpers $helper,U
 
             $user->setPhotoDeProfile($uploader->uploadFile($photo,$directory));
         }
-
+        $plainPassword = $form->get('plainPassword')->getData();
+if ($plainPassword) {
+    $hashedPassword = $userPasswordHasher->hashPassword($user, $plainPassword);
+    $user->setPassword($hashedPassword);
+    $user->eraseCredentials();
+}
         // Persist the user entity to the database
         $manager->getManager()->persist($user);
         $manager->getManager()->flush();
-        $this->addFlash('success',$helper->UserCreated());
+       
 
         // Redirect to a page after successful submission
-        return $this->redirectToRoute('get_all');
+       
     }
-    return $this->renderForm('user/add.html.twig', ['f' => $form]);}
+    return $this->renderForm('user/myprofile.html.twig', ['f' => $form]);}
     
     #[Route('/user/deactivate/{id}', name: 'deactivate')]
     public function Deactivate($id, ManagerRegistry $manager, UserRepository $repo, Request $req)
