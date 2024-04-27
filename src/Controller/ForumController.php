@@ -19,6 +19,7 @@ use Symfony\Component\Mailer\Mailer;
 
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 
 
 class ForumController extends AbstractController
@@ -125,7 +126,7 @@ public function new(ManagerRegistry $manager, Request $request): Response
     ]);
 }
 #[Route('/publication/{id}/add-comment', name: 'add_comment')]
-public function addCommentaire(ManagerRegistry $manager, Request $request, int $id): Response
+public function addCommentaire(ManagerRegistry $manager, Request $request, int $id,MailerInterface $mailer): Response
 {
     // Récupérer l'EntityManager
     $entityManager = $manager->getManager();
@@ -175,7 +176,7 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
         // Enregistrer le commentaire dans la base de données
         $entityManager->persist($commentaire);
         $entityManager->flush();
-        $this->sendEmail();
+        $this->sendEmail($mailer);
 
         // Rediriger vers la page d'accueil ou tout autre endroit approprié
         return $this->redirectToRoute('forum');
@@ -222,9 +223,11 @@ public function myPublications(ManagerRegistry $manager ): Response
         // Supprimer la publication
         $entityManager->remove($publication);
         $entityManager->flush();
+        
+        
 
         // Rediriger vers la page principale du forum
-        return $this->redirectToRoute('my_publications');
+        return $this->redirectToRoute('my_publications', ['suppression' => true]);
     }
     #[Route('/publication/edit/{id}', name: 'edit_publication')]
     public function editPublication(Request $request, int $id): Response
@@ -335,25 +338,30 @@ public function myPublications(ManagerRegistry $manager ): Response
         ]);
     }
     #[Route('/email', name: 'app_email')]
-    public function sendEmail(): Response
-    {  $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
-        $mailer = new Mailer($transport);
-        $email = (new Email())
-            ->from('davincisdata@gmail.com')
-            ->to('aminehamrouni10@gmail.com')
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+public function sendEmail(MailerInterface $mailer): Response
+{
+    $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+    $mailer = new Mailer($transport);
+    
+    // Construire le contenu personnalisé du mail
+    $mailContent = "Un utilisateur a commenté votre publication.";
 
-        $mailer->send($email);
+    // Créer l'email
+    $email = (new Email())
+        ->from('davincisdata@gmail.com')
+        ->to('aminehamrouni10@gmail.com')
+        ->subject('Notification de commentaire')
+        ->text($mailContent)
+        ->html('<p>' . $mailContent . '</p>');
 
-        return $this->render('email/index.html.twig', [
-            'controller_name' => 'EmailController',]);
-    }
+    // Envoyer l'email
+    $mailer->send($email);
+
+    // Retourner une réponse
+    return $this->render('email/index.html.twig', [
+        'controller_name' => 'EmailController',
+    ]);
+}
     
     
 
