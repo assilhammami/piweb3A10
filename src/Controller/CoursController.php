@@ -12,6 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 #[Route('/cours')]
 class CoursController extends AbstractController
 {
@@ -23,7 +27,7 @@ class CoursController extends AbstractController
         $cours = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1
-            3 // Nombre d'éléments par page
+            3// Nombre d'éléments par page
         );
     
         return $this->render('cours/index.html.twig', [
@@ -31,7 +35,7 @@ class CoursController extends AbstractController
         ]);
     }
     #[Route('/new', name: 'app_cours_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $cour = new Cours();
         $cour->setDatePub(new \DateTime('today'));
@@ -51,7 +55,7 @@ class CoursController extends AbstractController
             }
             $entityManager->persist($cour);
             $entityManager->flush();
-
+            $this->sendEmail($mailer);
             return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -76,6 +80,16 @@ class CoursController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $image = $form->get('image')->getData();
+            if ($image) {
+                // Gérer l'upload de l'image
+                $fileName = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fileName
+                );
+                $cour->setImage($fileName);
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
@@ -97,7 +111,77 @@ class CoursController extends AbstractController
 
         return $this->redirectToRoute('app_cours_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/', name: 'search', methods: ['POST'])]
+    public function search(Request $request, CoursRepository $coursRepository,PaginatorInterface $paginator): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
     
+      
+        if (empty($searchValue)) {
+           
+        $cour = $coursRepository->findAll(); // Récupérer tous les cours
+    
+        } else {
+           
+            $cour = $coursRepository->createQueryBuilder('e')
+                ->where('e.nom LIKE :searchValue')  
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('cours/search.html.twig', [
+            'cour' => $cour, 
+        ]);
+    
+        }
+    
+            #[Route('/chart', name: 'stat', methods: ['GET'])]
+            public function statistiques(CoursRepository $coursRepository): Response
+            {
+                $cours = $coursRepository->findAll();
+                $data = [];
+        
+                // Récupérer le nombre de commentaires pour chaque cours
+                foreach ($cours as $coursItem) {
+                    $data[] = [
+                        'title' => $coursItem->getNom(),
+                        'comment_count' => count($coursItem->getAvis())
+                    ];
+                }
+        
+                return $this->render('stat.html.twig', [
+                    'data' => json_encode($data)
+                ]);
+            }
 
-    
+            #[Route('/email', name: 'app_email')]
+            public function sendEmail(MailerInterface $mailer)
+            {
+                $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+                $mailer = new Mailer($transport);
+                
+                // Construire le contenu personnalisé du mail
+                $mailContent = "Un nouveau cours a été ajouté";
+            
+                // Créer l'email
+                $email = (new Email())
+                    ->from('davincisdata@gmail.com')
+                    ->to('mouadh.fersi@esprit.tn')
+                    ->subject('Notification de commentaire')
+                    ->text($mailContent)
+                    ->html('<p>' . $mailContent . '</p>');
+            
+                // Envoyer l'email
+                $mailer->send($email);
+            
+                
+                
+            }
+                
+                
+
 }

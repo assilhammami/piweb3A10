@@ -88,4 +88,32 @@ class CoursFrontController extends AbstractController
 
         return $this->redirectToRoute('app_cours_front_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/', name: 'search', methods: ['POST'])]
+    public function search(Request $request, CoursRepository $coursRepository,PaginatorInterface $paginator): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
+    
+      
+        if (empty($searchValue)) {
+           
+        $cour = $coursRepository->findAll(); // Récupérer tous les cours
+    
+        } else {
+           
+            $cour = $coursRepository->createQueryBuilder('e')
+                ->where('e.nom LIKE :searchValue')
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('cours_front/search.html.twig', [
+            'cour' => $cour, 
+        ]);
+    
+        }
+    
 }

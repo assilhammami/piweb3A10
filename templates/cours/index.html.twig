@@ -97,14 +97,21 @@
                         <p><strong>Date de publication : </strong>{{ cour.datePub ? cour.datePub|date('Y-m-d') : '' }}</p>
                         <p><strong>Likes :</strong> {{ cour.likes }}</p>
                         <p><strong>Dislikes : </strong>{{ cour.dislikes }}</p>
-
+<div class="rating">
+                            <input type hidden  id="ratingValue" name="rating" value="0"> <!-- Champ de note caché pour stocker la valeur de la note -->
+                            <i class="far fa-star" style="color: gold;" data-star-value="1"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="2"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="3"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="4"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="5"></i>
+                        </div>
                         <button type="button" class="btn btn-custom" onclick="window.location.href='{{ path('app_cours_edit', {'id': cour.id}) }}';"><i class="fas fa-pencil-alt"></i>Modifier</button>
 
                         <form method="post" action="{{ path('app_cours_delete', {'id': cour.id}) }}" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this item?');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cour.id) }}">
                             <button type="submit" class="btn btn-custom"><i class="fas fa-trash-alt"></i>Supprimer</button>
                              <button type="button" class="btn btn-custom" onclick="window.location.href='{{ path('app_aviss_new', {'coursId': cour.id}) }}';"><i class="fas fa-comment"></i>Evaluer</button>
-
+                             <button type="button" class="btn btn-custom" onclick="window.location.href='{{ path('stat', {'coursId': cour.id}) }}';"><i class="fas fa-comment"></i>Statistiques</button>  
                         </form>
                     </div>
                 </div>
@@ -123,3 +130,38 @@
 
 </html>
 {% endblock %}
+{% block js %}       
+<script document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('.rating i');
+
+                stars.forEach(star => {
+                    star.addEventListener('mouseover', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        highlightStars(value);
+                    });
+
+                    star.addEventListener('click', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        document.getElementById('ratingValue').value = value;
+                    });
+
+                    star.addEventListener('mouseout', function() {
+                        const value = parseInt(document.getElementById('ratingValue').value);
+                        highlightStars(value);
+                    });
+                });
+
+                function highlightStars(value) {
+                    stars.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-star-value'));
+                        if (starValue <= value) {
+                            star.classList.add('fas');
+                            star.classList.remove('far');
+                        } else {
+                            star.classList.remove('fas');
+                            star.classList.add('far');
+                        }
+                    });
+                }
+            });
+        </script>{% endblock %}
