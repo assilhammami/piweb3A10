@@ -108,6 +108,39 @@ class TravailController extends AbstractController
         return $this->redirectToRoute('app_travail_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    
-    
+
+
+    #[Route('/chart', name: 'chart',methods: ['GET'])]
+    public function chart(TravailRepository $travailRepository): Response
+    {
+        // Récupérer le nombre d'archives pour chaque travail
+        $travaux = $travailRepository->findAll();
+
+        $data = [];
+        foreach ($travaux as $travail) {
+            $data[] = [
+                'titre' => $travail->getTitre(),
+                'nombre_archives' => count($travail->getIdArchives())
+            ];
+        }
+
+        return $this->render('chart.html.twig', [
+            'data' => json_encode($data) // Passer les données au template sous forme de JSON
+        ]);
+    }
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+    

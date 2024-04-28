@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Archive;
 use App\Form\ArchiveType;
 use App\Repository\ArchiveRepository;
+use App\Repository\TravailRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,5 +83,12 @@ class ArchiveController extends AbstractController
 
         return $this->redirectToRoute('app_archive_index', [], Response::HTTP_SEE_OTHER);
     }
-    
-}
+   
+    }
+
+
+
+
+
+
+

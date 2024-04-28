@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
 
 
+
 #[Route('/artiste/travail')]
 class ArtisteTravailController extends AbstractController
 {
@@ -88,4 +89,10 @@ class ArtisteTravailController extends AbstractController
 
         return $this->redirectToRoute('app_artiste_travail_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    
 }
+
+
+

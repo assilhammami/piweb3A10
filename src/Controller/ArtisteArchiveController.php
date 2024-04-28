@@ -12,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 
 #[Route('/artiste/archive')]
 class ArtisteArchiveController extends AbstractController
@@ -82,7 +86,7 @@ class ArtisteArchiveController extends AbstractController
     }
 
     #[Route('/new/{travailId}', name: 'app_reservationfront_new', methods: ['GET', 'POST'])]
-    public function new1($travailId, Request $request, EntityManagerInterface $entityManager): Response
+    public function new1($travailId, Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         // Trouver l'événement en fonction de son ID
         $tarvail = $this->getDoctrine()->getRepository(Travail::class)->find($travailId);
@@ -105,6 +109,8 @@ class ArtisteArchiveController extends AbstractController
             // Persister la réservation
             $entityManager->persist($archive);
             $entityManager->flush();
+            $this->sendEmail($mailer);
+
     
             // Rediriger vers la liste des réservations ou toute autre page appropriée
             return $this->redirectToRoute('app_artiste_archive_index');
@@ -135,6 +141,35 @@ class ArtisteArchiveController extends AbstractController
             'Content-Disposition' => 'inline; filename="document.pdf"',
         ]);
 
-}}
+}
+
+#[Route('/email', name: 'app_email')]
+            public function sendEmail(MailerInterface $mailer)
+            {
+                $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+                $mailer = new Mailer($transport);
+                
+                // Construire le contenu personnalisé du mail
+                $mailContent = "Un artiste vous a proposé un archive ";
+            
+                // Créer l'email
+                $email = (new Email())
+                    ->from('davincisdata@gmail.com')
+                    ->to('benromdhanefiras5@gmail.com')
+                    ->subject('Notification d ajout d un archive')
+                    ->text($mailContent)
+                    ->html('<p>' . $mailContent . '</p>');
+            
+                // Envoyer l'email
+                $mailer->send($email);
+            
+                
+               
+            }
+
+
+
+
+}
 
 

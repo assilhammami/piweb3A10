@@ -19,7 +19,7 @@ class ArchiveType extends AbstractType
             ->add('image')
             ->add('description', TextareaType::class)
             ->add('date_creation',DateType::class)
-            ->add('idT')
+           
         ;
     }
 

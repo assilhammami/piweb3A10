@@ -13,6 +13,6 @@ class HomeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('front.html.twig');
+        return $this->render('artiste.html.twig');
     }
 }
