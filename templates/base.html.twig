@@ -224,10 +224,7 @@
 
                     </ul>
  <div >
-        <form  action="{{ path('app_travail_index') }}" method="get">
-          <input style="border-radius:20px;margin-bottom:10px;" type="search" placeholder="Search" aria-label="Search" name="q">
-          <button  style="border-radius:20px; border-color:#000066;color:#000066;" type="submit">Search</button>
-        </form>
+       
       </div>
                 </nav>
                 <!-- End of Topbar -->
@@ -237,7 +234,7 @@
 
                     <!-- Page Heading -->
                    
-                    
+       {% block recherche %}     {% endblock %}          
 {% block body %}
                     <!-- Content Row -->
                     <div class="row">

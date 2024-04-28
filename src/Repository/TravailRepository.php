@@ -29,6 +29,15 @@ class TravailRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findByPrix()
+    {
+        return $this->createQueryBuilder('d')
+            ->orderBy('d.prix', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
   
 
 //    /**

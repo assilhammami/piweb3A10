@@ -34,7 +34,7 @@ class TravailController extends AbstractController
         $travaux = $paginator->paginate(
             $allTravaux, // Les données à paginer
             $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
-            5 // Nombre d'éléments par page
+            30 // Nombre d'éléments par page
         );
 
         return $this->render('travail/index.html.twig', [
@@ -110,27 +110,54 @@ class TravailController extends AbstractController
 
 
 
-    #[Route('/chart', name: 'chart',methods: ['GET'])]
-    public function chart(TravailRepository $travailRepository): Response
+     /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistiques(TravailRepository $publicationRepository): Response
     {
-        // Récupérer le nombre d'archives pour chaque travail
-        $travaux = $travailRepository->findAll();
-
+        $publications = $publicationRepository->findAll();
         $data = [];
-        foreach ($travaux as $travail) {
+
+        // Récupérer le nombre de commentaires pour chaque publication
+        foreach ($publications as $publication) {
             $data[] = [
-                'titre' => $travail->getTitre(),
-                'nombre_archives' => count($travail->getIdArchives())
+                'title' => $publication->getTitre(),
+                'comment_count' => count($publication->getIdArchives())
             ];
         }
 
-        return $this->render('chart.html.twig', [
-            'data' => json_encode($data) // Passer les données au template sous forme de JSON
+        return $this->render('travail/chart.html.twig', [
+            'data' => json_encode($data)
         ]);
     }
 
 
-
+    #[Route('/', name: 'search1', methods: ['POST'])]
+    public function search(Request $request, TravailRepository $eventRepository): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
+    
+      
+        if (empty($searchValue)) {
+           
+            $events = $eventRepository->findAll();
+        } else {
+           
+            $events = $eventRepository->createQueryBuilder('e')
+                ->where('e.titre LIKE :searchValue')
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('travail/table_rowss1.html.twig', [
+            'travaux' => $events, 
+        ]);
+    
+        }
 
 
 

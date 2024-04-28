@@ -98,7 +98,14 @@
             <p><strong>Date de fin:</strong> {{ travail.dateFin|date('Y-m-d') }}</p>
             <div class="actions">
                 <button type="button" class="btn" onclick="window.location.href='{{ path('app_client_travail_show', {'id': travail.id}) }}';">Voir détails</button>
-                
+             {% set description = travail.titre %}
+
+{# Encode the description and image URL #}
+{% set encodedDescription = description | url_encode %}
+
+{% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ '&quote=' ~ encodedDescription %}
+
+           <button><a href="{{ shareUrl }}" >Share </a></button>
                 </form>
             </div>
         </div>

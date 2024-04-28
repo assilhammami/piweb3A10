@@ -104,4 +104,18 @@ class ClientTravailController extends AbstractController
 
         return $this->redirectToRoute('app_client_travail_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+    #[Route('/prix', name:'travails_prix')]
+     
+    public function travailbyPrix(TravailRepository $DossierRepository): Response
+    {
+        $dossiers = $DossierRepository->findByPrix();
+        
+        return $this->render('client_travail/index.html.twig', [
+            'dossiers' => $dossiers,
+        ]);
+    }
+
+
 }

@@ -1,42 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Listes des archives{% endblock %}
+{% block recherche %}
+ <input id="searchInput"  type="search" placeholder="Search">
+   
 
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
 {% block body %}
     <h1>Listes des Archives </h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Image</th>
-                <th>Description</th>
-                <th>Date_creation</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for archive in archives %}
-            <tr>
-                <td>{{ archive.id }}</td>
-                <td>{{ archive.image }}</td>
-                <td>{{ archive.description }}</td>
-                <td>{{ archive.dateCreation ? archive.dateCreation|date('Y-m-d') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_archive_show', {'id': archive.id}) }}">show</a>
-                    <a href="{{ path('app_archive_edit', {'id': archive.id}) }}">edit</a>
-                   
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+         <div id="searchResults"></div>
 
-    <a href="{{ path('app_archive_new') }}"class="btn btn-primary">Create new</a><br>
-        <a  class="btn btn-primary">Statistiques</a>
+
+    
+    
 
 {% endblock %}

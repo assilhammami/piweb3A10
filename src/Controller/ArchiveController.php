@@ -83,6 +83,32 @@ class ArchiveController extends AbstractController
 
         return $this->redirectToRoute('app_archive_index', [], Response::HTTP_SEE_OTHER);
     }
+    #[Route('/', name: 'search', methods: ['POST'])]
+    public function search(Request $request, ArchiveRepository $eventRepository): Response
+    {
+        
+        $requestData = json_decode($request->getContent(), true);
+        $searchValue = $requestData['search'] ?? ''; 
+    
+      
+        if (empty($searchValue)) {
+           
+            $events = $eventRepository->findAll();
+        } else {
+           
+            $events = $eventRepository->createQueryBuilder('e')
+                ->where('e.description LIKE :searchValue')
+                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->getQuery()
+                ->getResult();
+        }
+    
+      
+        return $this->render('Archive/table_rowss.html.twig', [
+            'archives' => $events, 
+        ]);
+    
+        }
    
     }
 
