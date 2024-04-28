@@ -3,6 +3,7 @@
 {% block title %}Forum{% endblock %}
  {% block recherche %}
  <input id="searchInput"  type="search" placeholder="Search">
+ 
    
 
 <script>
@@ -32,15 +33,19 @@ document.getElementById('searchInput').addEventListener('input', function() {
   {% endblock %}
 
 {% block body %}
+
+
     <header>
         <h1>Welcome To Our Forum</h1>
     </header>
     <!-- Formulaire de recherche -->
+    
 
     <nav>
      
         
         <a href="{{ path('publication_newadmin') }}" class="btn btn-primary">Ajouter une publication</a>
+        <button onclick="window.location.href='/stats'">Statistiques</button>
         
     </nav>
     <section>
@@ -73,6 +78,14 @@ document.getElementById('searchInput').addEventListener('input', function() {
                 {# Formulaire d'ajout de commentaire pour cette publication #}
                 <form class="comment-form" action="{{ path('add_comment', {'id': publication.id}) }}" method="post" style="display: none;">
                     {{ form_widget(comment_forms[publication.id]) }}
+                     <div class="rating">
+                            <input type hidden  id="ratingValue" name="rating" value="0"> <!-- Champ de note caché pour stocker la valeur de la note -->
+                            <i class="far fa-star" style="color: gold;" data-star-value="1"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="2"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="3"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="4"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="5"></i>
+                        </div>
                     <button type="submit" class="btn btn-primary">Ajouter commentaire</button>
                 </form>
             </div>
@@ -89,7 +102,43 @@ document.getElementById('searchInput').addEventListener('input', function() {
                     commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
                 });
             });
+
+        // Gestion du rating avec des étoiles
+            document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('.rating i');
+
+                stars.forEach(star => {
+                    star.addEventListener('mouseover', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        highlightStars(value);
+                    });
+
+                    star.addEventListener('click', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        document.getElementById('ratingValue').value = value;
+                    });
+
+                    star.addEventListener('mouseout', function() {
+                        const value = parseInt(document.getElementById('ratingValue').value);
+                        highlightStars(value);
+                    });
+                });
+
+                function highlightStars(value) {
+                    stars.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-star-value'));
+                        if (starValue <= value) {
+                            star.classList.add('fas');
+                            star.classList.remove('far');
+                        } else {
+                            star.classList.remove('fas');
+                            star.classList.add('far');
+                        }
+                    });
+                }
+            });
         </script>
+        
     {% endblock %}
     <style>
     /* Styles pour le champ de recherche */

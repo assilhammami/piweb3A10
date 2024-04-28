@@ -20,6 +20,13 @@ class PublicationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Publication::class);
     }
+    public function findAllSortedByDate($sort)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.datepublication', ($sort === 'asc' ? 'ASC' : 'DESC'));
+
+        return $qb->getQuery()->getResult();
+    }
   
 
 //    /**

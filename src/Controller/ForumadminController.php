@@ -120,7 +120,7 @@ public function addCommentaire(ManagerRegistry $manager, Request $request, int $
             $entityManager->flush();
 
             // Rediriger vers la page d'accueil ou tout autre endroit approprié
-            return $this->redirectToRoute('forumadmin');
+            return $this->redirectToRoute('forum_admin');
         }
     }
 

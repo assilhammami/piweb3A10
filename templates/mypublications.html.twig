@@ -11,6 +11,17 @@
                 <div class="publication-actions">
                     <a href="{{ path('edit_publication', {'id': publication.id}) }}" class="btn btn-primary">Modifier</a>
                     <a href="{{ path('delete_publication', {'id': publication.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% set titre = publication.titre %}
+{% set imageUrl = publication.image %}
+
+{# Encode the description and image URL #}
+{% set encodedTitre = titre| url_encode %}
+{% set encodedImageUrl = imageUrl | url_encode %}
+
+
+{% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ encodedImageUrl ~ '&quote=' ~ encodedTitre %}
+
+           <button><a href="{{ shareUrl }}" >Share </a></button>
                 </div>
             </div>
         {% endfor %}
