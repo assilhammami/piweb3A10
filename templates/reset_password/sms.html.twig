@@ -40,16 +40,28 @@
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-                                        <p class="mb-4">Please enter your new passwor and dont forget it next time !</p>
+                                        <p class="mb-4">Please enter your phone number and a code will be sent!</p>
                                     </div>
                                     
     <h1>Reset your password</h1>
-{{ form_start(resetForm) }}
-    <div class="form-group">
-        {{ form_row(resetForm.plainPassword ,{'attr': {'class': 'form-control form-control-user'}}) }}
-    </div>
-        <button class="btn btn-primary btn-user btn-block">Reset password</button>
-    {{ form_end(resetForm) }}
+    
+
+    <form method="post" action="{{path('send_sms')}}" onsubmit="return validatePhoneNumber();">
+        <div class="form-group">
+            <label for="number">Phone Number :</label>
+            <input type="text" name="number" id="number" class="form-control" required pattern="[4-5-9-2][0-9]{7}">
+         
+
+        <button type="submit" class="btn btn-primary btn-block" id="btn">Send SMS</button>
+    </form>
+    
+    
+    {% if smsSent %}
+                    <div class="alert alert-success mt-3 text-center">Le SMS a été envoyé avec succès.</div>
+                {% endif %}
+                {% if errorMessage is not null %}
+    <div class="alert alert-danger">{{ errorMessage }}</div>
+{% endif %}
     <hr>
     <div class="text-center">
         <a class="small" href="/register">Create an Account!</a>
@@ -57,7 +69,9 @@
     <div class="text-center">
         <a class="small" href="/login">Already have an account? Login!</a>
     </div>
-    
+    <div class="text-center">
+        <a class="small" href="/reset-password">Reset your password via Email.</a>
+    </div>
 </div>
 </div>
 </div>
