@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\CustomerOrderRepository;
 use App\Service\PdfGenerator;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Twilio\Rest\Client;
+use App\Entity\WhatsappNotif;
 
 
 
@@ -172,8 +174,11 @@ public function checkout(CartRepository $cartRepository, EntityManagerInterface 
 }
 
 #[Route('/cart_buy_all', name: 'cart_buy_all', methods: ['GET','POST'])]
-public function buyAll(Request $request, EntityManagerInterface $entityManager, CustomerOrderRepository $orderRepository): Response
+public function buyAll(CartRepository $cartRepository,Request $request, EntityManagerInterface $entityManager, CustomerOrderRepository $orderRepository): Response
 {
+    $sid = "AC02b753da6a37d9b0d7a310f7aa15d9cf";
+    $token = "5131a077a1524160fb8299395019354b";
+    $twilio = new Client($sid, $token);
     $userId = 1; // Set userId to 1
     
     $cartItems = $this->getDoctrine()->getRepository(Cart::class)->findBy(['userId' => $userId]);
@@ -192,26 +197,51 @@ public function buyAll(Request $request, EntityManagerInterface $entityManager, 
             'productName' => $item->getProductName(),
             'productImage' => $item->getProductImage(),
             'quantity' => $item->getQuantity(),
-            'price' => $item->getPrice(),
+            'price' => $item->getPrice() * $item->getQuantity(),
 
         ]);
         
         $entityManager->remove($item);
     }
     
-    $entityManager->persist($order);
-
-
-     // Create a PDF content
+    try {
+        // Sending WhatsApp message
+       
+      
+             // Create a PDF content
      $pdfContent = $this->generatePdfContent($cartItems);
 
      // Set response headers for PDF download
      $response = new Response($pdfContent);
      $response->headers->set('Content-Type', 'application/pdf');
      $response->headers->set('Content-Disposition', 'attachment; filename="order_receipt.pdf"');
-    $entityManager->flush();
+        $entityManager->persist($order);
+        $entityManager->flush();
 
-    //return $this->redirectToRoute('app_shop_index');
+        $message = $twilio->messages->create(
+            "whatsapp:+21652601504",
+            [
+                "from" => "whatsapp:+14155238886",
+                "body" => "A new order has been submitted."
+            ]
+        );
+
+        // Saving WhatsApp notification
+        $whatsappNotif = new WhatsappNotif();
+        $whatsappNotif->setText("A new order has been added.");
+        $whatsappNotif->setReclamation($order);
+        $entityManager->persist($whatsappNotif);
+
+        return $this->render('cart/index.html.twig', [
+            'carts' => $cartRepository->findAll(),
+        ]);
+    
+
+}
+    catch (\Exception $e) {
+        // Handle exception
+        $this->addFlash('error', "Failed to send WhatsApp message: " . $e->getMessage());
+    }
     return $this->redirectToRoute('generate_pdf');
 }
 // Generate PDF content based on cart items

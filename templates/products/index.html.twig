@@ -49,7 +49,10 @@
         {% endfor %}
         </tbody>
     </table>
+<div>
+{{ knp_pagination_render(products) }}
 
+</div>
     <div align="center">
     <a class="btn btn-success btn-sm" href="{{ path('app_products_new') }}">Create new</a>
     </div>

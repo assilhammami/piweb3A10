@@ -12,11 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Knp\Component\Pager\PaginatorInterface;
 #[Route('/products')]
 class ProductsController extends AbstractController
 {
-    #[Route('/', name: 'app_products_index', methods: ['GET'])]
+   /* #[Route('/', name: 'app_products_index', methods: ['GET'])]
     public function index(Request $request, ProductsRepository $productsRepository): Response
     {
         $query = $request->query->get('query');
@@ -32,8 +32,44 @@ class ProductsController extends AbstractController
             'products' => $products,
             'productInWishlist' => [$this, 'productInWishlist'], // Pass the function to the Twig template
         ]);
-    }
+    }*/
+   /* #[Route('/', name: 'app_reclamation_index', methods: ['GET'])]
+    public function index(ReclamationRepository $reclamationRepository,Request $request,PaginatorInterface $paginator): Response
+    {
+
+        $pagination = $paginator->paginate(
+            $reclamationRepository->findAll(), // Query
+            $request->query->getInt('page', 1), // Page number
+            10 // Limit per page
+        );
+
+        return $this->render('reclamation/index.html.twig', [
+            'reclamations' => $pagination,
+        ]);
+    }*/
+    #[Route('/', name: 'app_products_index', methods: ['GET'])]
+    public function index(Request $request, ProductsRepository $productsRepository, PaginatorInterface $paginator): Response
+    {
+        $query = $request->query->get('query');
     
+        if ($query !== null) {
+            $queryBuilder = $productsRepository->getSearchQuery($query);
+        } else {
+            // If no query is provided, return all products
+            $queryBuilder = $productsRepository->createQueryBuilder('p');
+        }
+    
+        $pagination = $paginator->paginate(
+            $queryBuilder->getQuery(), // Doctrine Query object
+            $request->query->getInt('page', 1), // Current page number
+            6 // Items per page
+        );
+    
+        return $this->render('products/index.html.twig', [
+            'products' => $pagination,
+            'productInWishlist' => [$this, 'productInWishlist'], // Pass the function to the Twig template
+        ]);
+    }
     private function isInWishlist(int $productId, int $userId): bool
     {
         $wishlistItem = $this->getDoctrine()

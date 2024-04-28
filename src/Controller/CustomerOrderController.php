@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Controller;
-
+use App\Service\MailService;
 use App\Entity\CustomerOrder;
+use App\Entity\WhatsappNotif;
 use App\Form\CustomerOrderType;
 use App\Repository\CustomerOrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -12,8 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Cart;
+use App\Entity\Orders;
 use App\Repository\ProductsRepository;;
-
 #[Route('/customer/order')]
 class CustomerOrderController extends AbstractController
 {
@@ -73,6 +74,7 @@ class CustomerOrderController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->persist($customerOrder);
             $entityManager->flush();
 
@@ -120,6 +122,7 @@ class CustomerOrderController extends AbstractController
     #[Route('/buy_all', name: 'app_cart_buy_all', methods: ['POST'])]
     public function buyAll(Request $request, EntityManagerInterface $entityManager, CustomerOrderRepository $orderRepository): Response
     {
+ 
         $userId = 1; // Set userId to 1
        
         $cartItems = $this->getDoctrine()->getRepository(Cart::class)->findBy(['userId' => $userId]);
@@ -141,37 +144,54 @@ class CustomerOrderController extends AbstractController
        
         $entityManager->persist($order);
         $entityManager->flush();
-
-        return $this->redirectToRoute('app_customer_order_show', ['id' => $order->getId()]);
+    return $this->redirectToRoute('app_customer_order_show', ['id' => $order->getId()]);
     }
 
-#[Route('/{id}/toggle-status', name: 'app_toggle_status', methods: ['GET', 'POST'])]
-public function toggleStatus(CustomerOrder $customerOrder, EntityManagerInterface $entityManager, Request $request): Response
-{
-    $currentStatus = $customerOrder->getStatus();
+   
+
+   
+    #[Route('/{id}/toggle-status', name: 'app_toggle_status', methods: ['GET', 'POST'])]
+    public function toggleStatus(CustomerOrder $customerOrder, EntityManagerInterface $entityManager, Request $request): Response
+    {
+        $currentStatus = $customerOrder->getStatus();
+        
+        // If the status is "Delivered" or "Declined", delete the order
+        if ($currentStatus === 'Delivered' || $currentStatus === 'Declined') {
+            $entityManager->remove($customerOrder);
+            $entityManager->flush();
     
-    // If the status is "Delivered" or "Declined", delete the order
-    if ($currentStatus === 'Delivered' || $currentStatus === 'Declined') {
-        $entityManager->remove($customerOrder);
-        $entityManager->flush();
+            return $this->redirectToRoute('app_customer_order_index', [], Response::HTTP_SEE_OTHER);
+        }
+    
+        // If the request method is POST, update the status
+        if ($request->isMethod('POST')) {
+            $newStatus = $request->request->get('status');
+            $customerOrder->setStatus($newStatus);
+            $entityManager->flush();
 
-        return $this->redirectToRoute('app_customer_order_index', [], Response::HTTP_SEE_OTHER);
+            // If the new status is "Delivered", send an email to the customer
+            if ($newStatus === 'Delivered') {
+                // Assuming you have a getter method getUser() to retrieve the associated User entity
+                $user = $customerOrder->getUserId();
+
+                // Make sure the user is not null and has an email
+                if ($user instanceof Orders && $user->getEmail()) {
+                    $customerEmail = $user->getEmail();
+                    $emailSubject = 'Your order has been delivered';
+                    $emailBody = 'Your order with ID ' . $customerOrder->getId() . ' has been delivered. Thank you for shopping with us.';
+
+                    // Send email using the email service
+                   // $this->emailService->sendEmail($customerEmail, $emailSubject, $emailBody);
+                }
+            }
+    
+            return $this->redirectToRoute('app_customer_order_index');
+        }
+    
+        // Render the form to choose the new status
+        return $this->render('customer_order/change_status.html.twig', [
+            'customer_order' => $customerOrder,
+        ]);
     }
-
-
-    // If the request method is POST, update the status
-    if ($request->isMethod('POST')) {
-        $newStatus = $request->request->get('status');
-        $customerOrder->setStatus($newStatus);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('app_customer_order_index');
-    }
-
-    // Render the form to choose the new status
-    return $this->render('customer_order/change_status.html.twig', [
-        'customer_order' => $customerOrder,
-    ]);
-}
 }
 

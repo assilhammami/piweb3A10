@@ -5,99 +5,99 @@
 {% block body %}
 
 <section class="single-page-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>My Cart</h2>
-                <ol class="breadcrumb header-bradcrumb justify-content-center">
-                    <li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Shop</li>
-                </ol>
-            </div>
-        </div>
-    </div>
+<div class="container">
+<div class="row">
+<div class="col-md-12">
+<h2>My Cart</h2>
+<ol class="breadcrumb header-bradcrumb justify-content-center">
+<li class="breadcrumb-item"><a href="index.html" class="text-white">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Shop</li>
+</ol>
+</div>
+</div>
+</div>
 </section>
 
 <section class="posts section" style="background-color: #F6F5F2;">
-    <div class="container">
-        <div class="row">
-            {% for cart in carts %}
-                <div class="col-lg-4 col-md-4 mb-3">
-                    <article style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                        <div style="text-align: center;">
-                            <h3 style="margin-right: 115px; font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">{{ cart.productName }}</h3>
-                        </div>
-                        <div class="post-item" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
-                            <a href="{{ path('app_cart_show', {'id': cart.id}) }}">
-                                <div class="media-wrapper" style="height: 375px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
-                                    {% if cart.productImage %}
-                                        <img loading="lazy" src="{{ asset('uploads/' ~ cart.productImage) }}" alt="Product Image" class="img-fluid" style="max-width: 100%; max-height: 100%;">
-                                    {% else %}
-                                        <p style="height: 375px; display: flex; align-items: center; justify-content: center;">No image available</p>
-                                    {% endif %}
-                                </div>
-                            </a>
-                            <div class="content">
-                                <div class="row"> 
-                                    <p style="font-size: 16px; color: #666;">Quantity: 
-                                        <form method="post" action="{{ path('app_cart_update_quantity', {'id': cart.id}) }}">
-                                            <input type="hidden" name="_token" value="{{ csrf_token('update_quantity' ~ cart.id) }}">
-                                            <button type="submit" class="btn btn-sm btn-secondary" name="quantity" value="{{ cart.Quantity - 1 }}" {% if cart.Quantity <= 1 %} disabled {% endif %}>-</button>
-                                            <span>{{ cart.Quantity }}</span>
-                                            <button type="submit" class="btn btn-sm btn-secondary" name="quantity" value="{{ cart.Quantity + 1 }}">+</button>
-                                        </form>
-                                    </p>
-                                </div> 
-                                <div class="row"> 
-                                    <p style="font-size: 18px; color: #333;">Price: {{ cart.Price }}</p>
-                                </div>
-                                <div class="row" style="display: flex; justify-content: center;"> 
-                                    <form method="post" action="{{ path('app_cart_delete', {'id': cart.id}) }}" onsubmit="return confirm('Are you sure you want to remove this item from your cart?');">
-                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cart.id) }}">
-                                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Remove</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            {% else %}
-                <div class="col-md-12">
-                    <p>No items in your cart.</p>
-                </div>
-            {% endfor %}
-        </div>
-        <div style="display: flex; justify-content: center;">
+<div class="container">
+<div class="row">
+{% for cart in carts %}
+<div class="col-lg-4 col-md-4 mb-3">
+<article style="background-color: white; padding: 20px; border-radius: 15px; border: 1px solid #c8e6c9; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+<div style="text-align: center;">
+<h3 style="margin-right: 115px; font-size: 24px; color: #333; font-family: 'Times New Roman', Times, serif;">{{ cart.productName }}</h3>
+</div>
+<div class="post-item" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+<a href="{{ path('app_cart_show', {'id': cart.id}) }}">
+<div class="media-wrapper" style="height: 375px; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+{% if cart.productImage %}
+<img loading="lazy" src="{{ asset('uploads/' ~ cart.productImage) }}" alt="Product Image" class="img-fluid" style="max-width: 100%; max-height: 100%;">
+{% else %}
+<p style="height: 375px; display: flex; align-items: center; justify-content: center;">No image available</p>
+{% endif %}
+</div>
+</a>
+<div class="content">
+<div class="row">
+<p style="font-size: 16px; color: #666;">Quantity:
+<form method="post" action="{{ path('app_cart_update_quantity', {'id': cart.id}) }}">
+<input type="hidden" name="_token" value="{{ csrf_token('update_quantity' ~ cart.id) }}">
+<button type="submit" class="btn btn-sm btn-secondary" name="quantity" value="{{ cart.Quantity - 1 }}" {% if cart.Quantity <= 1 %} disabled {% endif %}>-</button>
+<span>{{ cart.Quantity }}</span>
+<button type="submit" class="btn btn-sm btn-secondary" name="quantity" value="{{ cart.Quantity + 1 }}">+</button>
+</form>
+</p>
+</div>
+<div class="row">
+<p style="font-size: 18px; color: #333;">Price: {{ cart.Price * cart.Quantity }}</p>
+</div>
+<div class="row" style="display: flex; justify-content: center;">
+<form method="post" action="{{ path('app_cart_delete', {'id': cart.id}) }}" onsubmit="return confirm('Are you sure you want to remove this item from your cart?');">
+<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ cart.id) }}">
+<button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Remove</button>
+</form>
+</div>
+</div>
+</div>
+</article>
+</div>
+{% else %}
+<div class="col-md-12">
+<p>No items in your cart.</p>
+</div>
+{% endfor %}
+</div>
+<div style="display: flex; justify-content: center;">
 <a href="{{ path('cart_buy_all') }}" class="btn btn-success" style="position: relative; display: flex; align-items: center; justify-content: center;">
-    <i class="bi bi-cart" style="opacity: 1; transition: opacity 0.3s, width 0.3s;"></i> <!-- Icon initially visible -->
-    <span class="hover-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 0; height: 70%; overflow: hidden; text-align: center; opacity: 0; transition: width 0.3s, opacity 0.3s;">Buy All</span>
+<i class="bi bi-cart" style="opacity: 1; transition: opacity 0.3s, width 0.3s;"></i> <!-- Icon initially visible -->
+<span class="hover-text" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 0; height: 70%; overflow: hidden; text-align: center; opacity: 0; transition: width 0.3s, opacity 0.3s;">Buy All</span>
 </a>
 
 
-        </div>
-    </div>
+</div>
+</div>
 </section>
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var button = document.querySelector('.btn-success');
-            var icon = button.querySelector('.bi');
-            var hoverText = button.querySelector('.hover-text');
+document.addEventListener('DOMContentLoaded', function() {
+var button = document.querySelector('.btn-success');
+var icon = button.querySelector('.bi');
+var hoverText = button.querySelector('.hover-text');
 
-            button.addEventListener('mouseenter', function() {
-                hoverText.style.opacity = 1;
-                hoverText.style.width = 'auto'; // Allow text to expand to fit content
-                icon.style.opacity = 0; // Hide the icon
-                icon.style.width = '0'; // Reduce icon width to 0
-                button.style.width = '100px'; // Set button width to 50px on hover
-            });
+button.addEventListener('mouseenter', function() {
+hoverText.style.opacity = 1;
+hoverText.style.width = 'auto'; // Allow text to expand to fit content
+icon.style.opacity = 0; // Hide the icon
+icon.style.width = '0'; // Reduce icon width to 0
+button.style.width = '100px'; // Set button width to 50px on hover
+});
 
-            button.addEventListener('mouseleave', function() {
-                hoverText.style.opacity = 0;
-                hoverText.style.width = '0'; // Hide text by reducing width to 0
-                icon.style.opacity = 1; // Show the icon
-                icon.style.width = ''; // Reset icon width
-                button.style.width = ''; // Reset button width on mouse leave
-            });
-        });
-    </script>
+button.addEventListener('mouseleave', function() {
+hoverText.style.opacity = 0;
+hoverText.style.width = '0'; // Hide text by reducing width to 0
+icon.style.opacity = 1; // Show the icon
+icon.style.width = ''; // Reset icon width
+button.style.width = ''; // Reset button width on mouse leave
+});
+});
+</script>
 {% endblock %}
