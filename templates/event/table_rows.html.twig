@@ -24,7 +24,7 @@
                 <td>{{ events.capacity }}</td>
                 <td>{{ events.place }}</td>
                  <td>{{ events.Description }}</td>
-                <td><img width="200px" src="{{ asset('images/' ~ events.image) }}" alt="Image de l evenement"></td>
+                <td><img width="200px" src="{{ asset('images/'~ events.image) }}" alt="Image de l evenement"></td>
                 <td>
                   <a href="{{ path('app_event_show', {'id': events.id}) }}" class="link-action">show</a>
                    <a href="{{ path('app_event_edit', {'id': events.id}) }}" class="link-action">edit</a>

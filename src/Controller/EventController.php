@@ -15,17 +15,38 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Form\EventSearchType;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+
+
 #[Route('/backoffice/event')]
 class EventController extends AbstractController
 {
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
     public function index(EventRepository $eventRepository): Response
     {
+        $evenements = $eventRepository->findAll();
+        $events = [];
+    
+        foreach ($evenements as $evenement) {
+            $events[] = [
+                'title' => $evenement->getNom(),
+                'start' => $evenement->getDate(),
+                'description' => $evenement->getDescription(),
+                'url' => $this->generateUrl('app_event_show', ['id' => $evenement->getId()]),
+                // Ajoutez d'autres attributs selon vos besoins
+            ];
+        }
+    
+        // Render la vue calendar.html.twig avec les événements
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $events,
         ]);
     }
-
+    
+    
+    
+    
     
     #[Route('/new', name: 'app_eventt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -158,4 +179,48 @@ class EventController extends AbstractController
         ]);
     
         }
+      #[Route('/calendar', name: 'app_evenement_calendar', methods: ['GET'])]
+public function calendar(EventRepository $eventRepository): Response
+{
+    // Récupérer tous les événements de la base de données
+    $evenements = $eventRepository->findAll();
+    $events = [];
+
+    // Transformer les événements en tableau
+    foreach ($evenements as $evenement) {
+        $events[] = [
+            'title' => $evenement->getNom(),
+            'start' => $evenement->getDate(),
+            'description' => $evenement->getDescription(),
+            'url' => $this->generateUrl('app_eventt_show', ['id' => $evenement->getId()]),
+            // Vous pouvez ajouter plus d'attributs ici si nécessaire
+        ];
+    }
+
+    // Rendre la vue Twig avec les événements passés comme paramètre
+    return $this->render('event/calendar.html.twig', [
+        'events' => $events,
+    ]);
+}
+
+      #[Route("/stats", name:"stats")]
+      #[ParamConverter("event", class:"App\Entity\Event")]
+    public function statistiques(EventRepository $publicationRepository): Response
+    {
+        $publications = $publicationRepository->findAll();
+        $data = [];
+
+        // Récupérer le nombre de commentaires pour chaque publication
+        foreach ($publications as $publication) {
+            $data[] = [
+                'nom' => $publication->getNom(),
+                'capacity' => $publication->getCapacity()
+            ];
+        }
+
+        return $this->render('event/chart.html.twig', [
+            'data' => json_encode($data)
+        ]);
+    }
+
 }

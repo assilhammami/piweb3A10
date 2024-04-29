@@ -12,6 +12,7 @@
         "doctrine/doctrine-bundle": "^2.10",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
+        "knplabs/knp-paginator-bundle": "^5.9",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
         "sensio/framework-extra-bundle": "^6.2",
@@ -23,6 +24,7 @@
         "symfony/flex": "^1.17|^2",
         "symfony/form": "5.4.*",
         "symfony/framework-bundle": "5.4.*",
+        "symfony/google-mailer": "5.4.*",
         "symfony/http-client": "5.4.*",
         "symfony/intl": "5.4.*",
         "symfony/mailer": "5.4.*",
@@ -38,16 +40,13 @@
         "symfony/string": "5.4.*",
         "symfony/translation": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
+        "symfony/ux-chartjs": "^2.17",
         "symfony/validator": "5.4.*",
         "symfony/web-link": "5.4.*",
         "symfony/yaml": "5.4.*",
         "tecnickcom/tcpdf": "^6.7",
         "twig/extra-bundle": "^2.12|^3.0",
-        "knplabs/knp-paginator-bundle": "^5.9",
-
         "twig/twig": "^2.12|^3.0"
-        
-    
     },
     "config": {
         "allow-plugins": {

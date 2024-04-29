@@ -13,7 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\PdfGeneratorService;
 
-
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\MailerInterface;
 
 #[Route('/reservationfront')]
 class ReservationfrontController extends AbstractController
@@ -26,7 +29,7 @@ class ReservationfrontController extends AbstractController
         ]);
     }
     #[Route('/new/{eventId}', name: 'app_reservationfront_new', methods: ['GET', 'POST'])]
-    public function new($eventId, Request $request, EntityManagerInterface $entityManager): Response
+    public function new($eventId, Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         // Trouver l'événement en fonction de son ID
         $event = $this->getDoctrine()->getRepository(Event::class)->find($eventId);
@@ -49,7 +52,7 @@ class ReservationfrontController extends AbstractController
             // Persister la réservation
             $entityManager->persist($reservation);
             $entityManager->flush();
-    
+            $this->sendEmail($mailer);
             // Rediriger vers la liste des réservations ou toute autre page appropriée
             return $this->redirectToRoute('app_reservationfront_index');
 
@@ -117,4 +120,30 @@ class ReservationfrontController extends AbstractController
             'Content-Disposition' => 'inline; filename="document.pdf"',
         ]);
 
-}}
+}
+#[Route('/email', name: 'app_email')]
+public function sendEmail(MailerInterface $mailer)
+{
+    $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
+    $mailer = new Mailer($transport);
+    
+    // Construire le contenu personnalisé du mail
+    $mailContent = "Un personne a réservé pour un évenement";
+
+    // Créer l'email
+    $email = (new Email())
+        ->from('davincisdata@gmail.com')
+        ->to('assil.hammami@gmail.com')
+        ->subject('Notification de commentaire')
+        ->text($mailContent)
+        ->html('<p>' . $mailContent . '</p>');
+
+    // Envoyer l'email
+    $mailer->send($email);
+
+    
+    
+}
+
+
+}

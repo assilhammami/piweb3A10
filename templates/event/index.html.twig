@@ -36,14 +36,60 @@ document.getElementById('searchInput').addEventListener('input', function() {
   {% endblock %}
   
 {% block body %}
+<script>
+document.querySelector('.btn-add-event').addEventListener('click', function() {
+    // Appeler la fonction pour ouvrir le calendrier
+    openCalendar();
+
+// Empêche le lien de naviguer
+
+    // Montre l'élément du calendrier
+    const calendarContainer = document.getElementById('calendarContainer');
+    calendarContainer.style.display = 'block';
+
+    // Chargez les événements et créez un calendrier simple (par exemple, une liste d'événements)
+    loadCalendar();
+});
+
+function loadCalendar() {
+    const calendarContainer = document.getElementById('calendarContainer');
+
+    // Vous pouvez ajouter votre propre logique ici pour charger les événements
+    // et les afficher dans le calendrier. Voici un exemple simple d'une liste d'événements.
+    const events = [
+        { date: '2024-04-24', title: 'Event 1' },
+        { date: '2024-04-25', title: 'Event 2' },
+        // Ajoutez plus d'événements ici
+    ];
+
+    // Nettoie le contenu du calendrier
+    calendarContainer.innerHTML = '';
+
+    // Ajoute les événements au calendrier
+    events.forEach(event => {
+        const eventElement = document.createElement('div');
+        eventElement.innerHTML = `${event.date}: ${event.title}`;
+        calendarContainer.appendChild(eventElement);
+    });
+    function openCalendar() {
+    // Votre code pour ouvrir le calendrier
+    console.log('Le calendrier est ouvert');
+    // Par exemple, affichez un calendrier ou redirigez vers une page de calendrier
+}
+}
+</script>
     <h1>Events</h1>
    
 
    
 
    <a href="{{ path('app_event_new') }}" class="btn-add-event">Add Event</a>
+  <a href="{{ path('calendar') }}" class="btn-add-event">Calendar</a>
+
+
     <br>
      <div id="searchResults"></div>
+<div id="calendarContainer" style="display: none;"></div>
 
 
      <style>

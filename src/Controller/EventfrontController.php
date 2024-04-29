@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Likes;
 use App\Form\EventType;
+use App\Form\Likes3Type;
 use App\Repository\EventRepository;
+use App\Repository\likesRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,21 +24,54 @@ class EventfrontController extends AbstractController
 {
   
 
-    #[Route('/', name: 'app_frontevent_index', methods: ['GET'])]
-    public function index(Request $request, EventRepository  $eventfrontRepository, PaginatorInterface $paginator): Response
+    #[Route('/', name: 'app_frontevent_index', methods: ['GET','POST'])]
+    public function index(Request $request, EventRepository  $eventfrontRepository,LikesRepository $likesRepository, PaginatorInterface $paginator,EntityManagerInterface $entityManager): Response
     {
         // Récupère tous les travaux depuis la base de données
         $allTravaux = $eventfrontRepository->findAll();
+        $likes = new likes();
+        $form1 = $this->createForm(Likes3Type::class, $likes);
+
+        $form1->handleRequest($request);
+        if ($form1->isSubmitted() ) {
+           
+            $existingLike = $likesRepository->findOneBy([
+                'postId' => $likes->getPostId(),
+                'userId' => $likes->getUserId()
+            ]);
+        
+            if ($existingLike) {
+                // If the existing like has the same reaction type, delete it
+                if ($existingLike->getReactionType() === $likes->getReactionType()) {
+                    $entityManager->remove($existingLike);
+                } else {
+                    // If the reaction type is different, update the existing like
+                    $existingLike->setReactionType($likes->getReactionType());
+                    $entityManager->persist($existingLike);
+                }
+            } else {
+                // If no existing like, persist the new like
+                $entityManager->persist($likes);
+            }
+        
+
+            $entityManager->flush();    
+            return $this->redirectToRoute('app_frontevent_index', [], Response::HTTP_SEE_OTHER);
+            
+        }
 
         // Paginer les travaux avec KnpPaginatorBundle
         $event = $paginator->paginate(
             $allTravaux, // Les données à paginer
             $request->query->getInt('page', 1), // Numéro de la page, par défaut 1
-            1 // Nombre d'éléments par page
+            4 // Nombre d'éléments par page
         );
 
-        return $this->render('event/front.html.twig', [
+        return $this->renderForm('event/front.html.twig', [
             'events' => $event,
+            'form1' => $form1,
+            'likes' => $likesRepository->findAll(),
+            'userid' => 5,
         ]);
     }
 
