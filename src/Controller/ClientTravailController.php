@@ -56,6 +56,18 @@ class ClientTravailController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+ // Vérifier si le commentaire contient des mots interdits
+ $comment = $travail->getTitre(); // Supposons que 'comment' est le champ de commentaire dans votre entité Avis
+ if ($this->containsBadWords($comment)) {
+     // Redirection ou gestion d'erreur
+     return new Response('Votre Titre contient des mots interdits.', 400);
+ }
+
+
+
+
+
+ 
             $entityManager->persist($travail);
             $entityManager->flush();
 
@@ -117,5 +129,18 @@ class ClientTravailController extends AbstractController
         ]);
     }
 
+    public function containsBadWords($comment)
+    {
+        // Récupérer la liste des mots interdits depuis les paramètres Symfony
+        $badWords = $this->getParameter('badwords');
 
+        // Vérifier si le commentaire contient l'un des mots interdits
+        foreach ($badWords as $word) {
+            if (stripos($comment, $word) !== false) {
+                return true; // Le commentaire contient un mot interdit
+            }
+        }
+
+        return false; // Le commentaire ne contient aucun mot interdit
+    }
 }

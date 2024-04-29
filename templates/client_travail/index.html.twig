@@ -1,4 +1,8 @@
 {% extends 'front.html.twig' %}
+{% block head %}
+    <meta property="og:title" content="Liste des travaux">
+    <meta property="og:description" content="Votre description par défaut ici">
+{% endblock %}
 {% block body %}
 <style>
     .title-container {
@@ -86,7 +90,7 @@
   color: #fff;
 }
 </style>
-<a href="{{ path('app_client_travail_new') }}" class="btn" >Créer un nouveau travail</a>
+<a href="{{ path('app_client_travail_new') }}" class="btn">Créer un nouveau travail</a>
 <div class="card-container">
     {% for travail in travails %}
         <div class="card">
@@ -98,15 +102,7 @@
             <p><strong>Date de fin:</strong> {{ travail.dateFin|date('Y-m-d') }}</p>
             <div class="actions">
                 <button type="button" class="btn" onclick="window.location.href='{{ path('app_client_travail_show', {'id': travail.id}) }}';">Voir détails</button>
-             {% set description = travail.titre %}
-
-{# Encode the description and image URL #}
-{% set encodedDescription = description | url_encode %}
-
-{% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ '&quote=' ~ encodedDescription %}
-
-           <button><a href="{{ shareUrl }}" >Share </a></button>
-                </form>
+                <button class="btn" onclick="shareOnFacebook('{{ travail.titre }}', '{{ travail.description }}')">Partager</button>
             </div>
         </div>
     {% else %}
@@ -116,5 +112,13 @@
 <center><div class="pagination">
     {{ knp_pagination_render(travails) }}
 </div></center>
+
+<script>
+    function shareOnFacebook(title, description) {
+        var url = encodeURIComponent(window.location.href);
+        var quote = encodeURIComponent(description);
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + url + '&quote=' + quote, 'Facebook Share', 'width=600,height=400');
+    }
+</script>
 
 {% endblock %}
