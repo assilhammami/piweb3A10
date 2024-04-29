@@ -17,18 +17,10 @@ class CoursFrontController extends AbstractController
 {
     
     #[Route('/', name: 'app_cours_front_index', methods: ['GET'])]
-    public function index(CoursRepository $coursRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(CoursRepository $coursRepository, Request $request): Response
     {
-        $query = $coursRepository->findAll(); // Récupérer tous les cours
-    
-        $cours = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1
-            3 // Nombre d'éléments par page
-        );
-    
         return $this->render('cours_front/index.html.twig', [
-            'cours' => $cours,
+            'cours' => $coursRepository->findAll(),
         ]);
     }
 
@@ -88,32 +80,31 @@ class CoursFrontController extends AbstractController
 
         return $this->redirectToRoute('app_cours_front_index', [], Response::HTTP_SEE_OTHER);
     }
-    #[Route('/', name: 'search', methods: ['POST'])]
-    public function search(Request $request, CoursRepository $coursRepository,PaginatorInterface $paginator): Response
+    #[Route('/', name: 'search1', methods: ['POST'])]
+    public function search1(Request $request, CoursRepository $coursRepository,PaginatorInterface $paginator): Response
     {
         
         $requestData = json_decode($request->getContent(), true);
-        $searchValue = $requestData['search'] ?? ''; 
+        $searchValuee = $requestData['search'] ?? ''; 
     
       
-        if (empty($searchValue)) {
+        if (empty($searchValuee)) {
            
         $cour = $coursRepository->findAll(); // Récupérer tous les cours
     
         } else {
            
             $cour = $coursRepository->createQueryBuilder('e')
-                ->where('e.nom LIKE :searchValue')
-                ->setParameter('searchValue', '%' . $searchValue . '%')
+                ->where('e.nom LIKE :searchValuee')  
+                ->setParameter('searchValuee', '%' . $searchValuee . '%')
                 ->getQuery()
                 ->getResult();
         }
     
       
-        return $this->render('cours_front/search.html.twig', [
-            'cour' => $cour, 
+        return $this->render('cours_front/search1.html.twig', [
+            'cours' => $cour, 
         ]);
     
         }
-    
 }

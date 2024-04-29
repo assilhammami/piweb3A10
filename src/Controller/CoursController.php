@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Knp\Component\Pager\PaginatorInterface;
-
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
@@ -20,20 +19,13 @@ use Symfony\Component\Mailer\MailerInterface;
 class CoursController extends AbstractController
 {
     #[Route('/', name: 'app_cours_index', methods: ['GET'])]
-    public function index(CoursRepository $coursRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(CoursRepository $coursRepository): Response
     {
-        $query = $coursRepository->findAll(); // Récupérer tous les cours
-    
-        $cours = $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1
-            3// Nombre d'éléments par page
-        );
-    
         return $this->render('cours/index.html.twig', [
-            'cours' => $cours,
+            'cours' => $coursRepository->findAll(),
         ]);
     }
+
     #[Route('/new', name: 'app_cours_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
@@ -134,31 +126,32 @@ class CoursController extends AbstractController
     
       
         return $this->render('cours/search.html.twig', [
-            'cour' => $cour, 
+            'cours' => $cour, 
         ]);
     
         }
     
-            #[Route('/chart', name: 'stat', methods: ['GET'])]
-            public function statistiques(CoursRepository $coursRepository): Response
-            {
-                $cours = $coursRepository->findAll();
-                $data = [];
-        
-                // Récupérer le nombre de commentaires pour chaque cours
-                foreach ($cours as $coursItem) {
-                    $data[] = [
-                        'title' => $coursItem->getNom(),
-                        'comment_count' => count($coursItem->getAvis())
-                    ];
-                }
-        
-                return $this->render('stat.html.twig', [
-                    'data' => json_encode($data)
-                ]);
-            }
+          /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistiques(CoursRepository $coursRepository): Response
+    {
+        $cours = $coursRepository->findAll();
+        $data = [];
 
-            #[Route('/email', name: 'app_email')]
+        // Récupérer le nombre de commentaires pour chaque cours
+        foreach ($cours as $cours) {
+            $data[] = [
+                'nom' => $cours->getnom(),
+                'comment_count' => count($cours->getavis())
+            ];
+        }
+
+        return $this->render('cours/stat.html.twig', [
+            'data' => json_encode($data)
+        ]);
+    }
+   #[Route('/email', name: 'app_email')]
             public function sendEmail(MailerInterface $mailer)
             {
                 $transport=Transport::fromDsn('smtp://davincisdata@gmail.com:vjyyzltfspajsbpf@smtp.gmail.com:587');
@@ -181,7 +174,5 @@ class CoursController extends AbstractController
                 
                 
             }
-                
-                
-
+           
 }

@@ -1,7 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <style>
     
+    
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+    </style>
 
     <table class="table">
         <thead>
@@ -34,4 +64,7 @@
 
     <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_new') }}'">Create new</button>
     <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('generator_service_avis') }}'">PDF</button>
+    <div class="pagination">
+    {{ knp_pagination_render(avis) }}
+</div>
 {% endblock %}

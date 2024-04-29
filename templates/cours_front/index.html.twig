@@ -1,4 +1,33 @@
 {% extends 'front.html.twig' %}
+{% block recherche %}
+
+   
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValuee) {
+    fetch('{{ path('search1') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValuee }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults1').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValuee = this.value.trim();
+    fetchClubs(searchValuee);
+});
+
+
+</script>
+  {% endblock %}
 {% block body %}
 <!DOCTYPE html>
 <html lang="en">
@@ -69,33 +98,10 @@
 <body>
     <h1 class="text-center">Liste Des Cours</h1>
 
-    <div class="row">
-        {% for cour in cours %}
-            <div class="col-md-4">
-                <div class="course-card">
-                   <img src="{{ asset('img/' ~ cour.image) }}" class="course-image" width="300" height="150">
+       
+<div id="searchResults1"></div>
+    
 
-                    <div class="course-details">
-                        <h2>{{ cour.nom }}</h3>
-                        <p><strong>Description :</strong>{{ cour.description }}</p>
-                        <p><strong>Date de publication : </strong>{{ cour.datePub ? cour.datePub|date('Y-m-d') : '' }}</p>
-                        <p><strong>Likes :</strong> {{ cour.likes }}</p>
-                        <p><strong>Dislikes : </strong>{{ cour.dislikes }}</p>
-
-                        
-                    </div>
-                </div>
-            </div>
-            {% if loop.index % 3 == 0 %}
-                </div><div class="row">
-            {% endif %}
-        {% else %}
-            <p>Aucun cours trouvé.</p>
-        {% endfor %}
-    </div>
-<div class="pagination">
-    {{ knp_pagination_render(cours) }}
-</div>
 
    
 </body>

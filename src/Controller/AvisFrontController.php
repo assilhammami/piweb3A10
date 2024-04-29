@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Entity\Cours;
 use App\Entity\Avis;
 use App\Form\Avis1Type;
 use App\Repository\AvisRepository;
@@ -30,6 +30,13 @@ class AvisFrontController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Vérifier si le commentaire contient des mots interdits
+            $comment = $avi->getCommentaire(); // Supposons que 'comment' est le champ de commentaire dans votre entité Avis
+            if ($this->containsBadWords($comment)) {
+                // Redirection ou gestion d'erreur
+                return new Response('Votre commentaire contient des mots interdits.', 400);
+            }
+
             $entityManager->persist($avi);
             $entityManager->flush();
 
@@ -41,6 +48,8 @@ class AvisFrontController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
 
     #[Route('/{id}', name: 'app_avis_front_show', methods: ['GET'])]
     public function show(Avis $avi): Response
@@ -77,6 +86,58 @@ class AvisFrontController extends AbstractController
         }
 
         return $this->redirectToRoute('app_avis_front_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/new/{coursId}', name: 'app_aviss_front_new', methods: ['GET', 'POST'])]
+    public function new1($coursId, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Trouver l'cours en fonction de son ID
+        $cours = $this->getDoctrine()->getRepository(Cours::class)->find($coursId);
+    
+        // Vérifier si l'cours existe
+        if (!$cours) {
+            throw $this->createNotFoundException('L\'événement avec l\'ID '.$coursId.' n\'existe pas.');
+        }
+    
+        // Créer une nouvelle avis et l'associer à l'cours
+        $avis = new Avis();
+        $avis->setIdCour($cours);
+    
+        // Créer le formulaire de l'avis
+        $form = $this->createForm(Avis1Type::class, $avis);
+        $form->handleRequest($request);
+    
+        // Traiter la soumission du formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persister l' avis
+            $entityManager->persist($avis);
+            $entityManager->flush();
+    
+            // Rediriger vers la liste des avis ou toute autre page appropriée
+            return $this->redirectToRoute('app_avis_front_index');
+
+        }
+    
+        // Afficher le formulaire de réservation
+        return $this->renderForm('avis_front/new.html.twig', [
+            'avis' => $avis,
+            'form' => $form,
+        ]);
+    }
+
+    public function containsBadWords($comment)
+    {
+        // Récupérer la liste des mots interdits depuis les paramètres Symfony
+        $badWords = $this->getParameter('badwords');
+
+        // Vérifier si le commentaire contient l'un des mots interdits
+        foreach ($badWords as $word) {
+            if (stripos($comment, $word) !== false) {
+                return true; // Le commentaire contient un mot interdit
+            }
+        }
+
+        return false; // Le commentaire ne contient aucun mot interdit
     }
 }
 

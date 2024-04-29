@@ -1,0 +1,7 @@
+# config/packages/parameters.yaml
+
+parameters:
+    badwords:
+        - badword1
+        - badword2
+        - badword3
