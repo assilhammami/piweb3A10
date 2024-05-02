@@ -26,9 +26,9 @@
         <td>{{a.prenom}}</td>
         <td>{{ a.getNumTelephone }}</td>
 {% if a.getActive %}
-    <td><a href="{{ path('deactivate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-x"></i></a></td>
+    <td><a href="{{ path('deactivate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-x-lg"></i></a></td>
 {% else %}
-    <td><a href="{{ path('activate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i></a></td>
+    <td><a href="{{ path('activate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-check2"></i></a></td>
 {% endif %}
     </tr>
     {%endfor%}

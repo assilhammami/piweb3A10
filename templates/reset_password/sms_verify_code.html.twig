@@ -46,8 +46,6 @@
     <h1>Reset your password</h1>
     {% if errorMessage %}
     <div class="alert alert-danger">{{ errorMessage }}</div>
-    <p>Entered code: {{ enteredCode }}</p>
-<p>Stored code: {{ storedCode }}</p>
 {% endif %}
 
 <form method="post" action="{{ path('verify') }}">
