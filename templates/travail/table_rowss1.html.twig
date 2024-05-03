@@ -1,0 +1,22 @@
+<div class="card-container">
+    {% for travail in travaux %}
+        <div class="card">
+            <h2>{{ travail.titre }}</h2>
+            <p><strong>Description:</strong> {{ travail.description }}</p>
+            <p><strong>Prix:</strong> {{ travail.prix }}</p>
+            <p><strong>Type:</strong> {{ travail.type }}</p>
+            <p><strong>Date de demande:</strong> {{ travail.dateDemande|date('Y-m-d') }}</p>
+            <p><strong>Date de fin:</strong> {{ travail.dateFin|date('Y-m-d') }}</p>
+            <div class="actions">
+                <button type="button" class="btn" onclick="window.location.href='{{ path('app_travail_show', {'id': travail.id}) }}';">Voir détails</button>
+                <button type="button" class="btn" onclick="window.location.href='{{ path('app_travail_edit', {'id': travail.id}) }}';">Modifier</button>
+                <form method="post" action="{{ path('app_travail_delete', {'id': travail.id}) }}" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ travail.id) }}">
+                    <button type="submit" class="btn btn-secondary">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucun travail trouvé.</p>
+    {% endfor %}
+</div>

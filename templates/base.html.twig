@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <style>
     .logo {
         width: 130px; /* Définissez la largeur souhaitée */
         height: auto; /* Maintient le ratio hauteur/largeur */
     }
 </style>
+
+
+
 <head>
 
     <meta charset="utf-8">
@@ -18,13 +22,21 @@
  <title>Davinci's Data - {% block title %}{% endblock %}</title>
 ●	{% block css%}
     <!-- Custom fonts for this template-->
+
     <link href="{{asset('Admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
+    <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
     <link
         href="{{asset('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i')}}"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
+
     <link href="{{asset('Admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
+
+    <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
+
 {% endblock %} 
 </head>
  
@@ -37,12 +49,20 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
+
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
+
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">
+
                 <img  alt="Logo" src="{{ asset('Admin/img/logo.png') }}" class="logo"/>
+
+                <img  alt="backoffice" src="{{ asset('img/logo.pn') }}" class="logo"/>
+
                  </div>
             </a>
 
@@ -52,10 +72,15 @@
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
                 <a class="nav-link" href="/">
+
                     
     <i class="fas fa-fw fa-tachometer-alt"></i>
     <span>Dashboard</span>
 </a>
+
+
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
 
             </li>
 
@@ -69,18 +94,30 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
+
     <a class="nav-link collapsed" href="{{ path('app_cours_index') }}" aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-book"></i>
         <span>Cours</span>
+
+    <a class="nav-link collapsed" href="{{ path('app_travail_index') }}" aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-book"></i>
+        <span>Travail</span>
+
     </a>
 </li>
 
 
             <!-- Nav Item - Utilities Collapse Menu -->
            <li class="nav-item">
+
     <a class="nav-link collapsed" href="{{ path('app_avis_index') }}" aria-expanded="true" aria-controls="collapseTwo">
         <i class="fas fa-fw fa-book"></i>
         <span>Avis</span>
+
+    <a class="nav-link collapsed" href="{{ path('app_archive_index') }}" aria-expanded="true" aria-controls="collapseTwo">
+        <i class="fas fa-fw fa-book"></i>
+        <span>Archive</span>
+
     </a>
 </li>
 
@@ -118,6 +155,7 @@
                     </button>
 
                     <!-- Topbar Search -->
+
                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
     <div class="input-group">
         <input id="searchInput" type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -129,6 +167,9 @@
         </div>
     </div>
 </form>
+
+            
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -216,9 +257,14 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrateur</span>
                                 <img class="img-profile rounded-circle"
+
                                     src="Admin/img/undraw_profile.svg">
                             </a>
                             
+
+                                    src="asset{{('img/undraw_profile.svg')}}">
+                            </a>
+
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
@@ -240,10 +286,19 @@
                                     Logout
                                 </a>
                             </div>
+
                             
                         </li>
 
                     </ul>
+
+
+                        </li>
+
+                    </ul>
+ <div >
+       
+      </div>
 
                 </nav>
                 <!-- End of Topbar -->
@@ -253,7 +308,11 @@
 
                     <!-- Page Heading -->
                    
+
             {% block recherche %}   {% endblock %}      
+
+       {% block recherche %}     {% endblock %}          
+
 {% block body %}
                     <!-- Content Row -->
                     <div class="row">
@@ -325,9 +384,13 @@
                         <span>Copyright &copy; Your Website 2024</span>
                     </div>
                 </div>
+
                 
             </footer>
             
+
+            </footer>
+
             <!-- End of Footer -->
 
         </div>
@@ -335,6 +398,9 @@
 
     </div>
     {% endblock %}
+
+    <div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- End of Page Wrapper -->
 
     <!-- Scroll to Top Button-->
@@ -363,6 +429,7 @@
     </div>
 ●	{% block js %}
     <!-- Bootstrap core JavaScript-->
+
     <script src="Admin/vendor/jquery/jquery.min.js"></script>
     <script src="Admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -387,6 +454,26 @@
  { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); }
  </script>
  <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+</body>
+
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    
+{% endblock %}
 </body>
 
 </html>

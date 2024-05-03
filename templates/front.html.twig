@@ -12,7 +12,11 @@
   <!-- Basic Page Needs
   = -->
   <meta charset="utf-8">
+
     <title>{% block title %}Davinici's Data{% endblock %}</title>
+
+    <title>Davinci's Data - {% block title %}{% endblock %}</title>
+
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -78,6 +82,7 @@ Fixed Navigation
     <nav class="navbar navbar-expand-lg navbar-light px-0">
       <!-- logo -->
       <a class="navbar-brand logo" href="/">
+
         <img loading="lazy" class="logo-white" src="/frontoffice/images/logo-white.png" alt="logo" />
       </a>
       <!-- /logo -->
@@ -85,6 +90,7 @@ Fixed Navigation
         aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
+
       <div class="collapse navbar-collapse" id="navigation">
       
         <ul class="navbar-nav ml-auto text-center">
@@ -92,10 +98,16 @@ Fixed Navigation
         <input id="searchInput" type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
             aria-label="Search" aria-describedby="basic-addon2">
         <div class="input-group-append">
+
+
+      <div class="collapse navbar-collapse" id="navigation">
+        <ul class="navbar-nav ml-auto text-center">
+
           <li class="nav-item ">
             <a class="nav-link" href="/">Homepage</a>
           </li>
           <li class="nav-item ">
+
             <a class="nav-link" href="{{ path('app_cours_front_index') }}">Cours</a>
           </li>
           <li class="nav-item ">
@@ -110,6 +122,28 @@ Fixed Navigation
     <!-- /main nav -->
   </div>
   
+
+            <a class="nav-link" href="{{ path('app_client_travail_index') }}">Travail</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ path('app_client_travailbyid_index') }}">Mes Travaux</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="{{ path('app_client_archive_index') }}">Les Propositions</a>
+          </li>
+        </ul>
+      </div>
+         <div >
+        <form  action="{{ path('app_client_travail_index') }}" method="get">
+          <input style="border-radius:20px;margin-bottom:10px;" type="search" placeholder="Search" aria-label="Search" name="q">
+          <button  style="border-radius:20px; border-color:#000066;color:#000066;" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    <!-- /main nav -->
+    
+  </div>
+
   <style>
   .sticky-header {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
@@ -123,9 +157,15 @@ Fixed Navigation
 <!--
 End Fixed Navigation
 = -->
+
 {% block recherche %}{% endblock %}
 {% block body %}{% endblock %}
 
+
+
+
+{% block body %}{% endblock %}
+<div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <footer id="footer" class="bg-one" style="margin-top: 50px;">
   <div class="top-footer">
@@ -162,10 +202,17 @@ End Fixed Navigation
             <li>
               <h3>Connect with us Socially</h3>
             </li>
+
             <li><a href="https://www.facebook.com/profile.php?id=61553003056129">Facebook</a></li>
             <li><a href="https://www.twitter.com/themefisher/">Twitter</a></li>
             <li><a href="https://www.youtube.com/channel/UCx9qVW8VF0LmTi4OF2F8YdA">Youtube</a></li>
             <li><a href="https://github.com/assilhammami/pidev3A10">Github</a></li>
+
+            <li><a href="https://www.facebook.com/themefisher/">Facebook</a></li>
+            <li><a href="https://www.twitter.com/themefisher/">Twitter</a></li>
+            <li><a href="https://www.youtube.com/channel/UCx9qVW8VF0LmTi4OF2F8YdA">Youtube</a></li>
+            <li><a href="https://www.github.com/themefisher/">Github</a></li>
+
           </ul>
         </div>
         <!-- End of .col-sm-3 -->
@@ -206,10 +253,14 @@ End Fixed Navigation
 
 <!-- Custom js -->
 <script src="/frontoffice/js/script.js"></script>
+
 <div id="google_translate_element"></div>
  <script type="text/javascript"> function googleTranslateElementInit() 
  { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); }
  </script>
  <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+
+
+
 </body>
 </html>

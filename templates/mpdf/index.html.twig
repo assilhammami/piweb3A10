@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -120,17 +121,40 @@
 </body>
 </html>
 
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="{{ asset('frontoffice/images/logo1.jpg') }}" style="width: 140px; height: 100px;" alt="Description de votre image">
+</div>
+
+<br>
+<h2>Liste des archives</h2> <!-- Ajout du titre ici -->
+
+
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <img src="{{ asset('imagee/logo.jpg') }}" style="width: 140px; height: 100px;" alt="Description de votre image">
 </div>
 
 <br>
 <h2>Liste des réservations</h2> <!-- Ajout du titre ici -->
+
 <br>
 
 <table border="1">
     <thead>
         <tr>
+
+            <th style="color:#009CFF;">date</th>
+            <th style="color:#009CFF;">image</th>
+            <th style="color:#009CFF;">description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for archives in archives %}
+            <tr>
+           <td>{{ archives.dateCreation ? archives.dateCreation|date('Y-m-d') : '' }}</td>
+                <td>{{ archives.image }}</td>
+                <td>{{ archives.description }}</td>
+
             <th style="color:#009CFF;">Id</th>
             <th style="color:#009CFF;">Date</th>
             <th style="color:#009CFF;">NbPlaces</th>
@@ -142,6 +166,7 @@
                 <td>{{ reservation.id }}</td>
                 <td>{{ reservation.date }}</td>
                 <td>{{ reservation.nbplaces }}</td>
+
             </tr>
         {% endfor %}
     </tbody>
@@ -193,6 +218,9 @@ h2, table {
     align-items: center;
     margin-bottom: 20px; /* Ajoute un espace en dessous de l'image */
 }
+
+</style>
+
 </style>
 
 

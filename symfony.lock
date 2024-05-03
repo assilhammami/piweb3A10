@@ -26,7 +26,11 @@
             "branch": "main",
             "version": "2.4",
 
+
             "ref": "cc62b7e9470998c640ee99d284a013a676f1fc5e"
+
+            "ref": "91690c0a440faba1a3676256bcca2b4aa9f55b72"
+
 
             "ref": "013b823e7fee65890b23e40f31e6667a1ac519ac"
 
@@ -613,6 +617,10 @@
             "./config/routes/web_profiler.yaml"
         ]
     },
+
+    "twig/extra-bundle": {
+        "version": "v3.8.0"
+
 
     "symfony/webapp-pack": {
         "version": "1.2",

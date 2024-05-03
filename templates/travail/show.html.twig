@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <style>
+        .title-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-transform: uppercase;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #f2f2f2;
+        }
+
+        .table a {
+            text-decoration: none;
+            margin-right: 10px;
+        }
+
+        .btn {
+            background-color: #007bff; /* Bleu */
+            color: #ffffff; /* Texte en blanc */
+            border: none;
+            border-radius: 3px;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-decoration: none; /* Supprime le soulignement du lien */
+            display: inline-block; /* Assure que le bouton respecte les dimensions du contenu */
+        }
+
+        .btn:hover {
+            background-color: #0056b3; /* Changement de couleur au survol */
+        }
+
+        .btn-group {
+            
+    display: inline-flex; /* Pour afficher les boutons en ligne */
+    align-items: center; /* Pour aligner les éléments verticalement */
+}
+
+.btn {
+    margin-right: 10px; /* Ajouter un espacement entre les boutons */
+}
+    </style>
+
+    <div class="title-container">
+        <div class="title">mon Travail</div>
+    </div>
+
+
+
+
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ travail.id }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ travail.description }}</td>
+        </tr>
+        <tr>
+            <th>Prix</th>
+            <td>{{ travail.prix }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ travail.type }}</td>
+        </tr>
+        <tr>
+            <th>Date_demande</th>
+            <td>{{ travail.dateDemande ? travail.dateDemande|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Date_fin</th>
+            <td>{{ travail.dateFin ? travail.dateFin|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ travail.titre }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="btn-group">
+    <a href="{{ path('app_travail_index') }}" class="btn">Retour à la liste</a>
+    <a href="{{ path('app_travail_edit', {'id': travail.id}) }}" class="btn">Modifier</a>
+    {{ include('travail/_delete_form.html.twig') }}
+</div>
+{% endblock %}
