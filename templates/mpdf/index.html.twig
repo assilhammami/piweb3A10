@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -118,3 +119,81 @@
 
 </body>
 </html>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="{{ asset('imagee/logo.jpg') }}" style="width: 140px; height: 100px;" alt="Description de votre image">
+</div>
+
+<br>
+<h2>Liste des réservations</h2> <!-- Ajout du titre ici -->
+<br>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th style="color:#009CFF;">Id</th>
+            <th style="color:#009CFF;">Date</th>
+            <th style="color:#009CFF;">NbPlaces</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.id }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.nbplaces }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<style>
+/* Styles pour l'image de logo */
+img.logo {
+    width: 140px;
+    height: 100px;
+    object-fit: contain; /* Pour s'assurer que l'image s'ajuste à la zone définie sans se déformer */
+    border-radius: 10px; /* Ajoute des coins arrondis à l'image */
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* Ajoute une ombre subtile à l'image */
+}
+/* Styles pour le tableau */
+table {
+    width: 100%; /* Le tableau occupe toute la largeur de la page */
+    border-collapse: collapse; /* Pour éviter les espaces entre les cellules */
+    margin-bottom: 20px; /* Espace en bas du tableau */
+}
+
+th, td {
+    padding: 10px; /* Ajoute de l'espace intérieur aux cellules */
+    border: 1px solid #ddd; /* Ajoute une bordure aux cellules */
+    text-align: left; /* Aligne le texte à gauche */
+}
+
+th {
+    background-color: #009CFF; /* Couleur de fond des en-têtes */
+    color: white; /* Couleur du texte des en-têtes */
+    font-weight: bold; /* Gras pour les en-têtes */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Couleur de fond alternée pour les lignes paires */
+}
+
+tr:hover {
+    background-color: #f1f1f1; /* Couleur de fond lors du survol des lignes */
+}
+/* Alignement centré pour le titre et autres éléments */
+h2, table {
+    text-align: center;
+}
+
+/* Amélioration de l'alignement du logo */
+.logo-container {
+    display: flex;
+    justify-content: center; /* Centrer l'image */
+    align-items: center;
+    margin-bottom: 20px; /* Ajoute un espace en dessous de l'image */
+}
+</style>
+
+
+

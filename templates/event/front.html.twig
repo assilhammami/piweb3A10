@@ -1,0 +1,287 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Events
+{% endblock %}
+  
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('css/app.css')}}">
+<button class="my-button" onclick="window.location.href='/stats'">Statistiques</button>
+
+
+<div class="body-container">
+  <div id="myDiv" style="display: none;">
+    {{ form_start(form1, {'attr': {'id': 'myForm'}}) }}
+   {{ form_widget(form1.postId  , {'attr': {'id': 'postId'}})  }}
+    {{ form_widget(form1.userId, {'attr': {'id': 'userId'}}) }}
+    {{ form_widget(form1.reactionType , {'attr': {'id': 'reactionType'}} ) }}
+   
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form1) }}
+</div>
+
+    <h1>Events</h1>
+
+   
+   <div class="container">
+    {% if events is not empty %}
+        <div class="row">
+         
+        <body>
+        
+   
+  
+       
+            {% for event in events %}
+            
+             {% set reactionTypes = [] %}
+       {% set reactionCounts = {} %}
+        {% for like in likes %}
+        {% set reactionType = like.getReactionType() %}
+    {% if reactionType is not null %}
+        {% if reactionType not in reactionCounts %}
+            {% set reactionCounts = reactionCounts|merge({(reactionType): 1}) %}
+        {% else %}
+            {% set reactionCounts = reactionCounts|merge({(reactionType): reactionCounts[reactionType] + 1}) %}
+        {% endif %}
+    {% endif %}
+    {% endfor %}
+{% set sortedReactionTypes = reactionTypes|sort %}
+
+{# Display the sorted reaction types #}
+
+      
+
+   <div class="facebook-post">
+        <div class="post-header">
+            <div class="user-profile-image"></div>
+            <div class="user-info">
+                <span>{{ event.nom }}</span>
+                <span></span>
+            </div>
+            <img class="icon" src="./assets/ellipsis.svg" alt="">
+            <img class="icon" src="./assets/close.svg" alt="">
+        </div>
+        <div class="post"> <img src="{{ asset('images/' ~ event.image)  }} " width="435" height="400" > </div>
+        <div class="post-interactions">
+         {% for imgSrc ,count in reactionCounts %}
+    {% if loop.index <= 3 %}
+
+    {% set img = 'images/reactions/' ~ imgSrc ~ '.png' %}
+        <img src="{{ asset(img) }}" style="width: 15px;">
+        
+    {% endif %}
+{% endfor %}
+{% for reactionType in sortedReactionTypes %}
+    {{ reactionType }}
+    
+{% endfor %}
+{% set total = 0 %}
+
+{% for count in reactionCounts %}
+    {% set total = total + count %}
+{% endfor %}
+
+Total Count: {{ total }}
+ <br>
+            <button>
+             {% set foundLike = false %}
+              {% set i = 0 %}
+              {% set reactionTypes = [] %}
+{% for like in likes %}
+ 
+   
+  
+    {% if like.getpostid() == event.getId() and like.getuserid() == userid %}
+        {% set img = 'images/reactions/' ~ like.getReactionType() ~ '.png' %}
+        <img src="{{ asset(img) }}" style="width: 15px;">
+        {% set foundLike = true %}
+    {% endif %}
+     
+{% endfor %}
+
+{% if not foundLike %} 
+ 
+{% endif %}
+
+           
+                like
+                <span>
+             
+
+                    <img src="{{ asset('images/reactions/like.png')}}" onclick="likeAction({{ event.getId() }},'LIKE')">
+<img src="{{ asset('images/reactions/love.png')}}" onclick="likeAction({{ event.getId() }}, 'LOVE')">
+<img src="{{ asset('images/reactions/wow.png')}}" onclick="likeAction({{ event.getId() }}, 'WOW')">
+<img src="{{ asset('images/reactions/HAHA.png')}}" onclick="likeAction({{ event.getId() }}, 'HAHA')">
+<img src="{{ asset('images/reactions/sad.png')}}" onclick="likeAction({{ event.getId() }}, 'SAD')">
+<img src="{{ asset('images/reactions/angry.png')}}" onclick="likeAction({{ event.getId() }}, 'ANGRY')">
+
+
+                </span>
+            </button>
+        
+            
+{% set description = event.description %}
+{% set imageUrl = event.image %}
+
+{# Encode the description and image URL #}
+{% set encodedDescription = description | url_encode %}
+{% set encodedImageUrl = imageUrl | url_encode %}
+
+
+{% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ encodedImageUrl ~ '&quote=' ~ encodedDescription %}
+
+           <button><a href="{{ shareUrl }}" >Share </a></button>
+             <button> <a href="{{ path('app_eventt_show', {'id': event.id}) }}">Afficher</a></button>
+                        <button>     <a href="{{ path('app_reservationfront_new', {'eventId': event.id}) }}">Réserver</a></button>
+        </div>
+    </div>
+         
+        <br>
+
+
+    
+  
+    
+       
+
+{# Sort the reaction types array #}
+
+
+<p> </p>
+
+        <div class="post-interactions">
+            
+          
+
+
+
+            
+            <br>
+          
+        </div>
+       
+
+        
+    </div>
+                <div class="col-md-4">
+                    <div class="course-card">
+                       
+
+
+
+                        </div>
+                    </div>
+                </div>
+                {% if loop.index % 3 == 0 and not loop.last %}
+                    </div><div class="row">
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aucun événement trouvé</p>
+    {% endif %}
+</div>
+</div>
+
+<script>
+function searchEvents() {
+    const searchTerm = document.getElementById('searchTerm').value;
+    fetch(`/frontoffice/event/search?searchTerm=${searchTerm}`)
+        .then(response => {
+            // Vérifiez que la réponse est au format JSON
+            if (response.headers.get('Content-Type').includes('application/json')) {
+                return response.json();
+            } else {
+                throw new Error('La réponse n\'est pas au format JSON.');
+            }
+        })
+        .then(data => {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = ''; // Effacer les résultats précédents
+            data.events.forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.innerHTML = `
+                    <p>Nom: ${event.nom}</p>
+                    <p>Date: ${event.date}</p>
+                    <p>Lieu: ${event.place}</p>
+                `;
+                resultsDiv.appendChild(eventDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des événements :', error);
+        });
+}
+
+</script>
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
+.body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+.my-button {
+    float: right;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+</style>
+<script>
+function likeAction(postId, reactionType) {
+  console.log("aaaaaaaaaaaaaaaa")
+        // Set the post ID and reaction type in the form fields
+        document.getElementById('myDiv').style.display = 'block'; // Show the form
+        document.getElementById('likes3_postId').value = postId;
+        document.getElementById('likes3_reactionType').value = reactionType;
+          document.getElementById('likes3_userId').value = {{userid}};
+
+//document.getElementById('myForm').submit();
+     
+
+         //Submit the form
+        
+    }
+
+</script>
+
+<center><div class="pagination">
+    {{ knp_pagination_render(events) }}
+</div></center>
+ <div id="searchResults"></div>
+{% endblock %}
+

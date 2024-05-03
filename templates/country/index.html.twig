@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Information</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        main {
+            text-align: center;
+            max-width: 600px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #333333;
+            font-size: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        h2 {
+            color: #007bff;
+            font-size: 24px;
+            margin-top: 20px;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #666666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #666666;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+
+    <h1> Country Information</h1>
+
+
+    <h2>Names:</h2>
+    <p>Common Name: {{ countryInfo[0].name.common }}</p>
+    <p>Official Name: {{ countryInfo[0].name.official }}</p>
+
+
+
+    <h2>Native Name:</h2>
+    {% if countryInfo[0].name.nativeName is defined %}
+        {% set nativeName = countryInfo[0].name.nativeName %}
+        {% if nativeName.ara is defined %}
+            <p>Arabic: {{ nativeName.ara.common }}</p>
+        {% endif %}
+        {% if nativeName.fra is defined %}
+            <p>French: {{ nativeName.fra.common }}</p>
+        {% endif %}
+        {# Add more conditions for other languages as needed #}
+    {% else %}
+        <p>No native name available</p>
+    {% endif %}
+
+
+    <h2>Top-Level Domain:</h2>
+    <p>{{ countryInfo[0].tld[0] }}</p>
+
+    <h2>Country Codes:</h2>
+    <p>Alpha-2 Code: {{ countryInfo[0].cca2 }}</p>
+    <p>Numeric Code: {{ countryInfo[0].ccn3 }}</p>
+    <p>Alpha-3 Code: {{ countryInfo[0].cca3 }}</p>
+    <p>IOC Code: {{ countryInfo[0].cioc }}</p>
+
+    <h2>Independence and Status:</h2>
+    <p>Independent: {{ countryInfo[0].independent ? 'Yes' : 'No' }}</p>
+    <p>Status: {{ countryInfo[0].status }}</p>
+    <p>UN Member: {{ countryInfo[0].unMember ? 'Yes' : 'No' }}</p>
+<h2>Currency</h2>
+    <p><strong>Currency:</strong>
+        {% for currencyCode, currencyInfo in countryInfo[0].currencies %}
+            {{ currencyInfo.name }} ({{ currencyCode }}) - Symbol: {{ currencyInfo.symbol }}
+            {% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </p>
+
+    <h2>International Dialing:</h2>
+    <p>Root: {{ countryInfo[0].idd.root }}</p>
+    <p>Suffixes: {{ countryInfo[0].idd.suffixes|join(', ') }}</p>
+
+    <h2>Capital:</h2>
+    <p>{{ countryInfo[0].capital[0] }}</p>
+
+    <h2>Alternate Spellings:</h2>
+    <p>{{ countryInfo[0].altSpellings|join(', ') }}</p>
+
+
+    <h2>Languages:</h2>
+    <ul>
+        {% for languageCode, languageName in countryInfo[0].languages|default([]) %}
+            <li>{{ languageCode }}: {{ languageName }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Geographical Information:</h2>
+    <p>Region: {{ countryInfo[0].region }}</p>
+    <p>Subregion: {{ countryInfo[0].subregion }}</p>
+    <p>Latlng: {{ countryInfo[0].latlng[0] }}, {{ countryInfo[0].latlng[1] }}</p>
+    <p>Landlocked: {{ countryInfo[0].landlocked ? 'Yes' : 'No' }}</p>
+    {% if countryInfo[0].borders is defined %}
+        <p>Borders: {{ countryInfo[0].borders|join(', ') }}</p>
+    {% else %}
+        <p>This country has no land borders.</p>
+    {% endif %}
+    <p>Area: {{ countryInfo[0].area }} square kilometers</p>
+
+    <h2>Flag and Maps:</h2>
+    <img src="{{ countryInfo[0].flags.png }}" alt="Country Flag">
+    <p>Google Maps: <a href="{{ countryInfo[0].maps.googleMaps }}" target="_blank">Link</a></p>
+    <p>OpenStreet Maps: <a href="{{ countryInfo[0].maps.openStreetMaps }}" target="_blank">Link</a></p>
+
+    <h2>Population and Other Details:</h2>
+    <p>Population: {{ countryInfo[0].population }}</p>
+
+
+
+    <p>Timezones: {{ countryInfo[0].timezones|join(', ') }}</p>
+    <p>Continents: {{ countryInfo[0].continents|join(', ') }}</p>
+
+    <h2>Flags and Coat of Arms:</h2>
+    <img src="{{ countryInfo[0].flags.png }}" alt="Country Flag">
+    <img src="{{ countryInfo[0].coatOfArms.png }}" alt="Coat of Arms">
+
+    <h2>Start of Week and Capital Info:</h2>
+    <p>Start of Week: {{ countryInfo[0].startOfWeek }}</p>
+    <p>Capital Latitude: {{ countryInfo[0].capitalInfo.latlng[0] }}</p>
+
+</main>
+
+</body>
+</html>

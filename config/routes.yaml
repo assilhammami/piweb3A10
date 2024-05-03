@@ -1,3 +1,4 @@
+
 email:
     path: /email
     controller: App\Controller\CoursController::sendEmail
@@ -5,3 +6,25 @@ email:
 stats:
     path: /stats
     controller: App\Controller\CoursController::statistiques
+
+
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+stats:
+    path: /stats
+    controller: App\Controller\EventController::statistiques
+    
+calendar:
+    path: /calendar
+    controller: App\Controller\EventController::calendar   
+
+    
+
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+

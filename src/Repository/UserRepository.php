@@ -23,6 +23,7 @@ class UserRepository extends ServiceEntityRepository
 
 //    /**
 //     * @return User[] Returns an array of User objects
+
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,6 +37,36 @@ class UserRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+
+//    */
+    public function FindByusername($username): array
+{
+        return $this->createQueryBuilder('count(u.id)')
+           ->andWhere('u.username = :val')
+           ->setParameter('val', $username)
+           ->getQuery()
+           ->getSingleResult()
+      ;
+   }
+   public function FindByemail($email): array
+   {
+           return $this->createQueryBuilder('count(u.id)')
+              ->andWhere('u.email = :val')
+              ->setParameter('val', $email)
+              ->getQuery()
+              ->getSingleResult()
+         ;
+      }
+      public function FindBynumber($tel): array
+{
+        return $this->createQueryBuilder('count(u.id)')
+           ->andWhere('u.num_telephone = :val')
+           ->setParameter('val', $tel)
+           ->getQuery()
+           ->getSingleResult()
+      ;
+   }
+
 //    public function findOneBySomeField($value): ?User
 //    {
 //        return $this->createQueryBuilder('u')
@@ -45,4 +76,8 @@ class UserRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }
+
+}
+

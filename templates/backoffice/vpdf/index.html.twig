@@ -1,0 +1,41 @@
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <img src="{{ asset('imagee/logo.jpg') }}" style="width: 140px; height: 100px;" alt="Description de votre image">
+
+</div>
+<br>
+<br>
+<table  border="1">
+    <thead >
+    <tr>
+        <th style="color:#009CFF;">Id </th>
+        <th style="color:#009CFF;">Duree</th>
+        <th style="color:#009CFF;">Datedepart</th>
+        <th style="color:#009CFF;">Datearrivee</th>
+        <th style="color:#009CFF;">NbrEscale</th>
+        <th style="color:#009CFF;">NbrPlaces</th>
+        <th style="color:#009CFF;">Classe</th>
+        <th style="color:#009CFF;">Destination</th>
+        <th style="color:#009CFF;">PointDepart</th>
+        <th style="color:#009CFF;">Prix</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    {% for vol in vols %}
+        <tr>
+            <td>{{ vol.id }}</td>
+            <td>{{ vol.duree ? vol.duree|date('H:i:s') : '' }}</td>
+            <td>{{ vol.datedepart ? vol.datedepart|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ vol.datearrive ? vol.datearrive|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ vol.nbrescale }}</td>
+            <td>{{ vol.nbrplace }}</td>
+            <td>{{ vol.classe }}</td>
+            <td>{{ vol.destination }}</td>
+            <td>{{ vol.pointdepart }}</td>
+            <td>{{ vol.prix }}</td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

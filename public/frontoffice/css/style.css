@@ -11,8 +11,19 @@ body {
   line-height: 1.4;
   font-family: "Source Sans Pro", sans-serif;
   -webkit-font-smoothing: antialiased;
+
+
+
+
   margin-top: 100px; /* Ajustez cette valeur selon vos besoins */
 }
+
+
+
+
+
+}
+
 
 
 p {
@@ -398,12 +409,27 @@ a:focus, a:hover {
 }
 
 
-/*=================================================================
+
+/*==
   Navigation
-==================================================================*/
+===*/
 .navigation {
   margin-bottom: 20px; /* Diminuez cette valeur pour monter légèrement l'en-tête */}
 .navigation {
+
+
+
+
+/*==
+  Navigation
+===*/
+.navigation {
+
+  margin-bottom: 20px; /* Diminuez cette valeur pour monter légèrement l'en-tête */}
+.navigation {
+
+
+
   transition: 0.3s all;
 }
 .navigation .logo-default {
@@ -532,10 +558,23 @@ a:focus, a:hover {
 }
 .sticky-header {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.06);
+
+
+
+
   background: black;
 }
 .sticky-header .navbar-light .navbar-nav .nav-item .nav-link {
   color: white;
+
+
+
+  background: #fff;
+}
+.sticky-header .navbar-light .navbar-nav .nav-item .nav-link {
+  color: #000;
+
+
 }
 .sticky-header .logo-white {
   display: none;
@@ -775,9 +814,15 @@ a:focus, a:hover {
 }
 
 /* /slick arrows */
-/*=================================================================
+
+/*==
   About us section
-==================================================================*/
+===*/
+
+/*==
+  About us section
+===*/
+
 .about {
   padding: 100px 0;
   background: #fff;
@@ -811,9 +856,15 @@ a:focus, a:hover {
   margin-right: 8px;
 }
 
-/*=================================================================
+
+/*==
   About us 2 section
-==================================================================*/
+===*/
+
+/*==
+  About us 2 section
+===*/
+
 .about-2 {
   background: #F7F7F7;
 }
@@ -839,9 +890,15 @@ a:focus, a:hover {
   font-size: 20px;
 }
 
-/*=================================================================
+
+/*==
  Call To Action 1
-==================================================================*/
+===*/
+
+/*==
+ Call To Action 1
+===*/
+
 .call-to-action {
   padding: 100px 0;
   background: url("../images/call-to-action/call-to-action-bg-2.jpg");
@@ -858,9 +915,15 @@ a:focus, a:hover {
   margin-top: 20px;
 }
 
-/*=================================================================
+
+/*==
  Call To Action 2
-==================================================================*/
+===*/
+
+/*==
+ Call To Action 2
+===*/
+
 .call-to-action-2 {
   padding: 100px 0;
   background-image: url("../images/call-to-action/call-to-action-bg.jpg");
@@ -877,9 +940,15 @@ a:focus, a:hover {
   margin-top: 20px;
 }
 
-/*=================================================================
+
+/*==
   Contact
-  ==================================================================*/
+  ===*/
+
+/*==
+  Contact
+  ===*/
+
 .contact-us {
   padding: 100px 0 50px 0;
 }
@@ -964,9 +1033,15 @@ a:focus, a:hover {
   color: white;
 }
 
-/*=================================================================
+
+/*==
   Item counter section
-==================================================================*/
+===*/
+
+/*==
+  Item counter section
+===*/
+
 .counters-item {
   padding-bottom: 30px;
   color: #444;
@@ -1005,9 +1080,15 @@ a:focus, a:hover {
   color: #666;
 }
 
-/*=================================================================
+
+/*==
   Pricing section
-==================================================================*/
+===*/
+
+/*==
+  Pricing section
+===*/
+
 .pricing-table {
   padding: 100px 0;
   padding-bottom: 70px;
@@ -1071,9 +1152,15 @@ a:focus, a:hover {
   padding: 10px 0;
 }
 
-/*=================================================================
+
+/*==
   Portfolio section
-==================================================================*/
+===*/
+
+/*==
+  Portfolio section
+===*/
+
 .portfolio-filter {
   margin-bottom: 40px;
   text-align: center;
@@ -1150,9 +1237,15 @@ a:focus, a:hover {
   line-height: 47px;
 }
 
-/*=================================================================
+
+/*==
   Services section
-==================================================================*/
+===*/
+
+/*==
+  Services section
+===*/
+
 .services {
   padding: 100px 0 130px;
 }
@@ -1181,9 +1274,15 @@ a:focus, a:hover {
   color: #666;
 }
 
-/*=================================================================
+
+/*==
   Services section 2
-==================================================================*/
+===*/
+
+/*==
+  Services section 2
+===*/
+
 .service-2 .service-item {
   border: 1px solid #eee;
   margin-bottom: 30px;
@@ -1212,9 +1311,15 @@ a:focus, a:hover {
   transition: all 0.3s ease 0s;
 }
 
-/*=================================================================
+
+/*==
   Our skills
-==================================================================*/
+===*/
+
+/*==
+  Our skills
+===*/
+
 .team-skills .progress-block {
   margin-top: 40px;
 }
@@ -1237,9 +1342,15 @@ a:focus, a:hover {
   margin-top: 50px;
 }
 
-/*=================================================================
+
+/*==
   Step section
-==================================================================*/
+===*/
+
+/*==
+  Step section
+===*/
+
 .development-steps .step {
   padding: 80px 20px;
 }
@@ -1285,9 +1396,15 @@ a:focus, a:hover {
   color: #fff;
 }
 
-/*=================================================================
+
+/*==
   Our Team
-==================================================================*/
+===*/
+
+/*==
+  Our Team
+===*/
+
 .team {
   padding: 100px 0;
   padding-bottom: 70px;
@@ -1370,9 +1487,15 @@ a:focus, a:hover {
   transform: translateY(0%);
 }
 
-/*=================================================================
+
+/*==
   Testimonial section
-==================================================================*/
+===*/
+
+/*==
+  Testimonial section
+===*/
+
 .testimonial {
   padding-top: 100px;
   background: #28ABE3;
@@ -1413,9 +1536,15 @@ a:focus, a:hover {
   margin-bottom: 20px;
 }
 
-/*=================================================================
+
+/*==
   Latest Posts
-==================================================================*/
+===*/
+
+/*==
+  Latest Posts
+===*/
+
 .blog {
   padding-bottom: 60px;
   padding-top: 80px;
@@ -1648,9 +1777,15 @@ a:focus, a:hover {
   color: #28ABE3;
 }
 
-/*=================================================================
+
+/*==
   Single Blog Page
-==================================================================*/
+===*/
+
+/*==
+  Single Blog Page
+===*/
+
 #blog-banner {
   padding-bottom: 100px;
   padding-top: 150px;
@@ -1810,9 +1945,15 @@ a:focus, a:hover {
   height: auto;
 }
 
-/*=================================================================
+
+/*==
   Footer section
-==================================================================*/
+===*/
+
+/*==
+  Footer section
+===*/
+
 .top-footer {
   background-color: #222222;
   border-top: 1px solid #404040;
@@ -1888,9 +2029,15 @@ a:focus, a:hover {
   font-size: 200px;
 }
 
-/*============================================================
+
+/*====
 	For Small Desktop
-==============================================================*/
+======*/
+
+/*====
+	For Small Desktop
+======*/
+
 @media (min-width: 700px) and (max-width: 1090px) {
   .counters-item:before {
     display: none;
@@ -1937,9 +2084,15 @@ a:focus, a:hover {
     margin-left: 70px;
   }
 }
-/*============================================================
+
+/*====
 	Tablet (Portrait) Design for a width of 768px
-==============================================================*/
+======*/
+
+/*====
+	Tablet (Portrait) Design for a width of 768px
+======*/
+
 @media (min-width: 768px) and (max-width: 979px) {
   .counters-item:before {
     display: none;
@@ -2006,9 +2159,15 @@ a:focus, a:hover {
     margin-left: 0;
   }
 }
-/*============================================================
+
+/*====
 	Mobile (Portrait) Design for a width of 320px
-==============================================================*/
+======*/
+
+/*====
+	Mobile (Portrait) Design for a width of 320px
+======*/
+
 @media only screen and (max-width: 767px) {
   .counters-item:before {
     display: none;
@@ -2127,9 +2286,15 @@ a:focus, a:hover {
     margin-right: 10px;
   }
 }
-/*============================================================
+
+/*====
 	Mobile (Landscape) Design for a width of 480px
-==============================================================*/
+======*/
+
+/*====
+	Mobile (Landscape) Design for a width of 480px
+======*/
+
 @media only screen and (min-width: 480px) and (max-width: 767px) {
   .title h2 {
     font-size: 32px;
