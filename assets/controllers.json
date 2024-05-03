@@ -1,4 +1,7 @@
 {
+
+    "controllers": [],
+
     "controllers": {
 
         "@symfony/ux-chartjs": {
@@ -18,5 +21,6 @@
             }
         }
     },
+
     "entrypoints": []
 }

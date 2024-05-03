@@ -2,6 +2,15 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+stats:
+    path: /stats
+    controller: App\Controller\TravailController::statistiques
+
+
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
 stats:
     path: /stats
     controller: App\Controller\EventController::statistiques
@@ -17,4 +26,5 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
 

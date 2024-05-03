@@ -1,0 +1,11 @@
+{% if travails is not empty %}
+    {% for travail in travails %}
+        <div class="searchResult">
+            <p>{{ travail.titre }}</p>
+            
+            
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Aucun résultat trouvé.</p>
+{% endif %}

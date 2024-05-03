@@ -3,11 +3,18 @@ security:
     enable_authenticator_manager: true
 
 
+    enable_authenticator_manager: true
+
+
+
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
+
+        users_in_memory: { memory: null }
+
 
         users_in_memory: { memory: null }
 
@@ -17,12 +24,17 @@ security:
                 class: App\Entity\User
                 property: username
 
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
+
+            provider: users_in_memory
+
+
 
             provider: users_in_memory
 
@@ -46,6 +58,7 @@ security:
                 #always_remember_me: true
 
 
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -59,8 +72,14 @@ security:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
+
+
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
          #- { path: ^/user, roles: ROLE_ADMIN }
          - { path: ^/login, roles: PUBLIC_ACCESS }
+
 
 
 when@test:

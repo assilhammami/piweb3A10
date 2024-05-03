@@ -1,3 +1,10 @@
+
+parameters:
+    badwords:
+        - bitch
+        - fuck
+        - merde
+
  # config/packages/parameters.yaml
 
 parameters:
@@ -5,3 +12,4 @@ parameters:
         - badword
         - badword1
         - badword2
+

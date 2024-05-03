@@ -7,9 +7,14 @@ when@dev:
 
         profiler: { only_exceptions: false }
 
+
+
+        profiler: { only_exceptions: false }
+
         profiler:
             only_exceptions: false
             collect_serializer_data: true
+
 
 
 when@test:

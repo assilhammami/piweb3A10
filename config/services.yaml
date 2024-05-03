@@ -5,15 +5,21 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+#images_directory: '%kernel.project_dir%/public/uploads/images'
+
+
 
 
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
+
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+
 
  
     App\Twig\CustomTwigExtension:
@@ -23,6 +29,7 @@ services:
     App\Twig\DateModifyExtension:
         tags:
             - { name: twig.extension }
+
 
 
 
@@ -36,6 +43,12 @@ services:
             - '../src/Kernel.php'
 
 
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+imports:
+    - { resource: '../config/packages/parameters.yaml' }
+
+
 imports:
     - { resource: '../config/packages/parameters.yaml' }
     # add more service definitions when explicit configuration is needed
@@ -45,4 +58,5 @@ parameters:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
 

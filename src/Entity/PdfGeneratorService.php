@@ -16,6 +16,10 @@ class PdfGeneratorService
 
         $pdf->writeHTML($html, true, false, true, false, '');
         return $pdf->Output('document.pdf', 'S');
+
+    }
+
    }
+
 }
 ?>
