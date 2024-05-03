@@ -33,7 +33,7 @@ class EventController extends AbstractController
                 'title' => $evenement->getNom(),
                 'start' => $evenement->getDate(),
                 'description' => $evenement->getDescription(),
-                'url' => $this->generateUrl('app_event_show', ['id' => $evenement->getId()]),
+                'url' => $this->generateUrl('app_event_calendar', ['id' => $evenement->getId()]),
                 // Ajoutez d'autres attributs selon vos besoins
             ];
         }
@@ -56,6 +56,11 @@ class EventController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $event->getDescription(); // Supposons que 'comment' est le champ de commentaire dans votre entité Avis
+            if ($this->containsBadWords($comment)) {
+                // Redirection ou gestion d'erreur
+                return new Response('Votre description contient des mots interdits.', 400);
+            }
             /** @var UploadedFile $imageFile */
             $imageFile = $form->get('image')->getData();
             
@@ -86,7 +91,10 @@ class EventController extends AbstractController
             'form' => $form,
         ]);
     }
-    
+  
+        
+
+      
 
     #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
     public function show(Event $event): Response
@@ -179,7 +187,7 @@ class EventController extends AbstractController
         ]);
     
         }
-      #[Route('/calendar', name: 'app_evenement_calendar', methods: ['GET'])]
+      #[Route('/calendar', name: 'app_event_calendar', methods: ['GET'])]
 public function calendar(EventRepository $eventRepository): Response
 {
     // Récupérer tous les événements de la base de données
@@ -201,6 +209,7 @@ public function calendar(EventRepository $eventRepository): Response
     return $this->render('event/calendar.html.twig', [
         'events' => $events,
     ]);
+    
 }
 
       #[Route("/stats", name:"stats")]
@@ -222,5 +231,18 @@ public function calendar(EventRepository $eventRepository): Response
             'data' => json_encode($data)
         ]);
     }
+    public function containsBadWords($comment)
+    {
+        // Récupérer la liste des mots interdits depuis les paramètres Symfony
+        $badWords = $this->getParameter('badwords');
 
+        // Vérifier si le commentaire contient l'un des mots interdits
+        foreach ($badWords as $word) {
+            if (stripos($comment, $word) !== false) {
+                return true; // Le commentaire contient un mot interdit
+            }
+        }
+
+        return false; // Le commentaire ne contient aucun mot interdit
+    }
 }

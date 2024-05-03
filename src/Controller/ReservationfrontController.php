@@ -133,7 +133,7 @@ public function sendEmail(MailerInterface $mailer)
     // Créer l'email
     $email = (new Email())
         ->from('davincisdata@gmail.com')
-        ->to('assil.hammami@gmail.com')
+        ->to('assil.hammami36@gmail.com')
         ->subject('Notification de commentaire')
         ->text($mailContent)
         ->html('<p>' . $mailContent . '</p>');
