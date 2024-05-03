@@ -1,0 +1,51 @@
+{% extends 'home.html.twig' %}
+{% block body %}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; border: 2px solid #000; padding: 20px; box-sizing: border-box;">
+
+{{ form_start(f,{'attr': {'novalidate': 'novalidate' }} )}}
+<div class="form-group">
+    <div class="col">
+        <div style="display: flex; align-items: center;">
+            {{ form_row(f.photo_de_profile, {'attr': {'onchange': 'previewFile()'}}) }}            <div>
+                <img id="preview" src="{{ asset('uploads/photos/' ~ app.user.getPhotoDeProfile) }}" alt="Image Preview" style="width: 100px; height: 100px; margin-left: 20px; border-radius: 50%; border: 2px solid #000;"/>
+            </div>
+        </div>
+    </div>
+<div class="col">
+        {{ form_row(f.nom) }}
+      {{ form_row(f.prenom) }}
+</div>
+
+<div class="col">
+        {{ form_row(f.email) }}
+        {{ form_row(f.username) }}
+</div>
+<div class="col">
+        {{ form_row(f.plainPassword) }}
+    
+        {{ form_row(f.num_telephone) }}
+</div>
+<div class="col">
+    {{ form_row(f.date_de_naissance, {'attr':{'class':'form-control'}}) }}    
+</div>
+</div>
+{{ form_widget(f.Save) }}
+{{ form_end(f) }}
+</div>
+<script>
+    function previewFile() {
+        const preview = document.getElementById('preview');
+        const file = document.querySelector('input[type=file]').files[0];
+        const reader = new FileReader();
+    
+        reader.addEventListener("load", function () {
+            // convert image file to base64 string
+            preview.src = reader.result;
+        }, false);
+    
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+    </script>
+{% endblock %}

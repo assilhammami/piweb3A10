@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <!--
  // WEBSITE: https://themefisher.com
  // TWITTER: https://twitter.com/themefisher
@@ -10,7 +11,7 @@
 <head>
 
   <!-- Basic Page Needs
-  ================================================== -->
+  = -->
   <meta charset="utf-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
 
@@ -23,7 +24,7 @@
     {% endblock %}
 
   <!-- Mobile Specific Metas
-  ================================================== -->
+  = -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="One page parallax responsive HTML Template">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
@@ -34,7 +35,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="/frontoffice/images/favicon.png" />
 
   <!-- CSS
-  ================================================== -->
+  = -->
   <!-- Themefisher Icon font -->
   <link rel="stylesheet" href="/frontoffice/plugins/themefisher-font/style.css">
   <!-- bootstrap.min css -->
@@ -55,7 +56,7 @@
 
   <!--
   Start Preloader
-  ==================================== -->
+  = -->
   <div id="preloader">
     <div class='preloader'>
       <span></span>
@@ -68,11 +69,11 @@
   </div>
   <!--
   End Preloader
-  ==================================== -->
+  = -->
 
 <!--
 Fixed Navigation
-==================================== -->
+= -->
 <header class="navigation fixed-top sticky-header">
   <div class="container">
     <!-- main nav -->
@@ -116,7 +117,7 @@ Fixed Navigation
 
 <!--
 End Fixed Navigation
-==================================== -->
+= -->
 
 {% block body %}{% endblock %}
 <div id="google_translate_element"></div> <script type="text/javascript"> function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'},'google_translate_element'); } </script> <script type="text/javascript"src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -175,10 +176,10 @@ End Fixed Navigation
 
 
 <!-- end Footer Area
-========================================== -->
+ -->
 <!-- 
     Essential Scripts
-    =====================================-->
+    ==-->
 <!-- Main jQuery -->
 <script src="/frontoffice/plugins/jquery/jquery.min.js"></script>
 
@@ -205,4 +206,23 @@ End Fixed Navigation
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5/main.min.js'></script>
 
 </body>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+
 </html>
