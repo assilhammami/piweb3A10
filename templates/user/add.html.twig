@@ -1,0 +1,33 @@
+{% extends 'template.html.twig' %}
+{% block pagetitle %}Add users{% endblock %}
+{% block body %}
+{{ form_start(f,{'attr': {'novalidate': 'novalidate' }} )}}
+<table>
+    <tr>
+        <td>{{ form_row(f.photo_de_profile) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.nom) }}</td>
+        <td>{{ form_row(f.prenom) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.email) }}</td>
+        <td>{{ form_row(f.username) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.password) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.num_telephone) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.usertype) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_row(f.date_de_naissance) }}</td>
+    </tr>
+</table>
+{{ form_widget(f.Save) }}
+{{ form_end(f) }}
+{% endblock %}
+{% block title %}Add User{% endblock %}
