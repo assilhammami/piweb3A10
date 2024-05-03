@@ -1,0 +1,47 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}New Event{% endblock %}
+
+{% block body %}
+    <h1>Create new Event</h1>
+
+    {{ include('event/_form.html.twig') }}
+
+    <a href="{{ path('app_event_index') }}">back to list</a>
+    {{ parent() }}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélectionnez le champ de commentaire
+            const commentField = document.getElementById('event_description');
+
+            // Ajoutez un écouteur d'événement pour vérifier le commentaire lorsqu'il est modifié
+            commentField.addEventListener('input', function() {
+                const comment = commentField.value;
+                if (containsBadWords(comment)) {
+                    // Afficher un message d'alerte à côté du champ de commentaire
+                    commentField.insertAdjacentHTML('afterend', '<div class="alert alert-danger" role="alert">Votre commentaire contient des mots interdits.</div>');
+                } else {
+                    // Supprimer le message d'alerte s'il existe
+                    const alert = commentField.nextElementSibling;
+                    if (alert && alert.classList.contains('alert-danger')) {
+                        alert.remove();
+                    }
+                }
+            });
+
+            // Fonction pour vérifier si le commentaire contient des mots interdits
+            function containsBadWords(comment) {
+                // Votre logique de vérification des mots interdits ici
+                // Par exemple, utilisez une liste de mots interdits stockée dans une variable JavaScript
+                const badWords = ['badword1', 'badword2', 'badword3'];
+                for (const word of badWords) {
+                    if (comment.includes(word)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

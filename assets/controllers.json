@@ -1,5 +1,11 @@
 {
     "controllers": {
+
+        "@symfony/ux-chartjs": {
+            "chart": {
+                "enabled": true,
+                "fetch": "eager"
+
         "@symfony/ux-turbo": {
             "turbo-core": {
                 "enabled": true,
@@ -8,6 +14,7 @@
             "mercure-turbo-stream": {
                 "enabled": false,
                 "fetch": "eager"
+
             }
         }
     },

@@ -1,0 +1,94 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Reservation {% endblock %}
+
+{% block body %}
+    <h1>Reservation </h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+               <th>Event</th>
+                <th>Date</th>
+                <th>Nbplaces</th>
+                
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+                <td>{{ reservation.idevent.nom }}</td>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.nbplaces }}</td>
+                
+
+                <td>
+                    <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}">show</a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+<button onclick="window.location.href='{{ path('generator_service_reservation') }}'" class="export-pdf-btn">Exporter en PDF</button>
+
+    <style>
+    button.export-pdf-btn {
+    background-color: #4CAF50; /* Vert */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+/* Effet de survol */
+button.export-pdf-btn:hover {
+    background-color: white;
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+          
+                /* Styles pour la table */
+.table {
+    border-collapse: collapse; /* Supprime les espaces entre les cellules */
+    width: 100%; /* La table occupe toute la largeur du conteneur */
+    margin-bottom: 20px; /* Ajoute de l'espace en dessous de la table */
+}
+
+/* Styles pour les cellules de la table */
+.table th, .table td {
+    border: 1px solid #ddd; /* Bordure autour des cellules */
+    padding: 8px; /* Espacement interne des cellules */
+    text-align: left; /* Aligner le texte à gauche */
+}
+
+/* Styles pour l'en-tête de la table */
+.table th {
+    background-color: #f2f2f2; /* Couleur de fond pour l'en-tête */
+    color: #333; /* Couleur du texte pour l'en-tête */
+    font-weight: bold; /* Rend le texte en gras */
+}
+
+/* Style pour les lignes */
+.table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Couleur de fond pour les lignes paires */
+}
+
+.table tr:hover {
+    background-color: #e2e2e2; /* Couleur de fond au survol d'une ligne */
+}
+
+</style>
+{% endblock %}
