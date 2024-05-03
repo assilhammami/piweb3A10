@@ -5,7 +5,13 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+
+    images_directory: '%kernel.project_dir%/public/img'
+
+
+
 #images_directory: '%kernel.project_dir%/public/uploads/images'
+
 
 
 
@@ -45,6 +51,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+# config/services.yaml
+
+
 imports:
     - { resource: '../config/packages/parameters.yaml' }
 

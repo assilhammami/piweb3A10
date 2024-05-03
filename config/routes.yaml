@@ -1,4 +1,13 @@
 
+email:
+    path: /email
+    controller: App\Controller\CoursController::sendEmail
+
+stats:
+    path: /stats
+    controller: App\Controller\CoursController::statistiques
+
+
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index

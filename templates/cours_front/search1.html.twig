@@ -1,0 +1,27 @@
+    <div class="row">
+        {% for cour in cours %}
+            <div class="col-md-4">
+                <div class="course-card">
+                   <img src="{{ asset('img/' ~ cour.image) }}" class="course-image" width="300" height="150">
+
+                    <div class="course-details">
+                        <h2>{{ cour.nom }}</h3>
+                        <p><strong>Description :</strong>{{ cour.description }}</p>
+                        <p><strong>Date de publication : </strong>{{ cour.datePub ? cour.datePub|date('Y-m-d') : '' }}</p>
+                        <p><strong>Likes :</strong> {{ cour.likes }}</p>
+                        <p><strong>Dislikes : </strong>{{ cour.dislikes }}</p>
+ <button type="button" class="btn btn-custom" onclick="window.location.href='{{ path('app_aviss_front_new', {'coursId': cour.id}) }}';"><i class="fas fa-comment"></i>Evaluer</button>
+                        
+                    </div>
+                </div>
+            </div>
+            {% if loop.index % 3 == 0 %}
+                </div><div class="row">
+            {% endif %}
+        {% else %}
+            <p>Aucun cours trouvé.</p>
+        {% endfor %}
+    </div>
+
+
+   

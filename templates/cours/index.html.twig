@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+ {% block recherche %}
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Cours</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .btn-custom {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #fff;
+        }
+
+        .btn-custom:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+        }
+
+        /* Styles pour les icônes des boutons */
+        .btn-custom .fas {
+            margin-right: 5px;
+        }
+
+        /* Ajout de marge supérieure au bouton */
+        .btn-new-course {
+            margin-top: 20px;
+            float: right;
+        }
+        h1.text-center {
+    font-size: 36px; /* Taille de la police */
+    color: #007bff; /* Couleur du texte (bleu) */
+    margin-bottom: 20px; /* Marge inférieure pour l'espace */
+    text-transform: uppercase; /* Convertir le texte en majuscules */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    font-size: 60px; /* Ombre portée pour mettre en évidence */
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination a,
+.pagination span {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  margin: 0 4px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #f0f0f0;
+}
+
+.pagination .active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+    </style>
+</head>
+<body>
+ <form method="GET" action="{{ path('app_cours_new') }}" class="d-inline-block btn-new-course">
+        <button type="submit" class="btn btn-custom">
+        <i class="fas fa-plus-circle"></i>
+            Créer un nouveau cours 
+        </button>
+         <button type="button" class="btn btn-custom" onclick="window.location.href='/stats ';"><i class="fas fa-chart-pie"></i>Statistiques</button>
+    </form>
+    
+    
+    <h1 class="text-center">Liste Des Cours</h1>
+    
+   
+<div id="searchResults"></div>
+    
+
+</body>
+
+</html>
+{% endblock %}
+
+{% block js %}       
+<script document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('.rating i');
+
+                stars.forEach(star => {
+                    star.addEventListener('mouseover', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        highlightStars(value);
+                    });
+
+                    star.addEventListener('click', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        document.getElementById('ratingValue').value = value;
+                    });
+
+                    star.addEventListener('mouseout', function() {
+                        const value = parseInt(document.getElementById('ratingValue').value);
+                        highlightStars(value);
+                    });
+                });
+
+                function highlightStars(value) {
+                    stars.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-star-value'));
+                        if (starValue <= value) {
+                            star.classList.add('fas');
+                            star.classList.remove('far');
+                        } else {
+                            star.classList.remove('fas');
+                            star.classList.add('far');
+                        }
+                    });
+                }
+            });
+        </script>{% endblock %}
