@@ -1,0 +1,15 @@
+{% extends 'backoffice/base.html.twig' %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ event.nom }}</h1>
+        <p>Date: {{ event.date }}</p>
+        <p>Capacity: {{ event.capacity }}</p>
+        <p>Place: {{ event.place }}</p>
+        <p>Description: {{ event.Description }}</p>
+        <img src="{{ asset('images/' ~ event.image) }}" alt="Event Image" width="200px">
+        <a href="{{ path('app_event_index') }}">Back to List</a>
+    </div>
+{% endblock %}

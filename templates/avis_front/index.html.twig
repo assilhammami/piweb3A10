@@ -1,0 +1,36 @@
+{% extends 'front.html.twig' %}
+
+{% block body %}
+   
+
+    <table class="table">
+        <thead>
+            <tr>
+                
+                <th>Commentaires</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for avi in avis %}
+            <tr>
+                
+                <td>{{ avi.commentaire }}</td>
+                 <td>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_front_show', {'id': avi.id}) }}'">Show</button>
+                    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_front_edit', {'id': avi.id}) }}'">Edit</button>
+                </td>
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   
+    <button type="button" class="btn btn-primary" onclick="window.location.href='{{ path('app_avis_front_new') }}'">Create new</button>
+{% endblock %}

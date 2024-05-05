@@ -1,0 +1,39 @@
+{% extends 'base2.html.twig' %}
+ {% block pagetitle %}Liste des utilisateurs{% endblock %}
+
+ {% block body %}
+<table  class ="table" style="width: 50%; margin: auto;">
+    <th class="table-light">photo de profil</th>
+    <th class="table-light">ID</th>
+    <th class="table-light">username</th>
+    <th class="table-light">email</th>
+    <th class="table-light">date de naissance</th>
+    <th class="table-light">type</th>
+    <th class="table-light">nom</th>
+    <th class="table-light">prenom</th>
+    <th class="table-light">num telephone</th>
+    <th class="table-light">activer/desactiver</th>
+    </th>
+    {%for a in users%}
+    <tr class="table-primary">
+        <td><img width="70px" src="{{ asset('uploads/photos/' ~ a.getPhotoDeProfile) }}"></td>
+        <td>{{a.id}}</td>
+        <td>{{a.username}}</td>
+        <td>{{a.email}}</td>
+        <td>{{a.getDateDeNaissance() | date('d/m/Y') }}</td>
+        <td>{{ a.getUserType }}</td>
+        <td>{{a.nom}}</td>
+        <td>{{a.prenom}}</td>
+        <td>{{ a.getNumTelephone }}</td>
+{% if a.getActive %}
+    <td><a href="{{ path('deactivate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-x-lg"></i></a></td>
+{% else %}
+    <td><a href="{{ path('activate', {'id': a.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-check2"></i></a></td>
+{% endif %}
+    </tr>
+    {%endfor%}
+</table>
+<a href="{{ path('user_add') }}" class="btn btn-primary btn-sm">Add a User</a></td>
+{% endblock %}
+{%block title%}Users List{%endblock%}
+

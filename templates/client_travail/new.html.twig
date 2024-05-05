@@ -1,0 +1,44 @@
+{% extends 'front.html.twig' %}
+
+{% block title %}New Travail{% endblock %}
+
+{% block body %}
+    <h1>Create new Travail</h1>
+
+    {{ include('client_travail/_form.html.twig') }}
+
+    <a href="{{ path('app_client_travail_index') }}">back to list</a>
+
+    <script>
+        // Fonction pour vérifier si le titre contient des mots interdits
+        function containsBadWords(title) {
+            // Votre logique de vérification des mots interdits ici
+            // Par exemple, utilisez une liste de mots interdits stockée dans une variable JavaScript
+            const badWords = ['fuck', 'bitch', 'merde'];
+            for (const word of badWords) {
+                if (title.includes(word)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Sélectionnez le champ de titre
+        const titleField = document.getElementById('travail1_titre');
+
+        // Ajoutez un écouteur d'événement pour vérifier le titre lorsqu'il est modifié
+        titleField.addEventListener('input', function() {
+            const title = titleField.value;
+            if (containsBadWords(title)) {
+                // Afficher un message d'alerte à côté du champ de titre
+                titleField.insertAdjacentHTML('afterend', '<div class="alert alert-danger" role="alert">Votre titre contient des mots interdits.</div>');
+            } else {
+                // Supprimer le message d'alerte s'il existe
+                const alert = titleField.nextElementSibling;
+                if (alert && alert.classList.contains('alert-danger')) {
+                    alert.remove();
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -10873,7 +10873,15 @@ a:focus {
 }
 
 .bg-password-image {
+
   background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+
+
+  background: url("https://source.unsplash.com/oWTW-jNGl9I/600x800");
+
+  background: url("https://i.pinimg.com/564x/fd/84/d4/fd84d4d8f5ba8f89638bbf309e986682.jpg");
+
+
   background-position: center;
   background-size: cover;
 }

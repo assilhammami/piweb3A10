@@ -1,0 +1,37 @@
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    body {
+        background-color: #ffffff; /* Arrière-plan blanc */
+        color: #333333; /* Couleur de texte principale */
+    }
+
+    h1 {
+        color: #007bff; /* Titre en bleu */
+    }
+
+    .btn {
+        background-color: #007bff; /* Bouton en bleu */
+        color: #ffffff; /* Texte des boutons en blanc */
+        border: none;
+        border-radius: 3px;
+        padding: 8px 16px;
+        cursor: pointer;
+        text-decoration: none; /* Supprimer le soulignement des liens */
+        display: inline-block; /* Pour que le lien se comporte comme un bouton */
+        margin-top: 10px; /* Espacement entre le formulaire et le bouton */
+    }
+
+    .btn-secondary {
+        background-color: #6c757d; /* Bouton secondaire en gris */
+    }
+</style>
+
+<h1>Create new Travail</h1>
+
+{{ include('travail/_form.html.twig') }}
+
+<a href="{{ path('app_travail_index') }}" class="btn">Back to list</a>
+{% endblock %}
