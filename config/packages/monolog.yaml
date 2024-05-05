@@ -63,7 +63,11 @@ when@prod:
                 formatter: monolog.formatter.json
 
 
+                formatter: monolog.formatter.json
+
+
 
                 formatter: monolog.formatter.json
+
 
 

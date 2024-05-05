@@ -1,0 +1,21 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Mes Publications{% endblock %}
+
+{% block body %}
+    
+    
+    <section style="display: flex; flex-wrap: wrap;">
+        {% for publication in publications %}
+            <div class="publication" style="flex: 0 0 calc(33.33% - 20px); margin: 10px;">
+                <h2>{{ publication.titre }}</h2>
+                <p>{{ publication.description }}</p>
+                <img width="200px" src="{{ asset('image/' ~ publication.image) }}" alt="Image de la publication">
+                <div class="publication-actions">
+                    <a href="{{ path('edit_publication', {'id': publication.id}) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path('delete_publication', {'id': publication.id}) }}" class="btn btn-danger">Supprimer</a>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

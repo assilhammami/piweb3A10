@@ -13,9 +13,15 @@
   /*	Page Preloader
   /* === */
 
+
   /* === */
   /*	Page Preloader
   /* === */
+
+  /* === */
+  /*	Page Preloader
+  /* === */
+
 
   $(window).on('load', function () {
     $('#preloader').fadeOut('slow', function () {
@@ -52,9 +58,15 @@
   /*	Portfolio Filtering Hook
   /* ===  */
 
+
   /* === */
   /*	Portfolio Filtering Hook
   /* ===  */
+
+  /* === */
+  /*	Portfolio Filtering Hook
+  /* ===  */
+
 
   // filter
   setTimeout(function(){
@@ -70,9 +82,15 @@
   /*	Testimonial Carousel
   /* ===  */
 
+
   /* === */
   /*	Testimonial Carousel
   /* ===  */
+
+  /* === */
+  /*	Testimonial Carousel
+  /* ===  */
+
 
   //Init the slider
   $('.testimonial-slider').slick({
@@ -88,9 +106,15 @@
   /*	Clients Slider Carousel
   /* ===  */
 
+
   /* === */
   /*	Clients Slider Carousel
   /* ===  */
+
+  /* === */
+  /*	Clients Slider Carousel
+  /* ===  */
+
 
   //Init the slider
   $('.clients-logo-slider').slick({
@@ -125,9 +149,15 @@
   /*	Company Slider Carousel
   /* ===  */
 
+
   /* === */
   /*	Company Slider Carousel
   /* ===  */
+
+  /* === */
+  /*	Company Slider Carousel
+  /* ===  */
+
 
   $('.company-gallery').slick({
     infinite: true,
@@ -169,9 +199,15 @@
   /*	On scroll fade/bounce effect
   /* === */
 
+
   /* === */
   /*	On scroll fade/bounce effect
   /* === */
+
+  /* === */
+  /*	On scroll fade/bounce effect
+  /* === */
+
 
   var scroll = new SmoothScroll('a[href*="#"]');
 
@@ -214,12 +250,15 @@
 
 
 
+
+
     var scroll = $(window).scrollTop();
     if (scroll > 50) {
       $('.navigation').addClass('sticky-header');
     } else {
       $('.navigation').removeClass('sticky-header');
     }
+
 
 
   });

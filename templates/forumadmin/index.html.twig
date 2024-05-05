@@ -1,0 +1,160 @@
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Forum{% endblock %}
+ {% block recherche %}
+ <input id="searchInput"  type="search" placeholder="Search">
+ 
+   
+
+<script>
+// Function to fetch clubs based on search input
+function fetchClubs(searchValue) {
+    fetch('{{ path('search') }}', {
+        method: 'POST',
+        body: JSON.stringify({ search: searchValue }),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.text())
+      .then(data => document.getElementById('searchResults').innerHTML = data);
+}
+
+// Initial fetch to show all clubs
+fetchClubs('');
+
+// Listen for input on search input field
+document.getElementById('searchInput').addEventListener('input', function() {
+    var searchValue = this.value.trim();
+    fetchClubs(searchValue);
+});
+
+
+</script>
+  {% endblock %}
+
+{% block body %}
+
+
+    <header>
+        <h1>Welcome To Our Forum</h1>
+    </header>
+    <!-- Formulaire de recherche -->
+    
+
+    <nav>
+     
+        
+        <a href="{{ path('publication_newadmin') }}" class="btn btn-primary">Ajouter une publication</a>
+        <button onclick="window.location.href='/stats'">Statistiques</button>
+        
+    </nav>
+    <section>
+        {% for publication in publications %}
+            <div class="publication">
+                <h2>{{ publication.titre }}</h2>
+                <p>{{ publication.description }}</p>
+                {# Affichage de l'image de la publication #}
+                <img width="800px" src="{{ asset('image/' ~ publication.image) }}" alt="Image de la publication">
+                {# Bouton Télécharger à côté de l'image #}
+                <a href="{{ asset('image/' ~ publication.image) }}" download="{{ publication.image }}" class="download-btn btn btn-primary">Télécharger</a>
+                <a href="{{ path('delete_publication', {'id': publication.id}) }}" class="btn btn-danger">Supprimer</a>
+                {# Liste des commentaires pour cette publication #}
+                <div class="commentaires">
+                    <h3>Commentaires :</h3>
+                    {% for commentaire in publication.commentaires %}
+                        <div class="commentaire">
+                            {% if commentaire.iduser == 2 %}
+                                <p>{{ commentaire.contenu }}</p>
+                                <a href="{{ path('delete_comment', {'id': commentaire.id}) }}">Supprimer</a>
+                                {% if commentaire.iduser == 2 %}
+                                    <a href="{{ path('edit_comment', {'id': commentaire.id}) }}">Modifier</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                {# Bouton pour afficher/masquer le formulaire de commentaire #}
+                <button class="toggle-comment-form btn btn-primary">Comment</button>
+                {# Formulaire d'ajout de commentaire pour cette publication #}
+                <form class="comment-form" action="{{ path('add_comment', {'id': publication.id}) }}" method="post" style="display: none;">
+                    {{ form_widget(comment_forms[publication.id]) }}
+                     <div class="rating">
+                            <input type hidden  id="ratingValue" name="rating" value="0"> <!-- Champ de note caché pour stocker la valeur de la note -->
+                            <i class="far fa-star" style="color: gold;" data-star-value="1"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="2"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="3"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="4"></i>
+                            <i class="far fa-star" style="color: gold;" data-star-value="5"></i>
+                        </div>
+                    <button type="submit" class="btn btn-primary">Ajouter commentaire</button>
+                </form>
+            </div>
+        {% endfor %}
+    </section>
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            // JavaScript pour afficher/masquer le formulaire de commentaire
+            document.querySelectorAll('.toggle-comment-form').forEach(button => {
+                button.addEventListener('click', () => {
+                    const commentForm = button.nextElementSibling;
+                    commentForm.style.display = commentForm.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+
+        // Gestion du rating avec des étoiles
+            document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('.rating i');
+
+                stars.forEach(star => {
+                    star.addEventListener('mouseover', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        highlightStars(value);
+                    });
+
+                    star.addEventListener('click', function() {
+                        const value = parseInt(star.getAttribute('data-star-value'));
+                        document.getElementById('ratingValue').value = value;
+                    });
+
+                    star.addEventListener('mouseout', function() {
+                        const value = parseInt(document.getElementById('ratingValue').value);
+                        highlightStars(value);
+                    });
+                });
+
+                function highlightStars(value) {
+                    stars.forEach(star => {
+                        const starValue = parseInt(star.getAttribute('data-star-value'));
+                        if (starValue <= value) {
+                            star.classList.add('fas');
+                            star.classList.remove('far');
+                        } else {
+                            star.classList.remove('fas');
+                            star.classList.add('far');
+                        }
+                    });
+                }
+            });
+        </script>
+        
+    {% endblock %}
+    <style>
+    /* Styles pour le champ de recherche */
+input#searchInput {
+    width: 300px; /* Largeur du champ de recherche */
+    padding: 10px; /* Espacement interne (padding) */
+    border: 1px solid #ccc; /* Bordure légère */
+    border-radius: 5px; /* Bords arrondis */
+    outline: none; /* Supprime la bordure de focus par défaut */
+    transition: border-color 0.3s ease; /* Transition pour la couleur de la bordure */
+}
+
+/* Effet de focus pour le champ de recherche */
+input#searchInput:focus {
+    border-color: #007bff; /* Couleur de bordure plus vive au focus */
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes Publications{% endblock %}
+
+{% block body %}
+    <section style="display: flex; flex-wrap: wrap;">
+        {% for publication in publications %}
+            <div class="publication" style="flex: 0 0 calc(33.33% - 20px); margin: 10px;">
+                <h2>{{ publication.titre }}</h2>
+                <p>{{ publication.description }}</p>
+                <img width="200px" src="{{ asset('image/' ~ publication.image) }}" alt="Image de la publication">
+                <div class="publication-actions">
+                    <a href="{{ path('edit_publication', {'id': publication.id}) }}" class="btn btn-primary">Modifier</a>
+                    <a href="{{ path('delete_publication', {'id': publication.id}) }}" class="btn btn-danger">Supprimer</a>
+                    {% set titre = publication.titre %}
+{% set imageUrl = publication.image %}
+
+{# Encode the description and image URL #}
+{% set encodedTitre = titre| url_encode %}
+{% set encodedImageUrl = imageUrl | url_encode %}
+
+
+{% set shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' ~ encodedImageUrl ~ '&quote=' ~ encodedTitre %}
+
+           <button><a href="{{ shareUrl }}" >Share </a></button>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <!-- Container pour afficher les notifications -->
+    <div id="notification-container" style="position: fixed; top: 50px; right: 20px;"></div>
+
+
+    {% block javascripts %}
+        {{ parent() }}
+        <script>
+            // Fonction pour afficher la notification
+            function showNotification(message) {
+                var notificationContainer = document.getElementById('notification-container');
+                var notification = document.createElement('div');
+                notification.textContent = message;
+                notification.style.backgroundColor = 'green'; // Couleur de fond de la notification
+                notification.style.color = 'white'; // Couleur du texte de la notification
+                notification.style.padding = '10px'; // Espacement interne de la notification
+                notification.style.borderRadius = '5px'; // Bordure arrondie de la notification
+                notificationContainer.appendChild(notification);
+                
+                // Supprimer la notification après 5 secondes
+                setTimeout(function() {
+                    notificationContainer.removeChild(notification);
+                }, 5000); // 5000 ms = 5 secondes
+            }
+            
+
+            // Afficher la notification lorsque la page est chargée
+            document.addEventListener('DOMContentLoaded', function() {
+                // Récupérer le paramètre de l'URL
+                var urlParams = new URLSearchParams(window.location.search);
+                var notificationParam = urlParams.get('notification');
+                var suppressionParam = urlParams.get('suppression');
+                    
+                    // Afficher la notification d'ajout uniquement si le paramètre n'est pas "false" et s'il n'y a pas de paramètre de suppression
+                    if (notificationParam !== 'false' && !suppressionParam) {
+                        showNotification('La publication a été ajoutée avec succès');
+                }
+                
+                
+                
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

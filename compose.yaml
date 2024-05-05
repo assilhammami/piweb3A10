@@ -7,9 +7,13 @@ services:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
 
 
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+
+
     image: postgres:${POSTGRES_VERSION:-15}-alpine
 
     image: postgres:${POSTGRES_VERSION:-16}-alpine
+
 
 
     environment:
@@ -21,11 +25,14 @@ services:
 
 
 
+
+
     healthcheck:
       test: ["CMD", "pg_isready"]
       timeout: 5s
       retries: 5
       start_period: 60s
+
 
 
     volumes:

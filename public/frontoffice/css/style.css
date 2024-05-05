@@ -15,6 +15,9 @@ body {
 
 
 
+
+
+
   margin-top: 100px; /* Ajustez cette valeur selon vos besoins */
 }
 
@@ -22,7 +25,10 @@ body {
 
 
 
+
+
 }
+
 
 
 
@@ -418,6 +424,14 @@ a:focus, a:hover {
 .navigation {
 
 
+/*==
+  Navigation
+===*/
+.navigation {
+  margin-bottom: 20px; /* Diminuez cette valeur pour monter légèrement l'en-tête */}
+.navigation {
+
+
 
 
 /*==
@@ -427,6 +441,7 @@ a:focus, a:hover {
 
   margin-bottom: 20px; /* Diminuez cette valeur pour monter légèrement l'en-tête */}
 .navigation {
+
 
 
 
@@ -562,6 +577,9 @@ a:focus, a:hover {
 
 
 
+
+
+
   background: black;
 }
 .sticky-header .navbar-light .navbar-nav .nav-item .nav-link {
@@ -569,10 +587,13 @@ a:focus, a:hover {
 
 
 
+
+
   background: #fff;
 }
 .sticky-header .navbar-light .navbar-nav .nav-item .nav-link {
   color: #000;
+
 
 
 }
@@ -819,9 +840,15 @@ a:focus, a:hover {
   About us section
 ===*/
 
+
 /*==
   About us section
 ===*/
+
+/*==
+  About us section
+===*/
+
 
 .about {
   padding: 100px 0;
@@ -861,9 +888,15 @@ a:focus, a:hover {
   About us 2 section
 ===*/
 
+
 /*==
   About us 2 section
 ===*/
+
+/*==
+  About us 2 section
+===*/
+
 
 .about-2 {
   background: #F7F7F7;
@@ -895,9 +928,15 @@ a:focus, a:hover {
  Call To Action 1
 ===*/
 
+
 /*==
  Call To Action 1
 ===*/
+
+/*==
+ Call To Action 1
+===*/
+
 
 .call-to-action {
   padding: 100px 0;
@@ -920,9 +959,15 @@ a:focus, a:hover {
  Call To Action 2
 ===*/
 
+
 /*==
  Call To Action 2
 ===*/
+
+/*==
+ Call To Action 2
+===*/
+
 
 .call-to-action-2 {
   padding: 100px 0;
@@ -945,9 +990,15 @@ a:focus, a:hover {
   Contact
   ===*/
 
+
 /*==
   Contact
   ===*/
+
+/*==
+  Contact
+  ===*/
+
 
 .contact-us {
   padding: 100px 0 50px 0;
@@ -1038,9 +1089,15 @@ a:focus, a:hover {
   Item counter section
 ===*/
 
+
 /*==
   Item counter section
 ===*/
+
+/*==
+  Item counter section
+===*/
+
 
 .counters-item {
   padding-bottom: 30px;
@@ -1085,9 +1142,15 @@ a:focus, a:hover {
   Pricing section
 ===*/
 
+
 /*==
   Pricing section
 ===*/
+
+/*==
+  Pricing section
+===*/
+
 
 .pricing-table {
   padding: 100px 0;
@@ -1157,9 +1220,15 @@ a:focus, a:hover {
   Portfolio section
 ===*/
 
+
 /*==
   Portfolio section
 ===*/
+
+/*==
+  Portfolio section
+===*/
+
 
 .portfolio-filter {
   margin-bottom: 40px;
@@ -1242,9 +1311,15 @@ a:focus, a:hover {
   Services section
 ===*/
 
+
 /*==
   Services section
 ===*/
+
+/*==
+  Services section
+===*/
+
 
 .services {
   padding: 100px 0 130px;
@@ -1279,9 +1354,15 @@ a:focus, a:hover {
   Services section 2
 ===*/
 
+
 /*==
   Services section 2
 ===*/
+
+/*==
+  Services section 2
+===*/
+
 
 .service-2 .service-item {
   border: 1px solid #eee;
@@ -1316,9 +1397,15 @@ a:focus, a:hover {
   Our skills
 ===*/
 
+
 /*==
   Our skills
 ===*/
+
+/*==
+  Our skills
+===*/
+
 
 .team-skills .progress-block {
   margin-top: 40px;
@@ -1347,9 +1434,15 @@ a:focus, a:hover {
   Step section
 ===*/
 
+
 /*==
   Step section
 ===*/
+
+/*==
+  Step section
+===*/
+
 
 .development-steps .step {
   padding: 80px 20px;
@@ -1401,9 +1494,15 @@ a:focus, a:hover {
   Our Team
 ===*/
 
+
 /*==
   Our Team
 ===*/
+
+/*==
+  Our Team
+===*/
+
 
 .team {
   padding: 100px 0;
@@ -1492,9 +1591,15 @@ a:focus, a:hover {
   Testimonial section
 ===*/
 
+
 /*==
   Testimonial section
 ===*/
+
+/*==
+  Testimonial section
+===*/
+
 
 .testimonial {
   padding-top: 100px;
@@ -1541,9 +1646,15 @@ a:focus, a:hover {
   Latest Posts
 ===*/
 
+
 /*==
   Latest Posts
 ===*/
+
+/*==
+  Latest Posts
+===*/
+
 
 .blog {
   padding-bottom: 60px;
@@ -1782,9 +1893,15 @@ a:focus, a:hover {
   Single Blog Page
 ===*/
 
+
 /*==
   Single Blog Page
 ===*/
+
+/*==
+  Single Blog Page
+===*/
+
 
 #blog-banner {
   padding-bottom: 100px;
@@ -1950,9 +2067,15 @@ a:focus, a:hover {
   Footer section
 ===*/
 
+
 /*==
   Footer section
 ===*/
+
+/*==
+  Footer section
+===*/
+
 
 .top-footer {
   background-color: #222222;
@@ -2034,9 +2157,15 @@ a:focus, a:hover {
 	For Small Desktop
 ======*/
 
+
 /*====
 	For Small Desktop
 ======*/
+
+/*====
+	For Small Desktop
+======*/
+
 
 @media (min-width: 700px) and (max-width: 1090px) {
   .counters-item:before {
@@ -2089,9 +2218,15 @@ a:focus, a:hover {
 	Tablet (Portrait) Design for a width of 768px
 ======*/
 
+
 /*====
 	Tablet (Portrait) Design for a width of 768px
 ======*/
+
+/*====
+	Tablet (Portrait) Design for a width of 768px
+======*/
+
 
 @media (min-width: 768px) and (max-width: 979px) {
   .counters-item:before {
@@ -2164,9 +2299,15 @@ a:focus, a:hover {
 	Mobile (Portrait) Design for a width of 320px
 ======*/
 
+
 /*====
 	Mobile (Portrait) Design for a width of 320px
 ======*/
+
+/*====
+	Mobile (Portrait) Design for a width of 320px
+======*/
+
 
 @media only screen and (max-width: 767px) {
   .counters-item:before {
@@ -2291,9 +2432,15 @@ a:focus, a:hover {
 	Mobile (Landscape) Design for a width of 480px
 ======*/
 
+
 /*====
 	Mobile (Landscape) Design for a width of 480px
 ======*/
+
+/*====
+	Mobile (Landscape) Design for a width of 480px
+======*/
+
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
   .title h2 {
